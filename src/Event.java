@@ -1,29 +1,33 @@
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 public class Event{
     private String name; 
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private String location;
+    private Address location;
     private String host;
     private Double cost;
     private String flyerPath;
 
-    // Optional Fields
-    private Optional<String> url;
-    private Optional<String> eventDetails;
+    // Map coordinates
+    private String coordinates;
 
-    public Event(String name, LocalDateTime startTime, LocalDateTime endTime, String location, 
-                String host, Double cost, String flyerPath, Optional<String> url,
-                Optional<String> eventDetails){
+    // Optional Fields
+    private String url;
+    private String eventDetails;
+
+    public Event(String name, LocalDateTime startTime, LocalDateTime endTime, String nameOfLocation, String line1, String line2,
+                String city, String state, int zipcode, 
+                String host, Double cost, String flyerPath, String coordinates, String url,
+                String eventDetails){
         this.name = name;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.location = location;
+        this.location = new Address(nameOfLocation, line1, line2, city, state, zipcode);
         this.host = host;
         this.cost = cost;
         this.flyerPath = flyerPath;
+        this.coordinates = coordinates;
         this.url = url;
         this.eventDetails = eventDetails;
     }
@@ -40,7 +44,7 @@ public class Event{
         return endTime;
     }
 
-    public String getLocation(){
+    public Address getLocation(){
         return location;
     }
 
@@ -50,28 +54,25 @@ public class Event{
 
     // returns null if no url was given
     public String getUrl(){
-        if(url.isPresent() && !url.isEmpty()){
-            return url.get();
-        } else{
-            return null;
-        }
+       return url;
     }
 
     public Double getCost(){
         return cost;
     }
 
+    public String getCoordinates(){
+        return coordinates;
+    }
+
     // returns null if no event details were specified
     public String getEventDetails(){
-        if(eventDetails.isPresent() && !eventDetails.isEmpty()){
-            return eventDetails.get();
-        } else{
-            return null;
-        }
+        return eventDetails;
     }
 
     public String getFlyerPath(){
         return flyerPath;
     }
+
 }
 
