@@ -3,12 +3,12 @@ import java.time.LocalDateTime;
 public class Event{
     private String name; 
     private EventType eventType;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
+
+    private Duration duration;
     private Address location;
     private String host;
     private Double cost;
-    private String flyerPath;
+    private Attatchments images;
 
     // Map coordinates
     private Coordinates coordinates;
@@ -17,18 +17,16 @@ public class Event{
     private String url;
     private String eventDetails;
 
-    public Event(String name, EventType eventType, LocalDateTime startTime, LocalDateTime endTime, String nameOfLocation, String line1, String line2,
-                String city, String state, int zipcode, 
-                String host, Double cost, String flyerPath, Coordinates coordinates, String url,
+    public Event(String name, EventType eventType, Duration duration, Address location;
+                String host, Double cost, Attatchments images, Coordinates coordinates, String url,
                 String eventDetails){
         this.name = name;
-        this.eventType = eventType;
-        this.startTime = startTime;
+        this.duration = duration.
         this.endTime = endTime;
-        this.location = new Address(nameOfLocation, line1, line2, city, state, zipcode);
+        this.location = location;
         this.host = host;
         this.cost = cost;
-        this.flyerPath = flyerPath;
+        this.images = images;
         this.coordinates = coordinates;
         this.url = url;
         this.eventDetails = eventDetails;
