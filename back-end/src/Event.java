@@ -2,6 +2,7 @@ import java.time.LocalDateTime;
 
 public class Event{
     private String name; 
+    private EventType eventType;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private Address location;
@@ -10,17 +11,18 @@ public class Event{
     private String flyerPath;
 
     // Map coordinates
-    private String coordinates;
+    private Coordinates coordinates;
 
     // Optional Fields
     private String url;
     private String eventDetails;
 
-    public Event(String name, LocalDateTime startTime, LocalDateTime endTime, String nameOfLocation, String line1, String line2,
+    public Event(String name, EventType eventType, LocalDateTime startTime, LocalDateTime endTime, String nameOfLocation, String line1, String line2,
                 String city, String state, int zipcode, 
-                String host, Double cost, String flyerPath, String coordinates, String url,
+                String host, Double cost, String flyerPath, Coordinates coordinates, String url,
                 String eventDetails){
         this.name = name;
+        this.eventType = eventType;
         this.startTime = startTime;
         this.endTime = endTime;
         this.location = new Address(nameOfLocation, line1, line2, city, state, zipcode);
@@ -61,7 +63,7 @@ public class Event{
         return cost;
     }
 
-    public String getCoordinates(){
+    public Coordinates getCoordinates(){
         return coordinates;
     }
 
