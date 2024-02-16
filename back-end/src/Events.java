@@ -19,6 +19,7 @@ public class Events(){
     // save the event to savedEvents
     public boolean saveEvent(int id){
         savedEvents.add(event);
+        return true;
     }
     
     // send the image to the front end
@@ -30,7 +31,7 @@ public class Events(){
     
     // return the saved events and mini-flyers.
     // return is map from event to the mini flyer.
-    public Map<Event, String> getSavedEvents(){
+    public Map<int, String> getSavedEvents(){
         // TODO implement once the Event is finalized and the method of return.
         throw new UnsupportedOperationException("This method is not yet implemented");
     }
