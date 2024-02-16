@@ -1,6 +1,7 @@
 import java.time.LocalDateTime;
 
 public class Event{
+    private int eventId;
     private String name; 
     private EventType eventType;
 
@@ -17,9 +18,14 @@ public class Event{
     private String url;
     private String eventDetails;
 
+    private static int MAX_ID = 0;
+
     public Event(String name, EventType eventType, Duration duration, Address location;
                 String host, Double cost, Attatchments images, Coordinates coordinates, String url,
                 String eventDetails){
+        eventId = MAX_ID;
+        MAX_ID++;
+        
         this.name = name;
         this.duration = duration.
         this.endTime = endTime;

@@ -9,18 +9,21 @@ public class Events(){
     }
 
     // Displays the set of events that have the event_type and are within the time range (if given).
-    public Set<Event> getEvents(Set<EventType> event_types, LocalDateTime startTimeRange, LocalDateTime endTimeRange){
+    // Event in index 0 is the closest then longer.
+    // distance is birds eye
+    public List<Event> getEvents(Coordinates coordinates, Filters filters){
         // TODO implement once Event object is finalized
         throw new UnsupportedOperationException("This method is not yet implemented");
     }
 
     // save the event to savedEvents
-    public boolean saveEvent(Event event){
+    public boolean saveEvent(int id){
         savedEvents.add(event);
     }
     
     // send the image to the front end
-    public String getEventFlyer(Event event){
+    // returns the map of id name of the flyer.
+    public Map<int, String> getEventFlyer(int id,  Filters filters){
         // TODO implement once the Event is finalized.
         throw new UnsupportedOperationException("This method is not yet implemented");
     }

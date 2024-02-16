@@ -1,23 +1,17 @@
 public class Coordinates{
-    private int x;
-    private int y;
-    private int x;
+    private double x;
+    private double  y;
 
-    public Coordinates(int x, int y, int z){
+    public Coordinates(int x, int y){
         this.x = x;
         this.y = y;
-        this.z = z;
     }
 
-    public int  getX(){
+    public double getX(){
         return x;
     }
 
-    public int getY(){
+    public double getY(){
         return y;
-    }
-
-    public int getZ(){
-        return z;
     }
 }
