@@ -1,3 +1,5 @@
+package com.example.wander;
+
 public class Attatchments {
     private String flyerPath;
     private String miniFlyerPath;
@@ -11,7 +13,7 @@ public class Attatchments {
         return flyerPath;
     }
 
-    public Stirng getMiniFlyer(){
+    public String getMiniFlyer(){
         return miniFlyerPath;
     }
 }

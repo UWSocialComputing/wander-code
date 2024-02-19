@@ -1,3 +1,5 @@
+package com.example.wander;
+
 public enum EventType {
     // TODO: Add more event types
     CULTURAL("Cultural"),

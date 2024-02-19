@@ -1,13 +1,15 @@
+package com.example.wander;
+
 public class Address {
     private final String nameOfLocation;
     private final String line1;
     private final String line2;
     private final String city;
     private final String state;
-    private final int zipcode;
+    private final Integer zipcode;
 
     // city, state required
-    public Address(String nameOfLocation, String line1, String line2, String city, String state, int zipcode){
+    public Address(String nameOfLocation, String line1, String line2, String city, String state, Integer zipcode){
         this.nameOfLocation = nameOfLocation;
         this.line1 = line1;
         this.line2 = line2;

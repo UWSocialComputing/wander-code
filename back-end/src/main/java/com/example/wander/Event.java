@@ -1,3 +1,4 @@
+package com.example.wander;
 import java.time.LocalDateTime;
 
 public class Event{
@@ -20,15 +21,13 @@ public class Event{
 
     private static int MAX_ID = 0;
 
-    public Event(String name, EventType eventType, Duration duration, Address location;
+    public Event(String name, EventType eventType, Duration duration, Address location,
                 String host, Double cost, Attatchments images, Coordinates coordinates, String url,
                 String eventDetails){
         eventId = MAX_ID;
         MAX_ID++;
-        
         this.name = name;
-        this.duration = duration.
-        this.endTime = endTime;
+        this.duration = duration;
         this.location = location;
         this.host = host;
         this.cost = cost;
@@ -43,11 +42,11 @@ public class Event{
     }
 
     public LocalDateTime getStartTime(){
-        return startTime;
+        return duration.getStartTime();
     }
 
     public LocalDateTime getEndTime(){
-        return endTime;
+        return duration.getEndTime();
     }
 
     public Address getLocation(){
@@ -76,8 +75,12 @@ public class Event{
         return eventDetails;
     }
 
-    public String getFlyerPath(){
-        return flyerPath;
+    public String getFlyer(){
+        return images.getFlyer();
+    }
+
+    public String getMiniFlyer(){
+        return images.getMiniFlyer();
     }
 
 }

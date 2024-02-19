@@ -1,3 +1,5 @@
+package com.example.wander;
+
 public class Filters{
     private Duration duration;
     private EventType eventType;
