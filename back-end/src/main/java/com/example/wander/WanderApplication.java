@@ -8,8 +8,15 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 @RestController
 public class WanderApplication {
+    private static Events events;
     public static void main(String[] args) {
       SpringApplication.run(WanderApplication.class, args);
+
+      try{
+        events = new Events();
+      } catch (Exception e){
+        e.printStackTrace();
+      }
     }
     @GetMapping("/hello")
     public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {

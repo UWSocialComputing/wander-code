@@ -1,5 +1,8 @@
 package com.example.wander;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import com.google.gson.Gson;
+
 
 public class Event{
     private int eventId;
@@ -10,6 +13,8 @@ public class Event{
     private Address location;
     private String host;
     private Double cost;
+
+    // images is flyer/fileID.png or miniFlyer/fileID.png
     private Attatchments images;
 
     // Map coordinates
@@ -19,13 +24,45 @@ public class Event{
     private String url;
     private String eventDetails;
 
-    private static int MAX_ID = 0;
+    public Event(String[] line){
+        this.eventId = Integer.parseInt(line[0]);
+        this.name = line[1];
 
-    public Event(String name, EventType eventType, Duration duration, Address location,
+        switch(Integer.parseInt(line[2])){
+            case 0:
+                this.eventType = EventType.CULTURAL;
+                break;
+            case 1: 
+                this.eventType = EventType.SPORTS;
+                break;
+            case 2: 
+                this.eventType = EventType.THEATER;
+                break;
+            default:
+                this.eventType = EventType.OTHER;
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        String startTime = LocalDateTime.parse(line[3], formatter).toString();
+        String endTime = LocalDateTime.parse(line[4], formatter).toString();
+
+        this.duration = new Duration (startTime, endTime);
+        this.location = new Address(line[5], line[6], line[7], line[8], line[9], Integer.parseInt(line[10]));
+        this.host = line[11];
+        this.cost = Double.parseDouble(line[12]);
+
+        String flyerPath = "../database/images/flyer" + eventId + ".png";
+        String miniFlyerPath = "../database/images/miniflyer" + eventId + ".png";
+        this.images = new Attatchments(flyerPath, miniFlyerPath);
+        this.coordinates = new Coordinates(Integer.parseInt(line[13]), Integer.parseInt(line[14]));
+        this.url = line[15];
+        this.eventDetails = line[16];
+    }
+
+    public Event(int eventID, String name, EventType eventType, Duration duration, Address location,
                 String host, Double cost, Attatchments images, Coordinates coordinates, String url,
                 String eventDetails){
-        eventId = MAX_ID;
-        MAX_ID++;
+        eventId = eventID;
         this.name = name;
         this.duration = duration;
         this.location = location;
@@ -37,15 +74,19 @@ public class Event{
         this.eventDetails = eventDetails;
     }
 
+    public int getEventId(){
+        return eventId;
+    }
+
     public String getName(){
         return name;
     }
 
-    public LocalDateTime getStartTime(){
+    public String getStartTime(){
         return duration.getStartTime();
     }
 
-    public LocalDateTime getEndTime(){
+    public String getEndTime(){
         return duration.getEndTime();
     }
 
@@ -81,6 +122,11 @@ public class Event{
 
     public String getMiniFlyer(){
         return images.getMiniFlyer();
+    }
+
+    public String toJson(){
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
 
 }

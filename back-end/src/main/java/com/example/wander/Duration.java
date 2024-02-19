@@ -1,21 +1,20 @@
 package com.example.wander;
-
 import java.time.LocalDateTime;
 
 public class Duration{
-    private final LocalDateTime startTime;
-    private final LocalDateTime endTime;
+    private final String startTime;
+    private final String endTime;
 
-    public Duration(LocalDateTime startTime, LocalDateTime endTime){
+    public Duration(String startTime, String endTime){
         this.startTime = startTime;
         this.endTime = endTime;
     }
 
-    public LocalDateTime getStartTime(){
+    public String getStartTime(){
         return startTime;
     }
 
-    public LocalDateTime getEndTime(){
+    public String getEndTime(){
         return endTime;
     }
 }

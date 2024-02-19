@@ -2,17 +2,20 @@ package com.example.wander;
 
 public enum EventType {
     // TODO: Add more event types
-    CULTURAL("Cultural"),
-    SPORTS("Sports"),
-    THEATER("Theater");
 
-    private final String typeName;
+    // give numbers 
+    CULTURAL, // 0
+    SPORTS, // 1
+    THEATER, // 2
+    OTHER;
 
-    EventType(String typeName) {
-        this.typeName = typeName;
-    }
+    // private final String typeName;
 
-    public String toString() {
-        return typeName;
-    }
+    // EventType(String typeName) {
+    //     this.typeName = typeName;
+    // }
+
+    // public String toString() {
+    //     return typeName;
+    // }
 }

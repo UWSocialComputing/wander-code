@@ -3,16 +3,43 @@ package com.example.wander;
 import java.util.Set;
 import java.util.List;
 import java.util.Map;
+import java.util.HashMap;
+
+import com.opencsv.CSVReader;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class Events{
-    private Set<Event> allEvents;
+    private Map<Integer, Event> allEvents;
     private Set<Integer> savedEvents;
 
     // Inititalize the set of all events from the csv
-    public Events(){
-        // TODO implement once the csv is finalized.
-        throw new UnsupportedOperationException("This method is not yet implemented");
+    public Events() throws IOException{
+        allEvents = new HashMap<>();
+        String csvFile = "../database/events.csv"; // Ruh Roh
+        
+        try (CSVReader reader = new CSVReader(new FileReader(csvFile))) {
+            String[] nextLine;
+            
+            // Read in the first line, which has the headers.
+            nextLine = reader.readNext();
+
+            // Read each line from the file until there are no more lines
+            while ((nextLine = reader.readNext()) != null) {
+                // trim each element
+                for(int i = 0; i < nextLine.length; i++){
+                    nextLine[i] = nextLine[i].trim();
+                }
+
+                Event event = new Event(nextLine);
+                System.out.println(event.toJson());
+                allEvents.put(event.getEventId(), event);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
 
     // Displays the set of events that have the event_type and are within the time range (if given).
     // Event in index 0 is the closest then longer.
