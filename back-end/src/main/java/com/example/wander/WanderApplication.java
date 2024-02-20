@@ -18,8 +18,16 @@ public class WanderApplication {
         e.printStackTrace();
       }
     }
-    @GetMapping("/hello")
+
+
+    @GetMapping("/heartbeat")
     public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
-      return String.format("Hello %s!", name);
+      return String.format("Heartbeat %s!", name);
     }
+
+    // @GetMapping("/getEvents")
+    // public String getEvents(@RequestParam(value = "coordinates", defaultValue = "x:0,y:0") Coordinates coords, 
+    //                         @RequestParam(value = "filters", defaultValue = "duration:null, EventType:null") Filters filters) {
+    //   return String.format("Heartbeat %s!", name);
+    // }
 }

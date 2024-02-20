@@ -1,14 +1,13 @@
 package com.example.wander;
 
+import java.util.Comparator;
 import java.util.Set;
-
-import org.w3c.dom.events.Event;
 
 import java.util.List;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.HashMap;
-
+import java.util.Collections;
 import com.opencsv.CSVReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -16,8 +15,6 @@ import java.io.IOException;
 public class Events{
     private Map<Integer, Event> allEvents;
     private Map<Integer, Event> savedEvents;
-
-    private List<Event> currentShownEvents;
 
     public static final int DISTANCE_MAX = 100;
 
@@ -57,7 +54,7 @@ public class Events{
         // Insertion sort.
 
         List<Event> events = new ArrayList<>();
-        for(Event e: allEvents.entrySet()){
+        for(Event e: allEvents.values()){
             double distance = getBirdsEyeDistance(coordinates, e.getCoordinates());
             if(distance > DISTANCE_MAX) continue;
 
@@ -65,22 +62,23 @@ public class Events{
         }
 
         // sort List<Event> by distance
-        Collections.sort(events, new Comparator<Coordinates>() {
+        Collections.sort(events, new Comparator<Event>() {
             @Override
-            public int compare(Coordinates p1, Coordinates p2) {
-                double dist1 = getBirdsEyeDistance(coordinates, p1.getCoordinates());
-                double dist2 = getBirdsEyeDistance(coordinates, p2.getCoordinates());
+            public int compare(Event e1, Event e2) {
+                Coordinates p1 = e1.getCoordinates();
+                Coordinates p2 = e2.getCoordinates();
+                double dist1 = getBirdsEyeDistance(coordinates, p1);
+                double dist2 = getBirdsEyeDistance(coordinates, p2);
                 return Double.compare(dist1, dist2);
             }
         });
 
-        currentShownEvents = events;
         return events;
     }
 
     private double getBirdsEyeDistance(Coordinates left, Coordinates right){
-        double changeX = left.x - right.x;
-        double changeY = left.y - right.y;
+        double changeX = left.getX() - right.getX();
+        double changeY = left.getY() - right.getY();
         return Math.sqrt(changeX * changeX + changeY * changeY);
     }
 
@@ -93,16 +91,16 @@ public class Events{
     
     // send the image to the front end
     // returns the map of id name of the flyer.
-    public Map<Integer, String> getEventFlyer(int id,  Filters filters){
-        // TODO implement once the Event is finalized.
-        throw new UnsupportedOperationException("This method is not yet implemented");
+    // returns a list of all events sorted by distance
+    public List<Event> getEventFlyer(int id,  Filters filters){
+        if(!allEvents.containsKey(id)) return null;
+        return getEvents(allEvents.get(id).getCoordinates(), filters);
     }
     
     // return the saved events and mini-flyers.
     // return is map from event to the mini flyer.
-    public Map<Integer, String> getSavedEvents(){
-        // TODO implement once the Event is finalized and the method of return.
-        throw new UnsupportedOperationException("This method is not yet implemented");
+    public Map<Integer, Event> getSavedEvents(){
+        return Map.copyOf(savedEvents);
     }
 
 
