@@ -1,10 +1,13 @@
 package com.example.wander;
 
-public class Filters{
-    private Duration duration;
-    private EventType eventType;
+import java.util.Set;
 
-    public Filters(Duration duration, EventType eventType){
+public class Filters{
+    // Make this a set.
+    private Duration duration;
+    private Set<EventType> eventType;
+
+    public Filters(Duration duration, Set<EventType> eventType){
         this.duration = duration;
         this.eventType = eventType;
     }
@@ -13,7 +16,7 @@ public class Filters{
         return duration;
     }
 
-    public EventType eventType(){
+    public Set<EventType> eventType(){
         return eventType;
     }
 }

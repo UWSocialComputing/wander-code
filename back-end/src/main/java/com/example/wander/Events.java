@@ -52,7 +52,8 @@ public class Events{
     public List<Event> getEvents(Coordinates coordinates, Filters filters){
         // get a list of all events within the distance, then sort by distance.
         // Insertion sort.
-
+        
+        // TODO check the filters lmao
         List<Event> events = new ArrayList<>();
         for(Event e: allEvents.values()){
             double distance = getBirdsEyeDistance(coordinates, e.getCoordinates());

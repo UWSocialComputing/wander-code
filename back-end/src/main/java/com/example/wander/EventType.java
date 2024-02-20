@@ -5,8 +5,11 @@ public enum EventType {
 
     // give numbers 
     CULTURAL, // 0
-    SPORTS, // 1
-    THEATER, // 2
+    SPORTS,   // 1
+    THEATER,  // 2
+    ARTCRAFT, // 3
+    MUSIC,    // 4
+    FOOD,     // 5
     OTHER;
 
     // private final String typeName;
