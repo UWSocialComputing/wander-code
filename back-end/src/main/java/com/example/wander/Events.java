@@ -15,7 +15,7 @@ import java.io.IOException;
 
 public class Events{
     private Map<Integer, Event> allEvents;
-    private Set<Integer> savedEvents;
+    private Map<Integer, Event> savedEvents;
 
     private List<Event> currentShownEvents;
 
@@ -86,7 +86,8 @@ public class Events{
 
     // save the event to savedEvents
     public boolean saveEvent(int id){
-        savedEvents.add(id);
+        if(!allEvents.containsKey(id)) return false;
+        savedEvents.put(id, allEvents.get(id));
         return true;
     }
     
