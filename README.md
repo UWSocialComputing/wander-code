@@ -8,4 +8,4 @@
 TODO
 
 ## Setup
-1. Install `mvn` with command `brew install mvn`
+1. Install `mvn` with command `brew install mvn` (MacOS)

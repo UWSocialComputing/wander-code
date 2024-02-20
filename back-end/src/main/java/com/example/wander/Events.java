@@ -1,8 +1,12 @@
 package com.example.wander;
 
 import java.util.Set;
+
+import org.w3c.dom.events.Event;
+
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.opencsv.CSVReader;
@@ -12,6 +16,10 @@ import java.io.IOException;
 public class Events{
     private Map<Integer, Event> allEvents;
     private Set<Integer> savedEvents;
+
+    private List<Event> currentShownEvents;
+
+    public static final int DISTANCE_MAX = 100;
 
     // Inititalize the set of all events from the csv
     public Events() throws IOException{
@@ -45,8 +53,35 @@ public class Events{
     // Event in index 0 is the closest then longer.
     // distance is birds eye
     public List<Event> getEvents(Coordinates coordinates, Filters filters){
-        // TODO implement once Event object is finalized
-        throw new UnsupportedOperationException("This method is not yet implemented");
+        // get a list of all events within the distance, then sort by distance.
+        // Insertion sort.
+
+        List<Event> events = new ArrayList<>();
+        for(Event e: allEvents.entrySet()){
+            double distance = getBirdsEyeDistance(coordinates, e.getCoordinates());
+            if(distance > DISTANCE_MAX) continue;
+
+            events.add(e);
+        }
+
+        // sort List<Event> by distance
+        Collections.sort(events, new Comparator<Coordinates>() {
+            @Override
+            public int compare(Coordinates p1, Coordinates p2) {
+                double dist1 = getBirdsEyeDistance(coordinates, p1.getCoordinates());
+                double dist2 = getBirdsEyeDistance(coordinates, p2.getCoordinates());
+                return Double.compare(dist1, dist2);
+            }
+        });
+
+        currentShownEvents = events;
+        return events;
+    }
+
+    private double getBirdsEyeDistance(Coordinates left, Coordinates right){
+        double changeX = left.x - right.x;
+        double changeY = left.y - right.y;
+        return Math.sqrt(changeX * changeX + changeY * changeY);
     }
 
     // save the event to savedEvents
