@@ -3,7 +3,7 @@ import React, { Component } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import Pin from "./Pin";
-import { SOCCOMP_LATITUDE, SOCCOMP_LONGITUDE } from "./Constants";
+import { SOCCOMP_LATITUDE, SOCCOMP_LONGITUDE } from "./constants";
 
 // This defines the location of the map. These are the coordinates of the UW Seattle campus
 const position: LatLngExpression = [SOCCOMP_LATITUDE, SOCCOMP_LONGITUDE];
