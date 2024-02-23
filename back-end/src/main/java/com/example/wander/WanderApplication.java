@@ -29,11 +29,9 @@ public class WanderApplication {
       return String.format("Heartbeat %s!", name);
     }
 
+    // Can use the image field from this to get image.
     @GetMapping("/getEvents")
     public String getEvents(@RequestBody GetEventsRequest request) {
-
-      
-      // Parse into filters
       Gson gson = new Gson();
       return gson.toJson(events.getEvents(request.getCoordinates(), request.getFilters()));
     }
@@ -44,6 +42,20 @@ public class WanderApplication {
       Gson gson = new Gson();
       return gson.toJson(events.getEvents(new Coordinates(0,0), null));
     }
+
+    @GetMapping("/saveEvent")
+    public String saveEvent(@RequestParam(value = "id", defaultValue = "") String id) {
+      Gson gson = new Gson();
+      if(id.length() == 0) return gson.toJson(false);
+      return gson.toJson(events.saveEvent(Integer.parseInt(id)));
+    }
+
+    @GetMapping("/getSavedEvents")
+    public String getSavedEvents() {
+      Gson gson = new Gson();
+      return gson.toJson(events.getSavedEvents());
+    }
+
 }
 
 class GetEventsRequest {

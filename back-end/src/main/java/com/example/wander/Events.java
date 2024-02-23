@@ -21,6 +21,7 @@ public class Events{
     // Inititalize the set of all events from the csv
     public Events() throws IOException{
         allEvents = new HashMap<>();
+        savedEvents = new HashMap<>();
         String csvFile = "../database/events.csv"; // Ruh Roh
         
         try (CSVReader reader = new CSVReader(new FileReader(csvFile))) {
