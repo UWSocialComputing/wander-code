@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Duration{
+
+    // time is in the form yyyy-MM-dd HH:mm:ss
     private final String startTime;
     private final String endTime;
 

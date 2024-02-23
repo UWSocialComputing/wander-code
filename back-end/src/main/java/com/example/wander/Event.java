@@ -42,9 +42,8 @@ public class Event{
                 this.eventType = EventType.OTHER;
         }
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-        String startTime = LocalDateTime.parse(line[3], formatter).toString();
-        String endTime = LocalDateTime.parse(line[4], formatter).toString();
+        String startTime = line[3];
+        String endTime = line[4];
 
         this.duration = new Duration (startTime, endTime);
         this.location = new Address(line[5], line[6], line[7], line[8], line[9], Integer.parseInt(line[10]));

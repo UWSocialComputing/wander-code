@@ -30,6 +30,7 @@ public class Filters{
         }
 
         // if event type matches
+        if(eventType.size() == 0) return true;
         if(!eventType.contains(e.getEventType())) return false;
 
         return true;

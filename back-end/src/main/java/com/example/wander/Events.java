@@ -1,6 +1,7 @@
 package com.example.wander;
 
 import java.util.Comparator;
+import com.google.gson.Gson;
 
 import java.util.List;
 import java.util.Map;
@@ -36,7 +37,6 @@ public class Events{
                 }
 
                 Event event = new Event(nextLine);
-                // System.out.println(event.toJson());
                 allEvents.put(event.getEventId(), event);
             }
         } catch (Exception e) {
@@ -49,17 +49,18 @@ public class Events{
     // Event in index 0 is the closest then longer.
     // distance is birds eye
     public List<Event> getEvents(Coordinates coordinates, Filters filters){
+        Gson gson = new Gson();
         // get a list of all events within the distance, then sort by distance.
         // Insertion sort.
         
         List<Event> events = new ArrayList<>();
         for(Event e: allEvents.values()){
             // check if the filters apply
-            if(!filters.eventWithinFilter(e)) continue;
+            if(filters != null && !filters.eventWithinFilter(e)) continue;
 
             // check if event is within the distance range
             double distance = getBirdsEyeDistance(coordinates, e.getCoordinates());
-            if(distance > DISTANCE_MAX) continue;
+            if(distance >= DISTANCE_MAX) continue;
 
             events.add(e);
         }
