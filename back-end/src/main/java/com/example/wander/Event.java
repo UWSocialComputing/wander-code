@@ -90,6 +90,10 @@ public class Event{
         return duration.getEndTime();
     }
 
+    public Duration getDuration(){
+        return duration;
+    }
+
     public Address getLocation(){
         return location;
     }
@@ -124,9 +128,8 @@ public class Event{
         return images.getMiniFlyer();
     }
 
-    public String toJson(){
-        Gson gson = new Gson();
-        return gson.toJson(this);
+    public EventType getEventType(){
+        return eventType;
     }
 }
 

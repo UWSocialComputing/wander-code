@@ -19,4 +19,20 @@ public class Filters{
     public Set<EventType> eventType(){
         return eventType;
     }
+
+    public boolean eventWithinFilter(Event e){
+        // if event is not within time range.
+        try{
+            if(!e.getDuration().durationIsSubset(duration)) return false;
+        } catch (Exception ex){
+            // Exception occured.
+            return false;
+        }
+
+        // if event type matches
+        if(!eventType.contains(e.getEventType())) return false;
+
+        return true;
+
+    }
 }

@@ -36,7 +36,7 @@ public class Events{
                 }
 
                 Event event = new Event(nextLine);
-                System.out.println(event.toJson());
+                // System.out.println(event.toJson());
                 allEvents.put(event.getEventId(), event);
             }
         } catch (Exception e) {
@@ -52,9 +52,12 @@ public class Events{
         // get a list of all events within the distance, then sort by distance.
         // Insertion sort.
         
-        // TODO check the filters lmao
         List<Event> events = new ArrayList<>();
         for(Event e: allEvents.values()){
+            // check if the filters apply
+            if(!filters.eventWithinFilter(e)) continue;
+
+            // check if event is within the distance range
             double distance = getBirdsEyeDistance(coordinates, e.getCoordinates());
             if(distance > DISTANCE_MAX) continue;
 

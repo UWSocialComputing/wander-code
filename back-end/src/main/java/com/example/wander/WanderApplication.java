@@ -25,14 +25,15 @@ public class WanderApplication {
 
 
     @GetMapping("/heartbeat")
-    public String hello(@RequestParam(value = "name", defaultValue = "World") String name) {
+    public String hello(@RequestParam(value = "name", defaultValue = "<3") String name) {
       return String.format("Heartbeat %s!", name);
     }
 
     @GetMapping("/getEvents")
-    public List<Event> getEvents(@RequestBody GetEventsRequest request) {
+    public String getEvents(@RequestBody GetEventsRequest request) {
       // Parse into filters
-      return events.getEvents(request.getCoordinates(), request.getFilters());
+      Gson gson = new Gson();
+      return gson.toJson(events.getEvents(request.getCoordinates(), request.getFilters()));
     }
 
     @GetMapping("/getAllEvents")
