@@ -17,8 +17,6 @@ interface MapState {
   // TODO
 }
 
-const accessToken = 'OJ2YUOrMDjE0147QmdhGNAYq0C5zk97kufmkX32RgxjrdSUEUwkNwacWHyQt5XJP';
-
 /**
  * A map, initially focused on the CSE 481 P classroom on UW Campus, 
  * that renders the path all of the passed in event pins
@@ -48,11 +46,10 @@ class Map extends Component<MapProps, MapState> {
   render() {
     return (
       <div id="map">
-        {/* TODO: turn scroll off? "too many requests per second" error comes up sometimes if you move too fast */}
-        <MapContainer center={position} zoom={13} scrollWheelZoom={true}>
+        <MapContainer center={position} zoom={13.25} scrollWheelZoom={true}>
           <TileLayer
-            attribution='<a href="https://jawg.io" title="Tiles Courtesy of Jawg Maps" target="_blank">&copy; <b>Jawg</b>Maps</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url={`https://tile.jawg.io/jawg-sunny/{z}/{x}/{y}{r}.png?access-token=${accessToken}`}
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+            url={'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'}
           />
         </MapContainer>
       </div>
