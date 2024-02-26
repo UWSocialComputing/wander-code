@@ -37,7 +37,7 @@ public class WanderApplication {
     }
 
     @GetMapping("/getAllEvents")
-    public String getEvents() {
+    public String getAllEvents() {
       // Parse into filters
       Gson gson = new Gson();
       return gson.toJson(events.getAllEvents());

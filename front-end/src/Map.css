@@ -1,0 +1,26 @@
+/* Centers the map controls below the map. Puts the dropdowns above the buttons.  */
+#controller {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Orients the components of this part of the controller horizontally. */
+.controller-component {
+  display: flex;
+  justify-content: center;
+}
+
+/* Centers component with ID "map-wrapper" and sets width and bottom spacing */
+#map {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 1vh;
+  width: 100vw;
+}
+
+/* Sets size of map, which has class name "leaflet-container" */
+.leaflet-container {
+  width: 100vw;
+  height: 85vh;
+}

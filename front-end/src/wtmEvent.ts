@@ -1,4 +1,4 @@
-type WtmEvent = {
+export type WtmEvent = {
   eventId: number;
   name: string;
   eventType: WtmEventType;
@@ -7,17 +7,31 @@ type WtmEvent = {
   address: Address;
 };
 
-type WtmEventType = {
+export type WtmEventType = {
   // TODO
 }
 
-type Duration = {
+export type Duration = {
   // TODO
 }
 
-type Address = {
+export type Address = {
   // TODO
 }
+
+/**
+ * Takes event data passed from server and parses
+ * into collection of wtmEvent objects
+ */
+export const parseEvents = (data: unknown) => {
+  console.log("in parser")
+  console.log(typeof(data))
+  return data  // TODO: implement parsing
+  // throw new Error(`type ${typeof data} is not a valid collection of events`);
+}
+
+
+// NOTES: What API sends:
 
 // private Duration duration;
 // private Address location;

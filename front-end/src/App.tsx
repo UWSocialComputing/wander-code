@@ -3,28 +3,31 @@ import Map from "./Map";
 import "./App.css";
 
 interface AppState {
-    // TODO
+  // TODO
 }
 
 /**
  * The application.
  */
 class App extends Component<{}, AppState> {
-    constructor(props : any) {
-        super(props);
-        this.state = {
-            
-        };
-    }
+  constructor(props : any) {
+    super(props);
+    this.state = {
 
-    render() {
-        return (
-            <div>
-                <h1>wtm?</h1>
-                <Map />
-            </div>
-        );
-    }
+    };
+  }
+
+  render() {
+    return (
+      <div>
+        {/* TODO: nav bar containing below logo & tabs to other pages */}
+        <img src={require('./img/wtm_text.png')} id="logo"></img>
+
+        {/* TODO: conditionally render this or flyer or saved page based on view state */}
+        <Map />
+      </div>
+    );
+  }
 }
 
 export default App;

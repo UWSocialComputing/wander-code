@@ -25,10 +25,10 @@ public class Events{
         allEvents = new HashMap<>();
         savedEvents = new HashMap<>();
         String csvFile = "../database/events.csv"; // Ruh Roh
-        
+
         try (CSVReader reader = new CSVReader(new FileReader(csvFile))) {
             String[] nextLine;
-            
+
             // Read in the first line, which has the headers.
             nextLine = reader.readNext();
 
@@ -63,7 +63,7 @@ public class Events{
         Gson gson = new Gson();
         // get a list of all events within the distance, then sort by distance.
         // Insertion sort.
-        
+
         List<Event> events = new ArrayList<>();
         for(Event e: allEvents.values()){
             // check if the filters apply
@@ -103,7 +103,7 @@ public class Events{
         savedEvents.put(id, allEvents.get(id));
         return true;
     }
-    
+
     // send the image to the front end
     // returns the map of id name of the flyer.
     // returns a list of all events sorted by distance
@@ -111,7 +111,7 @@ public class Events{
         if(!allEvents.containsKey(id)) return null;
         return getEvents(allEvents.get(id).getCoordinates(), filters);
     }
-    
+
     // return the saved events and mini-flyers.
     // return is map from event to the mini flyer.
     public Map<Integer, Event> getSavedEvents(){
