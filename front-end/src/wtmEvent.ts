@@ -24,7 +24,10 @@ export type Address = {
  * into collection of wtmEvent objects
  */
 export const parseEvents = (data: unknown) => {
-    throw new Error(`type ${typeof data} is not a valid collection of events`);
+  console.log("in parser")
+  console.log(typeof(data))
+  return data  // TODO: implement parsing
+  // throw new Error(`type ${typeof data} is not a valid collection of events`);
 }
 
 

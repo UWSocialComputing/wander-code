@@ -1,10 +1,12 @@
+import "leaflet/dist/leaflet.css";
+import "./Map.css";
+
 import { LatLngExpression } from "leaflet";
 import React, { Component } from "react";
 import { MapContainer, TileLayer } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
-import Pin from "./Pin";
 import { SOCCOMP_LATITUDE, SOCCOMP_LONGITUDE } from "./constants";
-import "./Map.css";
+import Pin from "./Pin";
+import {parseEvents} from "./wtmEvent";
 
 // This defines the location of the map. These are the coordinates of the UW Seattle campus
 const position: LatLngExpression = [SOCCOMP_LATITUDE, SOCCOMP_LONGITUDE];
@@ -18,7 +20,7 @@ interface MapState {
 }
 
 /**
- * A map, initially focused on the CSE 481 P classroom on UW Campus, 
+ * A map, initially focused on the CSE 481 P classroom on UW Campus,
  * that renders the path all of the passed in event pins
  */
 class Map extends Component<MapProps, MapState> {
@@ -27,14 +29,52 @@ class Map extends Component<MapProps, MapState> {
 
     this.state = {
     };
+
+    // const url = "/api/heartbeat?name=Katherine";
+    // fetch(url).then(this.doListResp)
+    //   .catch(() => console.log("oh no"));
+
+    this.getAllEvents()
   }
 
   /**
+   * Gets all events.
+   */
+  getAllEvents = (): void => {
+    fetch("/api/getAllEvents")
+      .then(this.doGetAllEventsResp)
+      // .then((events) => {
+      //   this.setState({
+
+      //   });
+      // })
+      .catch(() => this.doGetAllEventsError("Failed to connect to server."));
+  }
+
+  doGetAllEventsResp = (res: Response): void => {
+    // console.log(res)
+    // console.log(res.json())
+    if (res.status === 200) {
+      res.json().then(parseEvents)
+         .catch(() => this.doGetAllEventsError("200 response not JSON"));
+    } else if (res.status === 400) {
+      res.text().then(this.doGetAllEventsError)
+         .catch(() => this.doGetAllEventsError("400 response not text"));
+    } else {
+      this.doGetAllEventsError(`returned status code ${res.status}`);
+    }
+  };
+
+  doGetAllEventsError = (msg: string): void => {
+    console.error(`Error fetching /api/getAllEvents: ${msg}`);
+  };
+
+  /**
    * When the component's props have been updated, checks to see if the pins need to be
-   * re-rendered on the map. 
+   * re-rendered on the map.
    */
   componentDidUpdate = (prevProps: any) => {
-    
+
   }
 
   /**
