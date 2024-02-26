@@ -1,5 +1,6 @@
 package com.example.wander;
 
+// This class encompasses the links for the flyers for an Event
 public class Attatchments {
     private String flyerPath;
     private String miniFlyerPath;

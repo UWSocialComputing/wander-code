@@ -1,8 +1,7 @@
 package com.example.wander;
 
+// This enum represents the types of events
 public enum EventType {
-    // TODO: Add more event types
-
     // give numbers 
     CULTURAL, // 0
     SPORTS,   // 1
@@ -11,14 +10,4 @@ public enum EventType {
     MUSIC,    // 4
     FOOD,     // 5
     OTHER;
-
-    // private final String typeName;
-
-    // EventType(String typeName) {
-    //     this.typeName = typeName;
-    // }
-
-    // public String toString() {
-    //     return typeName;
-    // }
 }

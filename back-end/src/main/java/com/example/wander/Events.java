@@ -14,6 +14,7 @@ import com.opencsv.CSVReader;
 import java.io.FileReader;
 import java.io.IOException;
 
+// This class acts as the search engine, and maintains state for the front end.
 public class Events{
     private Map<Integer, Event> allEvents;
     private Map<Integer, Event> savedEvents;
@@ -91,6 +92,7 @@ public class Events{
         return events;
     }
 
+    // Returns birdseye distance between two coordinates
     private double getBirdsEyeDistance(Coordinates left, Coordinates right){
         double changeX = left.getX() - right.getX();
         double changeY = left.getY() - right.getY();

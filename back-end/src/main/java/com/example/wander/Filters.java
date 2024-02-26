@@ -2,6 +2,7 @@ package com.example.wander;
 
 import java.util.Set;
 
+// This class represents filters on an Event.
 public class Filters{
     // Make this a set.
     private Duration duration;
@@ -20,6 +21,7 @@ public class Filters{
         return eventType;
     }
 
+    // Check if the event should be displayed given all applied filters 
     public boolean eventWithinFilter(Event e){
         // if event is not within time range.
         if(duration != null){

@@ -1,5 +1,6 @@
 package com.example.wander;
 
+// This class represents an address
 public class Address {
     private final String nameOfLocation;
     private final String line1;

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import com.google.gson.Gson;
 import java.util.List;
 
+// Controller class for the backend
 @CrossOrigin(origins = "http://localhost:3000")
 @SpringBootApplication
 @RestController
@@ -25,19 +26,20 @@ public class WanderApplication {
       }
     }
 
-
+    // Health
     @GetMapping("/heartbeat")
     public String hello(@RequestParam(value = "name", defaultValue = "<3") String name) {
       return String.format("Heartbeat %s!", name);
     }
 
-    // Can use the image field from this to get image.
+    // returns events and applies given filter, and checks distance.
     @GetMapping("/getEvents")
     public String getEvents(@RequestBody GetEventsRequest request) {
       Gson gson = new Gson();
       return gson.toJson(events.getEvents(request.getCoordinates(), request.getFilters()));
     }
 
+    // returns all events
     @GetMapping("/getAllEvents")
     public String getAllEvents() {
       // Parse into filters
@@ -45,6 +47,7 @@ public class WanderApplication {
       return gson.toJson(events.getAllEvents());
     }
 
+    // Adds an event to saved events.
     @GetMapping("/saveEvent")
     public String saveEvent(@RequestParam(value = "id", defaultValue = "") String id) {
       Gson gson = new Gson();
@@ -52,6 +55,7 @@ public class WanderApplication {
       return gson.toJson(events.saveEvent(Integer.parseInt(id)));
     }
 
+    // returns all saved events
     @GetMapping("/getSavedEvents")
     public String getSavedEvents() {
       Gson gson = new Gson();
@@ -60,6 +64,7 @@ public class WanderApplication {
 
 }
 
+// Request object for getting events with filters.
 class GetEventsRequest {
   private Coordinates coordinates;
   private Filters filters;

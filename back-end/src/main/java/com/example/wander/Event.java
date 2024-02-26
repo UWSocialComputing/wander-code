@@ -3,7 +3,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import com.google.gson.Gson;
 
-
+// This class represent an Event
 public class Event{
     private int eventId;
     private String name; 
@@ -28,20 +28,6 @@ public class Event{
         this.eventId = Integer.parseInt(line[0]);
         this.name = line[1];
         this.eventType = EventType.valueOf(line[2]);
-
-        // switch(Integer.parseInt(line[2])){
-        //     case 0:
-        //         this.eventType = EventType.CULTURAL;
-        //         break;
-        //     case 1: 
-        //         this.eventType = EventType.SPORTS;
-        //         break;
-        //     case 2: 
-        //         this.eventType = EventType.THEATER;
-        //         break;
-        //     default:
-        //         this.eventType = EventType.OTHER;
-        // }
 
         String startTime = line[3];
         String endTime = line[4];
