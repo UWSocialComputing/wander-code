@@ -6,6 +6,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 
 import com.google.gson.Gson;
 import java.util.List;
@@ -37,6 +48,25 @@ public class WanderApplication {
     public String getEvents(@RequestBody GetEventsRequest request) {
       Gson gson = new Gson();
       return gson.toJson(events.getEvents(request.getCoordinates(), request.getFilters()));
+    }
+
+    @GetMapping("/flyer/{imageName}")
+    public ResponseEntity<Resource> getImage(@PathVariable String imageName) throws IOException {
+        // Load the image file as a Resource
+        Resource resource = new FileSystemResource("../database/images/flyers/" + imageName);
+
+        // Check if the resource exists
+        if (!resource.exists()) {
+            throw new FileNotFoundException("Image not found: " + imageName);
+        }
+
+        // Set content type
+        String contentType = "image/png"; // Set the appropriate content type for your image
+        MediaType mediaType = MediaType.parseMediaType(contentType);
+
+        return ResponseEntity.ok()
+                .contentType(mediaType)
+                .body(resource);
     }
 
     // returns all events
