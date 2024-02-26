@@ -24,3 +24,8 @@
   width: 100vw;
   height: 85vh;
 }
+
+/* Orients the map and filter components horizontally. */
+.container {
+  display: flex;
+}

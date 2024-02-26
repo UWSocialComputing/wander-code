@@ -1,12 +1,13 @@
 import "leaflet/dist/leaflet.css";
 import "./Map.css";
 
-import { LatLngExpression } from "leaflet";
+import L, { LatLngExpression } from "leaflet";
 import React, { Component } from "react";
-import { MapContainer, TileLayer } from "react-leaflet";
-import { SOCCOMP_LATITUDE, SOCCOMP_LONGITUDE } from "./constants";
-import Pin from "./Pin";
-import {parseEvents} from "./wtmEvent";
+import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { SOCCOMP_LATITUDE, SOCCOMP_LONGITUDE, URL_BASE } from "./constants";
+import Filter from "./Filter";
+import { WtmEvent, WtmEventType, parseEvents } from "./wtmEvent";
+import { getPinIcon } from "./pin";
 
 // This defines the location of the map. These are the coordinates of the UW Seattle campus
 const position: LatLngExpression = [SOCCOMP_LATITUDE, SOCCOMP_LONGITUDE];
@@ -17,6 +18,7 @@ interface MapProps {
 
 interface MapState {
   // TODO
+  events: WtmEvent[];
 }
 
 /**
@@ -28,12 +30,11 @@ class Map extends Component<MapProps, MapState> {
     super(props);
 
     this.state = {
+        events: [],
     };
+  }
 
-    // const url = "/api/heartbeat?name=Katherine";
-    // fetch(url).then(this.doListResp)
-    //   .catch(() => console.log("oh no"));
-
+  componentDidMount = (): void => {
     this.getAllEvents()
   }
 
@@ -41,56 +42,47 @@ class Map extends Component<MapProps, MapState> {
    * Gets all events.
    */
   getAllEvents = (): void => {
-    fetch("/api/getAllEvents")
+    fetch(URL_BASE + "/getAllEvents")
       .then(this.doGetAllEventsResp)
-      // .then((events) => {
-      //   this.setState({
-
-      //   });
-      // })
-      .catch(() => this.doGetAllEventsError("Failed to connect to server."));
+      .catch(() => this.doError("Failed to connect to server."));
   }
 
   doGetAllEventsResp = (res: Response): void => {
-    // console.log(res)
-    // console.log(res.json())
     if (res.status === 200) {
-      res.json().then(parseEvents)
-         .catch(() => this.doGetAllEventsError("200 response not JSON"));
+      res.json()
+        .then(parseEvents)
+        .then((events) => { 
+            this.setState({events})})
+        .catch(() => this.doError("200 response from /getAllEvents not parsable"));
     } else if (res.status === 400) {
-      res.text().then(this.doGetAllEventsError)
-         .catch(() => this.doGetAllEventsError("400 response not text"));
+      res.text().then(this.doError)
+         .catch(() => this.doError("400 response from /getAllEvents not text"));
     } else {
-      this.doGetAllEventsError(`returned status code ${res.status}`);
+      this.doError(`/getAllEvents returned status code ${res.status}`);
     }
   };
 
-  doGetAllEventsError = (msg: string): void => {
-    console.error(`Error fetching /api/getAllEvents: ${msg}`);
-  };
-
-  /**
-   * When the component's props have been updated, checks to see if the pins need to be
-   * re-rendered on the map.
-   */
-  componentDidUpdate = (prevProps: any) => {
-
-  }
-
-  /**
-   * Using the given pin data, turn each into a Pin component to render
-   */
-  createPins = async () => {
+  doError = (msg: string): void => {
+    // TODO: configure a nice client facing error message, prob callback to app
+    console.error(msg);
   };
 
   render() {
     return (
-      <div id="map">
+      <div id="map" className="container">
+        <Filter/>
         <MapContainer center={position} zoom={13.25} scrollWheelZoom={true}>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-            url={'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'}
+            url='https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
           />
+          {this.state.events.map((event, idx) => { 
+            const icon = getPinIcon(event.eventType)
+            return <Marker key={idx} position={position} // event.coordinates} 
+                icon={icon} riseOnHover>
+                <Popup>{event.name}</Popup>
+            </Marker>
+          })}
         </MapContainer>
       </div>
     );

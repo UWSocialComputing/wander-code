@@ -4,7 +4,7 @@ import App from './App';
 
 const main: HTMLElement|null = document.getElementById('main');
 if (main === null)
-  throw new Error('Uh oh! Could not find the "main" element.')
+  throw new Error('Could not find the "main" element.')
 
 const root: Root = createRoot(main);
 
