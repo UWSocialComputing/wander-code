@@ -22,11 +22,13 @@ public class Filters{
 
     public boolean eventWithinFilter(Event e){
         // if event is not within time range.
-        try{
-            if(!e.getDuration().durationIsSubset(duration)) return false;
-        } catch (Exception ex){
-            // Exception occured.
-            return false;
+        if(duration != null){
+            try{
+                if(!e.getDuration().durationIsSubset(duration)) return false;
+            } catch (Exception ex){
+                // Exception occured.
+                return false;
+            }
         }
 
         // if event type matches
