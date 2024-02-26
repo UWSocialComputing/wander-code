@@ -27,26 +27,32 @@ public class Event{
     public Event(String[] line){
         this.eventId = Integer.parseInt(line[0]);
         this.name = line[1];
+        this.eventType = EventType.valueOf(line[2]);
 
-        switch(Integer.parseInt(line[2])){
-            case 0:
-                this.eventType = EventType.CULTURAL;
-                break;
-            case 1: 
-                this.eventType = EventType.SPORTS;
-                break;
-            case 2: 
-                this.eventType = EventType.THEATER;
-                break;
-            default:
-                this.eventType = EventType.OTHER;
-        }
+        // switch(Integer.parseInt(line[2])){
+        //     case 0:
+        //         this.eventType = EventType.CULTURAL;
+        //         break;
+        //     case 1: 
+        //         this.eventType = EventType.SPORTS;
+        //         break;
+        //     case 2: 
+        //         this.eventType = EventType.THEATER;
+        //         break;
+        //     default:
+        //         this.eventType = EventType.OTHER;
+        // }
 
         String startTime = line[3];
         String endTime = line[4];
 
         this.duration = new Duration (startTime, endTime);
-        this.location = new Address(line[5], line[6], line[7], line[8], line[9], Integer.parseInt(line[10]));
+
+        // 
+        this.location = new Address(line[5] == "" ? null : line[5], line[6] == "" ? null : line[6], 
+                                    line[7] == "" ? null : line[7], line[8] == "" ? null : line[8],
+                                    line[9] == "" ? null : line[9],
+                                    line[10] == "" ? null : Integer.parseInt(line[10]));
         this.host = line[11];
         this.cost = Double.parseDouble(line[12]);
 
