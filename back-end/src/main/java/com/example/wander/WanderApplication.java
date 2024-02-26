@@ -40,7 +40,7 @@ public class WanderApplication {
     public String getEvents() {
       // Parse into filters
       Gson gson = new Gson();
-      return gson.toJson(events.getEvents(new Coordinates(0,0), null));
+      return gson.toJson(events.getAllEvents());
     }
 
     @GetMapping("/saveEvent")

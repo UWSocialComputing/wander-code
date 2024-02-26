@@ -5,10 +5,12 @@ import com.google.gson.Gson;
 
 import java.util.List;
 import java.util.Map;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Collections;
 import com.opencsv.CSVReader;
+
 import java.io.FileReader;
 import java.io.IOException;
 
@@ -43,6 +45,14 @@ public class Events{
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public List<Event> getAllEvents(){
+        List l = new ArrayList<>();
+        for(Integer id: allEvents.keySet()){
+            l.add(allEvents.get(id));
+        }
+        return l;
     }
 
 

@@ -1,2 +1,2 @@
-eventID, eventName, eventType, startTime, endTime, nameOFLocation, line1Address, line2Address, city, state, zipcode, host, cost, xCood, yCoord, url, details
-0, Puppy Yoga, 1, 2024-02-19T08:30:00, 2024-02-19T08:30:00, Kerry Park, , , Seattle, Washington, 98105, Kyler Gray, 0, 1, 2, www.puppies.com, puppy yoga!!! come with yo dawgs!
+eventID, eventName, eventType, startTime(yyyy-MM-dd HH:mm:ss), endTime, nameOFLocation, line1Address, line2Address, city, state, zipcode, host, cost, xCood, yCoord, url, details
+0, Puppy Yoga, 1, 2024-02-19 4:30:00, 2024-02-19 4:30:00, Kerry Park, , , Seattle, Washington, 98105, Kyler Gray, 0, 100, 100, www.puppies.com, puppy yoga!!! come with yo dawgs!
