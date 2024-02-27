@@ -13,7 +13,7 @@ import { getPinIcon } from "./pin";
 const position: LatLngExpression = [SOCCOMP_LATITUDE, SOCCOMP_LONGITUDE];
 
 interface MapProps {
-  // TODO
+  onPinClick: (eventId: number) => void;
 }
 
 interface MapState {
@@ -92,9 +92,8 @@ class Map extends Component<MapProps, MapState> {
     }
   };
 
-  onPinClick = (e: LeafletMouseEvent): void => {
-    console.log("clicked pin: ")
-    console.log(e)
+  onPinClick = (e: LeafletMouseEvent, eventId: number): void => {
+    this.props.onPinClick(eventId);
   }
 
   /**
@@ -114,6 +113,7 @@ class Map extends Component<MapProps, MapState> {
   };
 
   render() {
+
     return (
       <div id="map" className="container">
         <Filter onChange={this.filterChange}/>
@@ -122,15 +122,13 @@ class Map extends Component<MapProps, MapState> {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
             url='https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
           />
-          <div>
-            {this.state.events.map((event) => {
-              const icon = getPinIcon(event.eventType)
-              return <Marker key={event.eventId} position={event.coordinates}
-                  icon={icon} eventHandlers={{ click: this.onPinClick }} riseOnHover>
-                  <Popup>{event.name}</Popup>
-              </Marker>
-            })}
-          </div>
+          {this.state.events.map((event) => (
+            <Marker key={event.eventId} position={event.coordinates}
+              eventHandlers={{ click: (e) => this.onPinClick(e, event.eventId) }}
+              icon={getPinIcon(event.eventType)} interactive riseOnHover>
+              <Popup>{event.name}</Popup>
+            </Marker>
+          ))}
         </MapContainer>
       </div>
     );

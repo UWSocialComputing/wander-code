@@ -73,23 +73,10 @@ export const parseEvents = (data: unknown) => {
       throw new Error(`Improperly formed event from server ${e}`);
     }
 
-    const coord: LatLngExpression =  latLng(e.coordinates.longitude, e.coordinates.latitude) as LatLngExpression
-    const event: WtmEvent = {
-      eventId: e.eventId,
-      name: e.name,
-      eventType: e.eventType,
-
-      duration: e.duration,
-      location: e.location,
-      host: e.host,
-      cost: e.cost,
-
-      images: e.images,
-      coordinates: coord,
-
-      url: e.url,
-      eventDetails: e.eventDetails
-    }
+    const coord: LatLngExpression =  
+      latLng(e.coordinates.longitude, e.coordinates.latitude) as LatLngExpression
+    console.log(coord)
+    const event: WtmEvent = {...e, coordinates: coord}
 
     events.push(event);
   }
