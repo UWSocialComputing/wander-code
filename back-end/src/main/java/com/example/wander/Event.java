@@ -6,7 +6,7 @@ import com.google.gson.Gson;
 // This class represent an Event
 public class Event{
     private int eventId;
-    private String name; 
+    private String name;
     private EventType eventType;
 
     private Duration duration;
@@ -34,8 +34,8 @@ public class Event{
 
         this.duration = new Duration (startTime, endTime);
 
-        // 
-        this.location = new Address(line[5] == "" ? null : line[5], line[6] == "" ? null : line[6], 
+        //
+        this.location = new Address(line[5] == "" ? null : line[5], line[6] == "" ? null : line[6],
                                     line[7] == "" ? null : line[7], line[8] == "" ? null : line[8],
                                     line[9] == "" ? null : line[9],
                                     line[10] == "" ? null : Integer.parseInt(line[10]));
@@ -45,7 +45,7 @@ public class Event{
         String flyerPath = "../database/images/flyer" + eventId + ".png";
         String miniFlyerPath = "../database/images/miniflyer" + eventId + ".png";
         this.images = new Attatchments(flyerPath, miniFlyerPath);
-        this.coordinates = new Coordinates(Integer.parseInt(line[13]), Integer.parseInt(line[14]));
+        this.coordinates = new Coordinates(Double.parseDouble(line[13]), Double.parseDouble(line[14]));
         this.url = line[15];
         this.eventDetails = line[16];
     }

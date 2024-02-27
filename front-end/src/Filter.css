@@ -1,4 +1,18 @@
 #filter {
-  background-color: blue;
   width: 25%;
+  border: '1px solid grey';
+  padding-top: 20px
+}
+
+input {
+  margin-left: 5px;
+}
+
+button {
+  margin: 20px;
+  margin-left: 0px;
+}
+
+button:hover, input:hover {
+  cursor: pointer;
 }

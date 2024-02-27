@@ -2,19 +2,19 @@ package com.example.wander;
 
 // This class represents coordinates on a map
 public class Coordinates{
-    private double x;
-    private double  y;
+    private double longitude;
+    private double latitude;
 
-    public Coordinates(int x, int y){
-        this.x = x;
-        this.y = y;
+    public Coordinates(double longitude, double latitude){
+        this.longitude = longitude;
+        this.latitude = latitude;
     }
 
     public double getX(){
-        return x;
+        return this.longitude;
     }
 
     public double getY(){
-        return y;
+        return this.latitude;
     }
 }

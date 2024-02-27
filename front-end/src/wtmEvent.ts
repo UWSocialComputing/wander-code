@@ -1,4 +1,4 @@
-import { LatLngExpression } from "leaflet";
+import { latLng, LatLng, LatLngExpression } from "leaflet";
 
 export type WtmEvent = {
   eventId: number;
@@ -6,11 +6,11 @@ export type WtmEvent = {
   eventType: WtmEventType;
 
   duration: Duration;
-  address: Address;
+  location: Address;
   host: String;
   cost: Number;
 
-  images: Attachements;
+  images: Attachments;
   coordinates: LatLngExpression;
 
   url?: string;
@@ -38,13 +38,13 @@ export type Duration = {
 export type Address = {
   name: String;
   line1: String;
-  line2?: String;  // TODO(Jaela): I made this optional, not optional in Address.java tho, feel free to make not optional
+  line2?: String;
   city: String;
   state: String;
   zipcode: number;
 }
 
-export type Attachements = {
+export type Attachments = {
   // flyer/fileID.png
   flyerPath: string;
 
@@ -62,28 +62,45 @@ export const parseEvents = (data: unknown) => {
   }
 
   const events: WtmEvent[] = [];
-  // TODO:
   for (const e of data) {
-    if (typeof e.eventId !== "number"
-      || typeof e.name !== "string"
-      || typeof e.host !== "string"
-      || typeof e.cost !== "number"
-      || (e.url !== null && typeof e.url !== "string") 
-      || (e.eventDetails !== null && typeof e.eventDetails !== "string")
+    if (typeof e.eventId !== "number" || typeof e.name !== "string" || Object.keys(WtmEventType).includes(e.type)
+      || (!isRecord(e.location)) || (!isRecord(e.duration))
+      || typeof e.host !== "string" || typeof e.cost !== "number"
+      || (!isRecord(e.images)) || (!isRecord(e.coordinates))
+      || (e.url !== undefined && typeof e.url !== "string")
+      || (e.eventDetails !== undefined && typeof e.eventDetails !== "string")
       ) {
       throw new Error(`Improperly formed event from server ${e}`);
-    }    
+    }
 
-    // Need more parsing:
-    // eventType
-    // duration
-    // location
-    // images (note: noa created an image endpoint which we may be able to use, so this info perhaps isn't necessary)
-    // coordinates
+    const coord: LatLngExpression =  latLng(e.coordinates.longitude, e.coordinates.latitude) as LatLngExpression
+    const event: WtmEvent = {
+      eventId: e.eventId,
+      name: e.name,
+      eventType: e.eventType,
 
-    events.push(e);
+      duration: e.duration,
+      location: e.location,
+      host: e.host,
+      cost: e.cost,
+
+      images: e.images,
+      coordinates: coord,
+
+      url: e.url,
+      eventDetails: e.eventDetails
+    }
+
+    events.push(event);
   }
-
   return events;
 }
 
+/**
+ * Determines whether the given value is a record.
+ * @param val the value in question
+ * @return true if the value is a record and false otherwise
+ */
+export const isRecord = (val: unknown): val is Record<string, unknown> => {
+  return val !== null && typeof val === "object";
+};

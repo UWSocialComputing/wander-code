@@ -5,82 +5,129 @@ import { WtmEventType } from "./wtmEvent";
 import { MAX_DURATION_END_DATE } from "./constants";
 
 interface FilterProps {
-  onChange(startDuration: Date, endDuration: Date, eventTypes: WtmEventType[]): void;
+  /** The new filters that have been chosen. */
+  onChange(durationStart: Date, durationEnd: Date, eventTypes: WtmEventType[]): void;
 }
 
 interface FilterState {
-  // WtmEvent start filter. Default is current DateTime.
-  eventStartFilter: Date;
+  /** WtmEvent start date filter. Default is current DateTime. */
+  eventStart: Date;
 
-  // WtmEvent end filter. Default is current Date at midnight.
-  eventEndFilter: Date;
+  /** WtmEvent end date filter. Default is current DateTime. */
+  eventEnd: Date;
 
-  // WtmEventType filters.
-  eventTypeFilters: JSX.Element[];
+  /** WtmEventType filters. */
+  eventTypes: JSX.Element[];
+
+  /** Helper for eventTypes. Contains enum key for each eventTypes value that is checked. */
+  currChecked: WtmEventType[];
 }
 
+/**
+ * The Map sidebar that allows the user to select different WtmEvent filters.
+ */
 class Filter extends Component<FilterProps, FilterState>  {
   constructor(props: any) {
     super(props);
 
-    let startDate = new Date();
-    let endDate = startDate;
-    endDate.setHours(23, 59, 59);
+    let date = new Date();
 
-    let wtmEventTypes: JSX.Element[] = [];
-    // TODO
-    for (const wtmEventType of Object.values(WtmEventType)) {
-      wtmEventTypes.push(
-        <div key={wtmEventType}>
-          <input type="checkbox" id={wtmEventType}/>
-          <label>{wtmEventType}</label>
+    let eventTypes: JSX.Element[] = [];
+    for (const eventType of Object.values(WtmEventType)) {
+      eventTypes.push(
+        <div key={eventType}>
+          <input key={eventType} type="checkbox" id={eventType.toString()} value={eventType} onChange={this.onEventTypeCheck} defaultChecked/>
+          <label>{eventType}</label>
         </div>
       );
     }
 
     this.state = {
-      eventStartFilter: startDate,
-      eventEndFilter: endDate,
-      eventTypeFilters: wtmEventTypes,
+      eventStart: date,
+      eventEnd: date,
+      eventTypes: eventTypes,
+      currChecked: Object.keys(WtmEventType) as Array<WtmEventType>,
     };
   }
 
+  /**
+   * Stores the selection of a new start date filter.
+   * @param event data of the changed start date
+   */
   onStartDateSelection = (event: ChangeEvent<HTMLInputElement>) => {
-    let eventStartDate: Date = this.filterStringToDate(event.target.value)
     this.setState({
-      eventStartFilter: eventStartDate
-    })
+      eventStart: this.filterStringToDate(event.target.value)
+    });
   }
 
+  /**
+   * Stores the selection of a new end date filter.
+   * @param event data of the changed end date
+   */
   onEndDateSelection = (event: ChangeEvent<HTMLInputElement>) => {
-    let eventEndDate: Date = this.filterStringToDate(event.target.value)
     this.setState({
-      eventEndFilter: eventEndDate
-    })
+      eventEnd: this.filterStringToDate(event.target.value)
+    });
   }
 
+  /**
+   * Updates currChecked with new status of the eventType, event.
+   * @param event data of the (un)checked eventType
+   */
+  onEventTypeCheck = (event: ChangeEvent<HTMLInputElement>) => {
+    let updatedChecked = this.state.currChecked;
+
+    let enumVal: WtmEventType = Object.keys(WtmEventType)[Object.values(WtmEventType).indexOf(event.target.value as WtmEventType)] as WtmEventType;
+    let index = this.state.currChecked.indexOf(enumVal);
+    // Not found, so need to "check" by adding to currChecked
+    if (index === -1) {
+      updatedChecked.push(enumVal);
+
+    // Found, so need to "uncheck" by removing from currChecked
+    } else {
+      updatedChecked.splice(index, 1)
+    }
+
+    this.setState({
+      currChecked: updatedChecked
+    });
+  }
+
+  /**
+   * Communicates the eventStart, eventEnd, and a WtmEventType list, where each
+   * element of the WtmEventType list is a checked value in eventType.
+   */
   onApplyFiltersClick = () => {
-    let eventTypes: WtmEventType[] = []
-    this.props.onChange(this.state.eventStartFilter, this.state.eventEndFilter, eventTypes)
+    this.props.onChange(this.state.eventStart, this.state.eventEnd, this.state.currChecked);
   }
 
-  /* Returns Date in format "YYYY-MM-DD" */
-  dateToFilterString = (year: number, month: number, day: number): string => {
-    let date = year.toString() + "-"
+  /**
+   * Translates the given date to a string in format "YYYY-MM-DD".
+   * @param date date to format
+   * @returns given date as a string in format "YYYY-MM-DD"
+   */
+  dateToFilterString = (date: Date): string => {
+    let str = date.getFullYear().toString() + "-";
 
-    month++;  // Date has zero based month numbering
+    let month = date.getMonth() + 1;  // Date has zero based month numbering
     if (month < 10) {
-      date = date + "0";
+      str = str + "0";
     }
-    date = date + month.toString() + "-";
+    str = str + month.toString() + "-";
 
+    let day = date.getDate();
     if (day < 10) {
-      date = date + "0";
+      str = str+ "0";
     }
-    return date + day.toString();
+    return str + day.toString();
   }
 
-  /* Returns "YYYY-MM-DD" as a Date */
+  /**
+   * Translates the given dateStr to a Date
+   * @param dateStr string to convert to Date
+   * @requires dateStr in format "YYYY-MM-DD"
+   * @returns given dateStr as a Date
+   */
   filterStringToDate = (dateStr: String): Date => {
     let dateParts: string[] = dateStr.split("-");
     let year = parseInt(dateParts[0])
@@ -98,20 +145,12 @@ class Filter extends Component<FilterProps, FilterState>  {
 
   render() {
     // Create correctly formatted start date for selector
-    let startDateValue = this.dateToFilterString(
-      this.state.eventStartFilter.getFullYear(),
-      this.state.eventStartFilter.getMonth(),
-      this.state.eventStartFilter.getDate()
-    );
+    let startDateValue = this.dateToFilterString(this.state.eventStart);
 
     // Create correctly formatted end date for selector
     let endDateValue = startDateValue;
-    if (this.state.eventStartFilter < this.state.eventEndFilter) {
-      endDateValue = this.dateToFilterString(
-        this.state.eventEndFilter.getFullYear(),
-        this.state.eventEndFilter.getMonth(),
-        this.state.eventEndFilter.getDate()
-      );
+    if (this.state.eventStart < this.state.eventEnd) {
+      endDateValue = this.dateToFilterString(this.state.eventEnd);
     }
 
     return (
@@ -132,7 +171,7 @@ class Filter extends Component<FilterProps, FilterState>  {
 
         <div>
           <h4>Type of Event</h4>
-          {this.state.eventTypeFilters}
+          {this.state.eventTypes}
         </div>
 
         <button type="button" onClick={this.onApplyFiltersClick}>Apply</button>

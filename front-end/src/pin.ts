@@ -8,4 +8,4 @@ export const getPinIcon = (type: WtmEventType) => {
     iconAnchor: [0, 0],
     popupAnchor: [0, 0],
   });
-} 
+}

@@ -1,12 +1,12 @@
 import "leaflet/dist/leaflet.css";
 import "./Map.css";
 
-import L, { LatLngExpression } from "leaflet";
+import { latLng, LatLng, LatLngExpression, LeafletMouseEvent } from "leaflet";
 import React, { Component } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { SOCCOMP_LATITUDE, SOCCOMP_LONGITUDE, URL_BASE } from "./constants";
 import Filter from "./Filter";
-import { WtmEvent, WtmEventType, parseEvents } from "./wtmEvent";
+import { WtmEvent, WtmEventType, Duration, parseEvents } from "./wtmEvent";
 import { getPinIcon } from "./pin";
 
 // This defines the location of the map. These are the coordinates of the UW Seattle campus
@@ -22,7 +22,7 @@ interface MapState {
 }
 
 /**
- * A map, initially focused on the CSE 481 P classroom on UW Campus,
+ * A map, initially centered on the CSE 481 P classroom on UW Campus,
  * that renders the path all of the passed in event pins
  */
 class Map extends Component<MapProps, MapState> {
@@ -34,6 +34,9 @@ class Map extends Component<MapProps, MapState> {
     };
   }
 
+  /**
+   * Initialize the map with pins once the component has mounted.
+   */
   componentDidMount = (): void => {
     this.getAllEvents()
   }
@@ -44,6 +47,33 @@ class Map extends Component<MapProps, MapState> {
   getAllEvents = (): void => {
     fetch(URL_BASE + "/getAllEvents")
       .then(this.doGetAllEventsResp)
+      .catch(() => this.doError("Failed to connect to server."));
+  }
+
+  /**
+   * Gets filtered events.
+   */
+  // TODO: finish adding body
+  getEvents = (duration: Duration, eventTypes: WtmEventType[]): void => {
+    let coord: LatLng = latLng(position);
+    fetch(URL_BASE + "/getEvents", {
+      method: "POST",
+      body: JSON.stringify({
+        coordinates: {
+          x: coord.lng, // Long is x
+          y: coord.lat  // Lat is y
+        },
+        filters: {
+          duration: {
+            startTime: duration.startTime,
+            endTime: duration.endTime
+          },
+          eventType: eventTypes
+        }
+      }),
+      headers: {"Content-Type": "application/x-www-form-urlencoded"}
+    })
+      .then((data) => console.log(data))  // TODO
       .catch(() => this.doError("Failed to connect to server."));
   }
 
@@ -62,14 +92,26 @@ class Map extends Component<MapProps, MapState> {
     }
   };
 
+  onPinClick = (e: LeafletMouseEvent): void => {
+    console.log("clicked pin: ")
+    console.log(e)
+  }
+
+  /**
+   * TODO
+   * @param durationStart start Date of Duration
+   * @param durationEnd end Date of Duration
+   * @param eventTypes
+   */
+  filterChange = (durationStart: Date, durationEnd: Date, eventTypes: WtmEventType[]) => {
+    let duration: Duration = {startTime: durationStart, endTime: durationEnd};
+    this.getEvents(duration, eventTypes);
+  }
+
   doError = (msg: string): void => {
     // TODO: configure a nice client facing error message, prob callback to app
     console.error(msg);
   };
-
-  filterChange = (startDuration: Date, endDuration: Date, eventTypes: WtmEventType[]) => {
-    // TODO: use the given filters
-  }
 
   render() {
     return (
@@ -80,13 +122,15 @@ class Map extends Component<MapProps, MapState> {
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
             url='https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
           />
-          {this.state.events.map((event, idx) => {
-            const icon = getPinIcon(event.eventType)
-            return <Marker key={idx} position={position} // event.coordinates}
-                icon={icon} riseOnHover>
-                <Popup>{event.name}</Popup>
-            </Marker>
-          })}
+          <div>
+            {this.state.events.map((event) => {
+              const icon = getPinIcon(event.eventType)
+              return <Marker key={event.eventId} position={event.coordinates}
+                  icon={icon} eventHandlers={{ click: this.onPinClick }} riseOnHover>
+                  <Popup>{event.name}</Popup>
+              </Marker>
+            })}
+          </div>
         </MapContainer>
       </div>
     );
