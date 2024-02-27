@@ -76,24 +76,25 @@ public class Events{
             }
 
             // check if event is within the distance range
-            // double distance = getBirdsEyeDistance(coordinates, e.getCoordinates());
-            // if(distance >= DISTANCE_MAX) continue;
+            double distance = getBirdsEyeDistance(coordinates, e.getCoordinates());
+            System.out.println(distance);
+            if(distance >= DISTANCE_MAX) continue;
 
             events.add(e);
         }
 
 
-        // // sort List<Event> by distance
-        // Collections.sort(events, new Comparator<Event>() {
-        //     @Override
-        //     public int compare(Event e1, Event e2) {
-        //         Coordinates p1 = e1.getCoordinates();
-        //         Coordinates p2 = e2.getCoordinates();
-        //         double dist1 = getBirdsEyeDistance(coordinates, p1);
-        //         double dist2 = getBirdsEyeDistance(coordinates, p2);
-        //         return Double.compare(dist1, dist2);
-        //     }
-        // });
+        // sort List<Event> by distance
+        Collections.sort(events, new Comparator<Event>() {
+            @Override
+            public int compare(Event e1, Event e2) {
+                Coordinates p1 = e1.getCoordinates();
+                Coordinates p2 = e2.getCoordinates();
+                double dist1 = getBirdsEyeDistance(coordinates, p1);
+                double dist2 = getBirdsEyeDistance(coordinates, p2);
+                return Double.compare(dist1, dist2);
+            }
+        });
 
         return events;
     }
@@ -102,7 +103,7 @@ public class Events{
     private double getBirdsEyeDistance(Coordinates left, Coordinates right){
         double changeX = left.getX() - right.getX();
         double changeY = left.getY() - right.getY();
-        return Math.sqrt(changeX * changeX + changeY * changeY);
+        return Math.sqrt((changeX * changeX) + (changeY * changeY));
     }
 
     // save the event to savedEvents

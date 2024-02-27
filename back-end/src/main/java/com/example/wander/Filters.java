@@ -26,7 +26,7 @@ public class Filters{
         // if event is not within time range.
         if(duration != null) {
             try {
-                // if (!duration.durationIsSubset(e.getDuration())) return false;
+                if (!duration.durationIsSubset(e.getDuration())) return false;
             } catch (Exception ex){
                 // Exception occured.
                 return false;
