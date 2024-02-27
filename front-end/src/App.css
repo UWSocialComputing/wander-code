@@ -2,3 +2,30 @@
   margin-top: 1vh;
   height: 8vh;
 }
+
+#flyer-container {
+  display: flexbox;
+  justify-content: center;
+  align-items: center;
+
+  height: 90vh;
+  margin: 0 auto;
+}
+
+button {
+  margin-left: 1px;
+  margin-top: 1px;
+  margin-bottom: 0;
+}
+
+iframe {
+  /*
+  margin-left: auto;
+  margin-right: auto;
+
+  width: auto; */
+  height: 900px;
+  width: 100%;
+  zoom: 0.5;
+  transform: scale(0.5);
+}

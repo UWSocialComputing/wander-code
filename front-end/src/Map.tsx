@@ -46,7 +46,7 @@ class Map extends Component<MapProps, MapState> {
    */
   getAllEvents = (): void => {
     fetch(URL_BASE + "/getAllEvents")
-      .then(this.doGetAllEventsResp)
+      .then(this.doGetEventsResp)
       .catch(() => this.doError("Failed to connect to server."));
   }
 
@@ -71,24 +71,24 @@ class Map extends Component<MapProps, MapState> {
           eventType: eventTypes
         }
       }),
-      headers: {"Content-Type": "application/x-www-form-urlencoded"}
+      headers: {"Content-Type": "application/json"}
     })
-      .then((data) => console.log(data))  // TODO
+      .then(this.doGetEventsResp)
       .catch(() => this.doError("Failed to connect to server."));
   }
 
-  doGetAllEventsResp = (res: Response): void => {
+  doGetEventsResp = (res: Response): void => {
     if (res.status === 200) {
       res.json()
         .then(parseEvents)
         .then((events) => {
             this.setState({events})})
-        .catch(() => this.doError("200 response from /getAllEvents not parsable"));
+        .catch(() => this.doError("200 response from /get(All)Events not parsable"));
     } else if (res.status === 400) {
       res.text().then(this.doError)
-         .catch(() => this.doError("400 response from /getAllEvents not text"));
+         .catch(() => this.doError("400 response from /get(All)Events not text"));
     } else {
-      this.doError(`/getAllEvents returned status code ${res.status}`);
+      this.doError(`/get(All)Events returned status code ${res.status}`);
     }
   };
 

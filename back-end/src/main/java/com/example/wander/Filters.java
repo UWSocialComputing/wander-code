@@ -1,14 +1,14 @@
 package com.example.wander;
 
-import java.util.Set;
+import java.util.List;
 
 // This class represents filters on an Event.
 public class Filters{
     // Make this a set.
     private Duration duration;
-    private Set<EventType> eventType;
+    private List<EventType> eventType;
 
-    public Filters(Duration duration, Set<EventType> eventType){
+    public Filters(Duration duration, List<EventType> eventType){
         this.duration = duration;
         this.eventType = eventType;
     }
@@ -17,16 +17,16 @@ public class Filters{
         return duration;
     }
 
-    public Set<EventType> eventType(){
+    public List<EventType> eventType(){
         return eventType;
     }
 
     // Check if the event should be displayed given all applied filters 
     public boolean eventWithinFilter(Event e){
         // if event is not within time range.
-        if(duration != null){
-            try{
-                if(!e.getDuration().durationIsSubset(duration)) return false;
+        if(duration != null) {
+            try {
+                // if (!duration.durationIsSubset(e.getDuration())) return false;
             } catch (Exception ex){
                 // Exception occured.
                 return false;
@@ -34,10 +34,9 @@ public class Filters{
         }
 
         // if event type matches
-        if(eventType.size() == 0) return true;
+        if(eventType.isEmpty()) return false;
         if(!eventType.contains(e.getEventType())) return false;
 
         return true;
-
     }
 }

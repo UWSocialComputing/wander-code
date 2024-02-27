@@ -61,33 +61,39 @@ public class Events{
     // Event in index 0 is the closest then longer.
     // distance is birds eye
     public List<Event> getEvents(Coordinates coordinates, Filters filters){
-        Gson gson = new Gson();
         // get a list of all events within the distance, then sort by distance.
         // Insertion sort.
 
         List<Event> events = new ArrayList<>();
+        if(filters == null) {
+            return events;
+        }
+
         for(Event e: allEvents.values()){
             // check if the filters apply
-            if(filters != null && !filters.eventWithinFilter(e)) continue;
+            if(!filters.eventWithinFilter(e)) {
+                continue;
+            }
 
             // check if event is within the distance range
-            double distance = getBirdsEyeDistance(coordinates, e.getCoordinates());
-            if(distance >= DISTANCE_MAX) continue;
+            // double distance = getBirdsEyeDistance(coordinates, e.getCoordinates());
+            // if(distance >= DISTANCE_MAX) continue;
 
             events.add(e);
         }
 
-        // sort List<Event> by distance
-        Collections.sort(events, new Comparator<Event>() {
-            @Override
-            public int compare(Event e1, Event e2) {
-                Coordinates p1 = e1.getCoordinates();
-                Coordinates p2 = e2.getCoordinates();
-                double dist1 = getBirdsEyeDistance(coordinates, p1);
-                double dist2 = getBirdsEyeDistance(coordinates, p2);
-                return Double.compare(dist1, dist2);
-            }
-        });
+
+        // // sort List<Event> by distance
+        // Collections.sort(events, new Comparator<Event>() {
+        //     @Override
+        //     public int compare(Event e1, Event e2) {
+        //         Coordinates p1 = e1.getCoordinates();
+        //         Coordinates p2 = e2.getCoordinates();
+        //         double dist1 = getBirdsEyeDistance(coordinates, p1);
+        //         double dist2 = getBirdsEyeDistance(coordinates, p2);
+        //         return Double.compare(dist1, dist2);
+        //     }
+        // });
 
         return events;
     }

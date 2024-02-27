@@ -1,9 +1,13 @@
 import React, {Component} from 'react';
 import Map from "./Map";
 import "./App.css";
+import { URL_BASE } from './constants';
+
+type view = "map" | "flyer" | "save" // TODO: expand
 
 interface AppState {
-  // TODO
+  view: view
+  flyer?: string
 }
 
 /**
@@ -12,24 +16,23 @@ interface AppState {
 class App extends Component<{}, AppState> {
   constructor(props : any) {
     super(props);
-    this.state = {
-
+    this.state = {  
+      view: "map",
     };
   }
 
   getFlyer = (eventId: number) => {
-    console.log("getting flyer")
-
-    // fetch(URL_BASE + "/")
-    //   .then(this.doGetFlyerResp)
-    //   .catch(() => this.doError("Failed to connect to server."));
+    fetch(URL_BASE + "/flyer/" + eventId + ".png")
+      .then(this.doGetFlyerResp)
+      .catch(() => this.doError("Failed to connect to server."));
   }
 
   doGetFlyerResp = (res: Response): void => {
     if (res.status === 200) {
-      res.json() // probably don't want to do this
-      // TODO: change state to flyer view and present image
-        .catch(() => this.doError("200 response from /getAllEvents not parsable"));
+      this.setState({
+        view: "flyer",
+        flyer: res.url,
+      })
     } else if (res.status === 400) {
       res.text().then(this.doError)
          .catch(() => this.doError("400 response from /getAllEvents not text"));
@@ -49,8 +52,16 @@ class App extends Component<{}, AppState> {
         {/* TODO: nav bar containing below logo & tabs to other pages */}
         <img src={require('./img/wtm_text.png')} id="logo"></img>
 
-        {/* TODO: conditionally render this or flyer or saved page based on view state */}
-        <Map onPinClick={this.getFlyer}/>
+        {this.state.view === "flyer" && this.state.flyer !== undefined?
+            <div id="flyer-container">
+              <button onClick={() => this.setState({ view: "map" })}>Back</button>
+              <iframe src={this.state.flyer} title="Flyer !!" id="flyer"></iframe>
+            </div>
+          : this.state.view === "map" ?
+            <Map onPinClick={this.getFlyer}/>
+          :
+            <></> // Shouldn't happen, error case
+        }        
       </div>
     );
   }

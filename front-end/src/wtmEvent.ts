@@ -75,7 +75,6 @@ export const parseEvents = (data: unknown) => {
 
     const coord: LatLngExpression =  
       latLng(e.coordinates.longitude, e.coordinates.latitude) as LatLngExpression
-    console.log(coord)
     const event: WtmEvent = {...e, coordinates: coord}
 
     events.push(event);
