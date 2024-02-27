@@ -5,7 +5,7 @@ import { WtmEventType } from "./wtmEvent";
 import { MAX_DURATION_END_DATE } from "./constants";
 
 interface FilterProps {
-  // TODO
+  onChange(startDuration: Date, endDuration: Date, eventTypes: WtmEventType[]): void;
 }
 
 interface FilterState {
@@ -17,7 +17,7 @@ interface FilterState {
 
   // WtmEventType filters.
   eventTypeFilters: JSX.Element[];
-} 
+}
 
 class Filter extends Component<FilterProps, FilterState>  {
   constructor(props: any) {
@@ -28,10 +28,11 @@ class Filter extends Component<FilterProps, FilterState>  {
     endDate.setHours(23, 59, 59);
 
     let wtmEventTypes: JSX.Element[] = [];
+    // TODO
     for (const wtmEventType of Object.values(WtmEventType)) {
       wtmEventTypes.push(
-        <div key={wtmEventType}> 
-          <input type="checkbox" id={wtmEventType}/> 
+        <div key={wtmEventType}>
+          <input type="checkbox" id={wtmEventType}/>
           <label>{wtmEventType}</label>
         </div>
       );
@@ -58,10 +59,15 @@ class Filter extends Component<FilterProps, FilterState>  {
     })
   }
 
+  onApplyFiltersClick = () => {
+    let eventTypes: WtmEventType[] = []
+    this.props.onChange(this.state.eventStartFilter, this.state.eventEndFilter, eventTypes)
+  }
+
   /* Returns Date in format "YYYY-MM-DD" */
   dateToFilterString = (year: number, month: number, day: number): string => {
     let date = year.toString() + "-"
-    
+
     month++;  // Date has zero based month numbering
     if (month < 10) {
       date = date + "0";
@@ -93,8 +99,8 @@ class Filter extends Component<FilterProps, FilterState>  {
   render() {
     // Create correctly formatted start date for selector
     let startDateValue = this.dateToFilterString(
-      this.state.eventStartFilter.getFullYear(), 
-      this.state.eventStartFilter.getMonth(), 
+      this.state.eventStartFilter.getFullYear(),
+      this.state.eventStartFilter.getMonth(),
       this.state.eventStartFilter.getDate()
     );
 
@@ -102,22 +108,34 @@ class Filter extends Component<FilterProps, FilterState>  {
     let endDateValue = startDateValue;
     if (this.state.eventStartFilter < this.state.eventEndFilter) {
       endDateValue = this.dateToFilterString(
-        this.state.eventEndFilter.getFullYear(), 
-        this.state.eventEndFilter.getMonth(), 
+        this.state.eventEndFilter.getFullYear(),
+        this.state.eventEndFilter.getMonth(),
         this.state.eventEndFilter.getDate()
       );
     }
-    
+
     return (
       <div id="filter">
+        <h2>Filters</h2>
+
         <div id="duration">
-          <label>Start date:</label>
-          <input type="date" id="start" name="duration-start" value={startDateValue} min={startDateValue} max={MAX_DURATION_END_DATE} onChange={this.onStartDateSelection} pattern="\d{4}-\d{2}-\d{2}"/>
-          <label>End date:</label>
-          <input type="date" id="end" name="duration-end" value={endDateValue} min={startDateValue} max={MAX_DURATION_END_DATE} onChange={this.onEndDateSelection} pattern="\d{4}-\d{2}-\d{2}"/>
+          <h4>Date Range</h4>
+          <div>
+            <label>Start date:</label>
+            <input type="date" id="start" name="duration-start" value={startDateValue} min={startDateValue} max={MAX_DURATION_END_DATE} onChange={this.onStartDateSelection} pattern="\d{4}-\d{2}-\d{2}"/>
+          </div>
+          <div>
+            <label>End date:</label>
+            <input type="date" id="end" name="duration-end" value={endDateValue} min={startDateValue} max={MAX_DURATION_END_DATE} onChange={this.onEndDateSelection} pattern="\d{4}-\d{2}-\d{2}"/>
+          </div>
         </div>
-        {this.state.eventTypeFilters}
-        {/* TODO: done/update filters button */}
+
+        <div>
+          <h4>Type of Event</h4>
+          {this.state.eventTypeFilters}
+        </div>
+
+        <button type="button" onClick={this.onApplyFiltersClick}>Apply</button>
       </div>
     );
   }

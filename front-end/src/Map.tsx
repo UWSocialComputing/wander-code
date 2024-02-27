@@ -51,7 +51,7 @@ class Map extends Component<MapProps, MapState> {
     if (res.status === 200) {
       res.json()
         .then(parseEvents)
-        .then((events) => { 
+        .then((events) => {
             this.setState({events})})
         .catch(() => this.doError("200 response from /getAllEvents not parsable"));
     } else if (res.status === 400) {
@@ -67,18 +67,22 @@ class Map extends Component<MapProps, MapState> {
     console.error(msg);
   };
 
+  filterChange = (startDuration: Date, endDuration: Date, eventTypes: WtmEventType[]) => {
+    // TODO: use the given filters
+  }
+
   render() {
     return (
       <div id="map" className="container">
-        <Filter/>
+        <Filter onChange={this.filterChange}/>
         <MapContainer center={position} zoom={13.25} scrollWheelZoom={true}>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
             url='https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
           />
-          {this.state.events.map((event, idx) => { 
+          {this.state.events.map((event, idx) => {
             const icon = getPinIcon(event.eventType)
-            return <Marker key={idx} position={position} // event.coordinates} 
+            return <Marker key={idx} position={position} // event.coordinates}
                 icon={icon} riseOnHover>
                 <Popup>{event.name}</Popup>
             </Marker>
