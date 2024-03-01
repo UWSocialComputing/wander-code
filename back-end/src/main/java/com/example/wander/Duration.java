@@ -30,11 +30,8 @@ public class Duration{
         Date s2, e1, e2 = null;
        
         boolean start = true;
-        System.out.println(d.getStartTime() != null);
         if(d.getStartTime() != null){
             s1 = dateFormat.parse(this.startTime);
-            System.out.println(this.startTime);
-            System.out.println(s1);
             s2 = dateFormat.parse(d.getStartTime());
             start = s1.equals(s2) || s1.before(s2);
         }
@@ -43,11 +40,7 @@ public class Duration{
         if(d.getEndTime() != null){
             e1 = dateFormat.parse(this.startTime);
             e2 = dateFormat.parse(d.getEndTime());
-            end = e2.before(e1);
-        }
-
-        if(s1 != null && e2 != null){
-            end = end && e2.equals(s1);
+            end = e1.before(e2) || e1.equals(e2);
         }
         
         return start && end;

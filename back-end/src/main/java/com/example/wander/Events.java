@@ -77,7 +77,6 @@ public class Events{
 
             // check if event is within the distance range
             double distance = getBirdsEyeDistance(coordinates, e.getCoordinates());
-            System.out.println(distance);
             if(distance >= DISTANCE_MAX) continue;
 
             events.add(e);
