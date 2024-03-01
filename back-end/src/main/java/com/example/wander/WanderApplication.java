@@ -50,7 +50,7 @@ public class WanderApplication {
     @GetMapping("/flyer/{imageName}")
     public ResponseEntity<Resource> getImage(@PathVariable String imageName) throws IOException {
         // Load the image file as a Resource
-        Resource resource = new FileSystemResource("../database/images/flyers/" + imageName);
+        Resource resource = new FileSystemResource("database/images/flyers/" + imageName);
 
         // Check if the resource exists
         if (!resource.exists()) {

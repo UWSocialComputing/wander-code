@@ -25,7 +25,7 @@ public class Events{
     public Events() throws IOException{
         allEvents = new HashMap<>();
         savedEvents = new HashMap<>();
-        String csvFile = "../database/events.csv"; // Ruh Roh
+        String csvFile = "database/events.csv"; // Ruh Roh
 
         try (CSVReader reader = new CSVReader(new FileReader(csvFile))) {
             String[] nextLine;

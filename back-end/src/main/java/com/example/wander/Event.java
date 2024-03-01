@@ -42,8 +42,8 @@ public class Event{
         this.host = line[11];
         this.cost = Double.parseDouble(line[12]);
 
-        String flyerPath = "../database/images/flyer" + eventId + ".png";
-        String miniFlyerPath = "../database/images/miniflyer" + eventId + ".png";
+        String flyerPath = "database/images/flyer" + eventId + ".png";
+        String miniFlyerPath = "database/images/miniflyer" + eventId + ".png";
         this.images = new Attatchments(flyerPath, miniFlyerPath);
         this.coordinates = new Coordinates(Double.parseDouble(line[13]), Double.parseDouble(line[14]));
         this.url = line[15];
