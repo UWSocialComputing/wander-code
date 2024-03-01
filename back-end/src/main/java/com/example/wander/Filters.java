@@ -42,7 +42,7 @@ public class Filters{
                 if (!duration.durationIsSubset(e.getDuration())) return false;
             } catch (Exception ex){
                 // Exception occured.
-                System.out.println("Error parsing date");
+                System.out.println("Error parsing date. Check input date format.");
                 return false;
             }
         }
