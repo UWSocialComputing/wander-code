@@ -1,4 +1,4 @@
-package com.example.wander;
+package com.wander;
 
 // This class represents an address
 public class Address {

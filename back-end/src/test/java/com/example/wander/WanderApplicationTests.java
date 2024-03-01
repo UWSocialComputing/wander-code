@@ -1,4 +1,4 @@
-package com.example.wander;
+package com.wander;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

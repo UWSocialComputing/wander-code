@@ -1,4 +1,4 @@
-package com.example.wander;
+package com.wander;
 
 // This enum represents the types of events
 public enum EventType {

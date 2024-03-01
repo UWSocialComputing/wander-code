@@ -1,4 +1,4 @@
-package com.example.wander;
+package com.wander;
 
 // This class represents coordinates on a map
 public class Coordinates{

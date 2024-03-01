@@ -1,4 +1,4 @@
-package com.example.wander;
+package com.wander;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import com.google.gson.Gson;

@@ -1,4 +1,4 @@
-package com.example.wander;
+package com.wander;
 
 // This class encompasses the links for the flyers for an Event
 public class Attatchments {

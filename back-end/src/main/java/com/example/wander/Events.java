@@ -1,4 +1,4 @@
-package com.example.wander;
+package com.wander;
 
 import java.util.Comparator;
 import com.google.gson.Gson;

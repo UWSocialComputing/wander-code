@@ -1,4 +1,4 @@
-package com.example.wander;
+package com.wander;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
