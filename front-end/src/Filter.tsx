@@ -85,7 +85,6 @@ class Filter extends Component<FilterProps, FilterState>  {
    */
   onEndDateSelection = (event: ChangeEvent<HTMLInputElement>) => {
     let newEventEnd = this.filterStringToDate(event.target.value);
-    console.log(newEventEnd)
     this.setState({
       eventEnd: newEventEnd
     }, this.applyFilters);
