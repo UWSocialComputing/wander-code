@@ -1,10 +1,30 @@
+
+#nav {
+  height: 10vh;
+  
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
 #logo {
-  margin-top: 1vh;
+  margin-left: 1vh;
   height: 8vh;
 }
 
+a {
+  text-decoration: none;
+  color: #242424;
+  margin-right: 2vh;
+}
+
+a:hover {
+  text-decoration: #daa7ff90 underline 3px;
+}
+
 #flyer-container {
-  display: flexbox;
+  display: flex;
   justify-content: center;
   align-items: center;
 
@@ -18,14 +38,6 @@ button {
   margin-bottom: 0;
 }
 
-iframe {
-  /*
-  margin-left: auto;
-  margin-right: auto;
-
-  width: auto; */
-  height: 900px;
-  width: 100%;
-  zoom: 0.5;
-  transform: scale(0.5);
+#flyer {
+  height: 98%;
 }
