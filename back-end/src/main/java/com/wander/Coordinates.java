@@ -5,16 +5,17 @@ public class Coordinates{
     private double longitude;
     private double latitude;
 
-    public Coordinates(double longitude, double latitude){
+    // (x, y) is (latitude, longitude)
+    public Coordinates(double latitude, double longitude) {
         this.longitude = longitude;
         this.latitude = latitude;
     }
 
-    public double getX(){
+    public double getLongitude(){
         return this.longitude;
     }
 
-    public double getY(){
+    public double getLatitude(){
         return this.latitude;
     }
 }

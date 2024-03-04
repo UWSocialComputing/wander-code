@@ -6,11 +6,11 @@ import React, { Component } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { SOCCOMP_LATITUDE, SOCCOMP_LONGITUDE, URL_BASE } from "./constants";
 import Filter from "./Filter";
-import { WtmEvent, WtmEventType, Duration, parseEvents } from "./wtmEvent";
+import { WtmEvent, WtmEventType, Duration, PriceRange, parseEvents } from "./wtmEvent";
 import { getPinIcon } from "./pin";
 
 // This defines the location of the map. These are the coordinates of the UW Seattle campus
-const position: LatLngExpression = [SOCCOMP_LATITUDE, SOCCOMP_LONGITUDE];
+const position: LatLngExpression = latLng(SOCCOMP_LATITUDE, SOCCOMP_LONGITUDE);
 
 interface MapProps {
   onPinClick: (eventId: number) => void;
@@ -53,22 +53,20 @@ class Map extends Component<MapProps, MapState> {
   /**
    * Gets filtered events.
    */
-  // TODO: finish adding body
-  getEvents = (duration: Duration, eventTypes: WtmEventType[]): void => {
+  getEvents = (duration: Duration, eventTypes: WtmEventType[], priceRange: PriceRange): void => {
     let coord: LatLng = latLng(position);
+
     fetch(URL_BASE + "/getEvents", {
       method: "POST",
       body: JSON.stringify({
         coordinates: {
-          x: coord.lng, // Long is x
-          y: coord.lat  // Lat is y
+          longitude: coord.lng,
+          latitude: coord.lat
         },
         filters: {
-          duration: {
-            startTime: duration.startTime,
-            endTime: duration.endTime
-          },
-          eventType: eventTypes
+          duration: duration,
+          eventType: eventTypes,
+          priceRange: priceRange
         }
       }),
       headers: {"Content-Type": "application/json"}
@@ -82,6 +80,7 @@ class Map extends Component<MapProps, MapState> {
       res.json()
         .then(parseEvents)
         .then((events) => {
+            console.log(events)
             this.setState({events})})
         .catch(() => this.doError("200 response from /get(All)Events not parsable"));
     } else if (res.status === 400) {

@@ -11,12 +11,16 @@ export const UW_LONGITUDE_OFFSET : number = 1370.6408;
 export const UW_LONGITUDE_SCALE : number = 0.00000848028;
 
 // Map center
-export const SOCCOMP_LATITUDE = 47.6544987;
+export const SOCCOMP_LATITUDE : number = 47.6544987;
 
 // Map center
-export const SOCCOMP_LONGITUDE = -122.3042749;
+export const SOCCOMP_LONGITUDE : number = -122.3042749;
 
 // Base url to access wtm back-end endpoints with
-export const URL_BASE = "http://localhost:5005";
+export const URL_BASE : string = "http://localhost:5005";
 
-export const MAX_DURATION_END_DATE = "2026-12-31 23:59:59"
+// Filter Duration.endTime max date allowed
+export const DURATION_END_DATE_MAX : string = "2026-12-31T23:59";
+
+// Filter PriceRange.max max value allowed
+export const PRICE_RANGE_MAX : number = 1000000;  // TODO: make dynamically set max value based on current???

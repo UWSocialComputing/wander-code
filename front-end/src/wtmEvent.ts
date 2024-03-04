@@ -1,4 +1,4 @@
-import { latLng, LatLng, LatLngExpression } from "leaflet";
+import { latLng, LatLngExpression } from "leaflet";
 
 export type WtmEvent = {
   eventId: number;
@@ -28,8 +28,8 @@ export enum WtmEventType {
   OTHER = "Miscellaneous"
 }
 
+/* In string format yyyy-MM-dd HH:mm:ss matching the backend */
 export type Duration = {
-  // Given in the form yyyy-MM-dd HH:mm:ss
   startTime: string;
   endTime: string;
 }
@@ -49,6 +49,11 @@ export type Attachments = {
 
   // miniFlyer/fileID.png
   miniFlyerPath: string;
+}
+
+export type PriceRange = {
+  min: number;
+  max: number;
 }
 
 /**
@@ -73,7 +78,7 @@ export const parseEvents = (data: unknown) => {
     }
 
     const coord: LatLngExpression =
-      latLng(e.coordinates.longitude, e.coordinates.latitude) as LatLngExpression
+      latLng(e.coordinates.latitude, e.coordinates.longitude) as LatLngExpression
     const event: WtmEvent = {...e, coordinates: coord}
 
     events.push(event);

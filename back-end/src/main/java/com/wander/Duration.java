@@ -3,7 +3,7 @@ package com.wander;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-// This class represents a time duration. 
+// This class represents a time duration.
 // Time strings must be in the form yyyy-MM-dd HH:mm:ss
 public class Duration{
 
@@ -28,7 +28,7 @@ public class Duration{
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date s1 = null;
         Date s2, e1, e2 = null;
-       
+
         boolean start = true;
         if(d.getStartTime() != null){
             s1 = dateFormat.parse(this.startTime);
@@ -38,11 +38,11 @@ public class Duration{
 
         boolean end = true;
         if(d.getEndTime() != null){
-            e1 = dateFormat.parse(this.startTime);
+            e1 = dateFormat.parse(this.endTime);
             e2 = dateFormat.parse(d.getEndTime());
-            end = e1.before(e2) || e1.equals(e2);
+            end = e2.before(e1) || e1.equals(e2);
         }
-        
+
         return start && end;
     }
 }

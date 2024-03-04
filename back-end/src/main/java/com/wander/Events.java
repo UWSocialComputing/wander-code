@@ -100,9 +100,9 @@ public class Events{
 
     // Returns birdseye distance between two coordinates
     private double getBirdsEyeDistance(Coordinates left, Coordinates right){
-        double changeX = left.getX() - right.getX();
-        double changeY = left.getY() - right.getY();
-        return Math.sqrt((changeX * changeX) + (changeY * changeY));
+        double changeLatitude = Math.abs(left.getLatitude() - right.getLatitude());
+        double changeLongitude = Math.abs(left.getLongitude() - right.getLongitude());
+        return Math.sqrt((changeLatitude * changeLatitude) + (changeLongitude * changeLongitude));
     }
 
     // save the event to savedEvents
