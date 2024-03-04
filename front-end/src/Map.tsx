@@ -96,17 +96,6 @@ class Map extends Component<MapProps, MapState> {
     this.props.onPinClick(eventId);
   }
 
-  /**
-   * TODO
-   * @param durationStart start Date of Duration
-   * @param durationEnd end Date of Duration
-   * @param eventTypes
-   */
-  filterChange = (durationStart: Date, durationEnd: Date, eventTypes: WtmEventType[]) => {
-    let duration: Duration = {startTime: durationStart, endTime: durationEnd};
-    this.getEvents(duration, eventTypes);
-  }
-
   doError = (msg: string): void => {
     // TODO: configure a nice client facing error message, prob callback to app
     console.error(msg);
@@ -116,7 +105,7 @@ class Map extends Component<MapProps, MapState> {
 
     return (
       <div id="map" className="container">
-        <Filter onChange={this.filterChange}/>
+        <Filter onChange={this.getEvents}/>
         <MapContainer center={position} zoom={13.25} scrollWheelZoom={true}>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'

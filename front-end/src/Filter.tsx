@@ -1,12 +1,12 @@
 import "./Filter.css";
 
 import React, { ChangeEvent, Component } from "react";
-import { WtmEventType } from "./wtmEvent";
+import { WtmEventType, Duration } from "./wtmEvent";
 import { MAX_DURATION_END_DATE } from "./constants";
 
 interface FilterProps {
   /** The new filters that have been chosen. */
-  onChange(durationStart: Date, durationEnd: Date, eventTypes: WtmEventType[]): void;
+  onChange(duration: Duration, eventTypes: WtmEventType[]): void;
 }
 
 interface FilterState {
@@ -94,11 +94,14 @@ class Filter extends Component<FilterProps, FilterState>  {
   }
 
   /**
-   * Communicates the eventStart, eventEnd, and a WtmEventType list, where each
-   * element of the WtmEventType list is a checked value in eventType.
+   * Communicates the Duration (eventStart to eventEnd) and a WtmEventType list,
+   * where each element of the WtmEventType list is a checked value in eventType.
    */
   onApplyFiltersClick = () => {
-    this.props.onChange(this.state.eventStart, this.state.eventEnd, this.state.currChecked);
+    const startTime: string = "";  // TODO
+    const endTime: string = "";  // TODO
+
+    this.props.onChange({startTime: startTime, endTime: endTime}, this.state.currChecked);
   }
 
   /**

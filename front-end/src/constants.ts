@@ -19,4 +19,4 @@ export const SOCCOMP_LONGITUDE = -122.3042749;
 // Base url to access wtm back-end endpoints with
 export const URL_BASE = "http://localhost:5005";
 
-export const MAX_DURATION_END_DATE = "2026-12-31"
+export const MAX_DURATION_END_DATE = "2026-12-31 23:59:59"

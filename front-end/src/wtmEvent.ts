@@ -30,9 +30,8 @@ export enum WtmEventType {
 
 export type Duration = {
   // Given in the form yyyy-MM-dd HH:mm:ss
-  // Parse into: Date(year, monthIndex, day, hours, minutes, seconds)
-  startTime: Date;
-  endTime: Date;
+  startTime: string;
+  endTime: string;
 }
 
 export type Address = {
@@ -73,7 +72,7 @@ export const parseEvents = (data: unknown) => {
       throw new Error(`Improperly formed event from server ${e}`);
     }
 
-    const coord: LatLngExpression =  
+    const coord: LatLngExpression =
       latLng(e.coordinates.longitude, e.coordinates.latitude) as LatLngExpression
     const event: WtmEvent = {...e, coordinates: coord}
 
