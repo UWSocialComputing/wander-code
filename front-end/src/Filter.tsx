@@ -68,9 +68,15 @@ class Filter extends Component<FilterProps, FilterState>  {
    * @param event data of the changed start date
    */
   onStartDateSelection = (event: ChangeEvent<HTMLInputElement>) => {
+    let newStart: Date = this.filterStringToDate(event.target.value);
+    let newEnd: Date = this.state.eventEnd;
+    if (newStart > newEnd) {
+      newEnd = newStart;
+    }
     this.setState({
-      eventStart: this.filterStringToDate(event.target.value)
-    });
+      eventStart: newStart,
+      eventEnd: newEnd
+    }, this.applyFilters);
   }
 
   /**
@@ -78,9 +84,11 @@ class Filter extends Component<FilterProps, FilterState>  {
    * @param event data of the changed end date
    */
   onEndDateSelection = (event: ChangeEvent<HTMLInputElement>) => {
+    let newEventEnd = this.filterStringToDate(event.target.value);
+    console.log(newEventEnd)
     this.setState({
-      eventEnd: this.filterStringToDate(event.target.value)
-    });
+      eventEnd: newEventEnd
+    }, this.applyFilters);
   }
 
   /**
@@ -98,19 +106,19 @@ class Filter extends Component<FilterProps, FilterState>  {
 
     // Found, so need to "uncheck" by removing from currChecked
     } else {
-      updatedChecked.splice(index, 1)
+      updatedChecked.splice(index, 1);
     }
 
     this.setState({
       currChecked: updatedChecked
-    });
+    }, this.applyFilters);
   }
 
   /**
    * Communicates the Duration (eventStart to eventEnd) and a WtmEventType list,
    * where each element of the WtmEventType list is a checked value in eventType.
    */
-  onApplyFiltersClick = () => {
+  applyFilters = () => {
     const startTime: string = this.dateToDurationString(this.state.eventStart);
     const endTime: string = this.dateToDurationString(this.state.eventEnd);
 
@@ -212,10 +220,7 @@ class Filter extends Component<FilterProps, FilterState>  {
     let startDateValue = this.dateToFilterString(this.state.eventStart);
 
     // Create correctly formatted end date for selector
-    let endDateValue = startDateValue;
-    if (this.state.eventStart < this.state.eventEnd) {
-      endDateValue = this.dateToFilterString(this.state.eventEnd);
-    }
+    let endDateValue = this.dateToFilterString(this.state.eventEnd);
 
     return (
       <div id="filter">
@@ -237,8 +242,6 @@ class Filter extends Component<FilterProps, FilterState>  {
           <h4>Type of Event</h4>
           {this.state.eventTypes}
         </div>
-
-        <button type="button" onClick={this.onApplyFiltersClick}>Apply</button>
       </div>
     );
   }

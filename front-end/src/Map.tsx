@@ -80,7 +80,6 @@ class Map extends Component<MapProps, MapState> {
       res.json()
         .then(parseEvents)
         .then((events) => {
-            console.log(events)
             this.setState({events})})
         .catch(() => this.doError("200 response from /get(All)Events not parsable"));
     } else if (res.status === 400) {
