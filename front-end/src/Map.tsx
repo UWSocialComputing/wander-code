@@ -34,22 +34,6 @@ class Map extends Component<MapProps, MapState> {
   }
 
   /**
-   * Initialize the map with pins once the component has mounted.
-   */
-  componentDidMount = (): void => {
-    this.getAllEvents()
-  }
-
-  /**
-   * Gets all events.
-   */
-  getAllEvents = (): void => {
-    fetch(URL_BASE + "/getAllEvents")
-      .then(this.doGetEventsResp)
-      .catch(() => this.doError("Failed to connect to server."));
-  }
-
-  /**
    * Gets filtered events.
    */
   getEvents = (duration: Duration, eventTypes: WtmEventType[], priceRange: PriceRange): void => {
@@ -97,7 +81,7 @@ class Map extends Component<MapProps, MapState> {
   render() {
 
     return (
-      <div id="map" className="container">
+      <div id="map" className="home">
         <Filter onChange={this.getEvents}/>
         <MapContainer center={position} zoom={13.25} scrollWheelZoom={true}>
           <TileLayer

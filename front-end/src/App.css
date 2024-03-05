@@ -1,7 +1,13 @@
+* {
+  font-family: "Red Hat Display", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-weight: 300;
+  /* Within components can pick font weight from 300-900 */
+}
 
 #nav {
   height: 10vh;
-  
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -13,13 +19,14 @@
   height: 8vh;
 }
 
-a {
-  text-decoration: none;
+#savedPageButton {
+  background-color: transparent;
+  border: none;
   color: #242424;
   margin-right: 2vh;
 }
 
-a:hover {
+#savedPageButton:hover {
   text-decoration: #daa7ff90 underline 3px;
 }
 

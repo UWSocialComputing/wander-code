@@ -25,8 +25,11 @@ export const REDIRECT_URL: string ="http://localhost:3000"
 // Filter Duration.endTime max date allowed
 export const DURATION_END_DATE_MAX : string = "2026-12-31T23:59";
 
+// Filter PriceRange.min min value allowed
+export const PRICE_RANGE_MIN : number = 0;
+
 // Filter PriceRange.max max value allowed
-export const PRICE_RANGE_MAX : number = 1000000;  // TODO: make dynamically set max value based on current???
+export const PRICE_RANGE_MAX : number = 50;
 
 // Discovery doc URL for APIs
 export const DISCOVERY_DOC = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest']

@@ -2,7 +2,7 @@ import "./Filter.css";
 
 import { ChangeEvent, Component } from "react";
 import { WtmEventType, Duration, PriceRange } from "./wtmEvent";
-import { DURATION_END_DATE_MAX, PRICE_RANGE_MAX } from "./constants";
+import { DURATION_END_DATE_MAX, PRICE_RANGE_MIN, PRICE_RANGE_MAX } from "./constants";
 
 interface FilterProps {
   /** The new filters that have been chosen. */
@@ -51,7 +51,7 @@ class Filter extends Component<FilterProps, FilterState>  {
       );
     }
 
-    let priceRange: PriceRange = {min: 0, max: PRICE_RANGE_MAX};
+    let priceRange: PriceRange = {min: PRICE_RANGE_MIN, max: PRICE_RANGE_MAX};
 
     this.state = {
       duration_start_date_min: this.dateToFilterString(eventStart),
@@ -61,6 +61,14 @@ class Filter extends Component<FilterProps, FilterState>  {
       currChecked: Object.keys(WtmEventType) as Array<WtmEventType>,
       priceRange: priceRange
     };
+  }
+
+  /**
+   * Initialize the map with pins that match default filter once the component
+   * has mounted.
+   */
+  componentDidMount = (): void => {
+    this.applyFilters();
   }
 
   /**
@@ -114,6 +122,25 @@ class Filter extends Component<FilterProps, FilterState>  {
   }
 
   /**
+   * Stores the selection of a new priceRange max.
+   * @param event data of the changed max price
+   */
+  onPriceRangeUpdate = (event: ChangeEvent<HTMLInputElement>) => {
+    let updatedPriceRange: PriceRange = this.state.priceRange;
+
+    let priceRangeMax: number = parseInt(event.target.value);
+    if (isNaN(priceRangeMax)) {
+      console.log("ERROR: Price range selector gave non-numerical max price.")
+    }
+    updatedPriceRange.max = priceRangeMax;
+
+    this.setState({
+      priceRange: updatedPriceRange
+    }, this.applyFilters);
+    console.log("New price range max:" + event.target.value);
+  }
+
+  /**
    * Communicates the Duration (eventStart to eventEnd) and a WtmEventType list,
    * where each element of the WtmEventType list is a checked value in eventType.
    */
@@ -129,7 +156,6 @@ class Filter extends Component<FilterProps, FilterState>  {
    * @param date date to format
    * @returns given date as a string in format "YYYY-MM-DD hh:mm"
    */
-  // TODO
   dateToDurationString = (date: Date): string => {
     let str = date.getFullYear().toString() + "-";
 
@@ -145,10 +171,10 @@ class Filter extends Component<FilterProps, FilterState>  {
     }
     str = str + day.toString() + " ";
 
-    let hours = date.getHours();  // TODO: fix hour for prefix 0
+    let hours = date.getHours();
     str = str + hours.toString() + ":";
 
-    let mins = date.getMinutes();  // TODO: fix hour for prefix 0
+    let mins = date.getMinutes();
 
     return str + mins.toString() + ":00";
   }
@@ -240,6 +266,12 @@ class Filter extends Component<FilterProps, FilterState>  {
         <div>
           <h4>Type of Event</h4>
           {this.state.eventTypes}
+        </div>
+
+        <div>
+          <h4>Cost</h4>
+          {/** TODO: Make pop-up value!!! */}
+          <input type="range" id="price" name="price-range" min={PRICE_RANGE_MIN} max={PRICE_RANGE_MAX} step="1" onChange={this.onPriceRangeUpdate}/>
         </div>
       </div>
     );
