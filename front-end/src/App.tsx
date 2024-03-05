@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import Map from "./Map";
 import "./App.css";
-import { URL_BASE } from './constants';
 import Flyer from './Flyer';
 import { WtmEvent } from './wtmEvent';
 
