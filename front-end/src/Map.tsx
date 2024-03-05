@@ -1,7 +1,7 @@
 import "leaflet/dist/leaflet.css";
 import "./Map.css";
 
-import { latLng, LatLng, LatLngExpression, LeafletMouseEvent } from "leaflet";
+import { latLng, LatLng, LatLngExpression } from "leaflet";
 import React, { Component } from "react";
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import { SOCCOMP_LATITUDE, SOCCOMP_LONGITUDE, URL_BASE } from "./constants";
@@ -13,11 +13,10 @@ import { getPinIcon } from "./pin";
 const position: LatLngExpression = latLng(SOCCOMP_LATITUDE, SOCCOMP_LONGITUDE);
 
 interface MapProps {
-  onPinClick: (eventId: number) => void;
+  onPinClick: (event: WtmEvent) => void;
 }
 
 interface MapState {
-  // TODO
   events: WtmEvent[];
 }
 
@@ -90,10 +89,6 @@ class Map extends Component<MapProps, MapState> {
     }
   };
 
-  onPinClick = (e: LeafletMouseEvent, eventId: number): void => {
-    this.props.onPinClick(eventId);
-  }
-
   doError = (msg: string): void => {
     // TODO: configure a nice client facing error message, prob callback to app
     console.error(msg);
@@ -111,7 +106,7 @@ class Map extends Component<MapProps, MapState> {
           />
           {this.state.events.map((event) => (
             <Marker key={event.eventId} position={event.coordinates}
-              eventHandlers={{ click: (e) => this.onPinClick(e, event.eventId) }}
+              eventHandlers={{ click: (e) => this.props.onPinClick(event) }}
               icon={getPinIcon(event.eventType)} interactive riseOnHover>
               <Popup>{event.name}</Popup>
             </Marker>
