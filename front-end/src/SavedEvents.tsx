@@ -24,6 +24,7 @@ export class SavedEvents extends Component<SavedEventsProps, SavedEventsState> {
 
   /** Loads all saved events from server when page is rendered */
   componentDidMount() {
+    console.log("SavedEvents mounting")
     fetch(URL_BASE + "/getSavedEvents")
       .then(this.doGetSavedResp)
       .catch(() => this.props.doError("Failed to connect to server."));
@@ -32,35 +33,34 @@ export class SavedEvents extends Component<SavedEventsProps, SavedEventsState> {
   /** Validates success server response, parses and saves received events[] to state */
   doGetSavedResp = (res: Response): void => {
     if (res.status === 200) {
-      res.json().then(parseEvents).then((events) => {
-        this.setState({events})
-      }).catch(() => this.props.doError("Could not parse events"));
+      res.json().then(this.handleSavedEvents)
+        .catch(() =>  this.props.doError("Could not parse events"));
     } else if (res.status === 400) {
-      res.text().then(this.props.doError)
+      res.text().then(() => this.props.doError)
          .catch(() => this.props.doError("Failure (400) response while accessing server events"));
     } else {
       this.props.doError(`Failure (${res.status}) response while accessing server events`);
     }
   }
 
+  handleSavedEvents = (resJson: any): void => {
+    // Turn server response into WtmEvent objects
+    const events: WtmEvent[] = parseEvents(resJson);
+    this.setState({events})
+  }
+
   render() {
-    // Loops through all saved events and
-    //  - fetches their img url to render
-    //  - inserts each miniFlyer image into a list to render
-    const miniFlyers: JSX.Element[] = [];
-    if (this.state.events) {
-      for (const event of this.state.events) {
-        // this.getMiniFlyer()
-      }
-    } else {
-      miniFlyers.push(<p>No saved events!</p>)
-    }
-
-
-    return <div>
+    return <div id={"savedEventsPage"}>
       <h1>Saved Events</h1>
       <div id="savedEventsContainer">
-        {miniFlyers}
+        {/* Renders each saved event as its mini image */}
+        {this.state.events?.map((event) => 
+          <div className={"miniFlyerContainer"}>
+            {/* TODO: add any label we want here */}
+            <img key={event.eventId} src={URL_BASE + `/flyer/${event.eventId}.png`} 
+               className={"miniFlyer"} alt={"Mini flyer image for event: " + event.name}/>
+          </div>
+        )}
       </div>
     </div>;
   }

@@ -13,7 +13,10 @@ import { getPinIcon } from "./pin";
 const position: LatLngExpression = latLng(SOCCOMP_LATITUDE, SOCCOMP_LONGITUDE);
 
 interface MapProps {
+  // Trigger App to display flyer associated with clicked pin
   onPinClick: (event: WtmEvent) => void;
+  // Trigger App to display server error page
+  doError: (msg: string) => void;
 }
 
 interface MapState {
@@ -55,7 +58,7 @@ class Map extends Component<MapProps, MapState> {
       headers: {"Content-Type": "application/json"}
     })
       .then(this.doGetEventsResp)
-      .catch(() => this.doError("Failed to connect to server."));
+      .catch(() => this.props.doError("Failed to connect to server."));
   }
 
   doGetEventsResp = (res: Response): void => {
@@ -64,18 +67,13 @@ class Map extends Component<MapProps, MapState> {
         .then(parseEvents)
         .then((events) => {
             this.setState({events})})
-        .catch(() => this.doError("200 response from /get(All)Events not parsable"));
+        .catch(() => this.props.doError("200 response from /get(All)Events not parsable"));
     } else if (res.status === 400) {
-      res.text().then(this.doError)
-         .catch(() => this.doError("400 response from /get(All)Events not text"));
+      res.text().then(this.props.doError)
+         .catch(() => this.props.doError("400 response from /get(All)Events not text"));
     } else {
-      this.doError(`/get(All)Events returned status code ${res.status}`);
+      this.props.doError(`/get(All)Events returned status code ${res.status}`);
     }
-  };
-
-  doError = (msg: string): void => {
-    // TODO: configure a nice client facing error message, prob callback to app
-    console.error(msg);
   };
 
   render() {

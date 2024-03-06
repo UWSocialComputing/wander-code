@@ -5,11 +5,15 @@ import "./App.css";
 import Flyer from './Flyer';
 import { WtmEvent } from './wtmEvent';
 
-type view = "map" | "flyer" | "saved"
+type view = "map" | "flyer" | "saved" | "error"
 
 interface AppState {
+  // Currently displayed page, updated in callbacks to app
   view: view
+  // Event associated with clicked-on pin
   clickedEvent?: WtmEvent;
+  // Error produced by any unsuccessful server access in app
+  error?: string;
 }
 
 /**
@@ -24,30 +28,36 @@ class App extends Component<{}, AppState> {
     };
   }
 
+  /** Switches app to error page view and displays given message */
   doError = (msg: string): void => {
-    // TODO: configure a nice client facing error message
-    console.error(msg);
-    // this.setState({view: undefined, error: msg})
+    this.setState({view: "error", error: msg});
   };
 
   render() {
+    // TODO: style this so it's prettier (but tbh it shouldn't ever show up)
+    if (this.state.view === "error") {
+      return (<p className={"error"}>{this.state.error ?? "Error"}</p>)
+    }
+
     return (
       <div>
         <div id="nav">
-          <img src={require('./img/wtm_text.png')} alt={"wtm? logo text"} id="logo" onClick={() => this.setState({view: "map"})}></img>
+          <img src={require('./img/wtm_text.png')} alt={"wtm? logo text"} id="logo" 
+            onClick={() => this.setState({view: "map"})}></img>
           <button id="savedPageButton" onClick={() => this.setState({view: "saved"})}>Saved Events</button>
         </div>
 
-        {this.state.view === "flyer" && this.state.clickedEvent !== undefined?
-            // TODO: meed to pass in all the flyer info here
+        {this.state.view === "flyer" && this.state.clickedEvent !== undefined ?
             <Flyer event={this.state.clickedEvent}
               onBack={() => this.setState({view: "map"})} doError={this.doError}></Flyer>
+
           : this.state.view === "map" ?
-            <Map onPinClick={(event) => this.setState({view: "flyer", clickedEvent: event})}/>
+            <Map onPinClick={(event) => this.setState({view: "flyer", clickedEvent: event})} doError={this.doError}/>
+
           : this.state.view === "saved" ?
             <SavedEvents doError={this.doError}></SavedEvents>
-          :
-            <></> // Shouldn't happen, error case
+
+          : <></> // Impossible
         }
       </div>
     );

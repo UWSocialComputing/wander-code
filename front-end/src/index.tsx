@@ -12,10 +12,11 @@ const root: Root = createRoot(main);
 if(process.env.REACT_APP_CLIENT_ID) {
   root.render(
     // GoogleOAuthProvider necessary to allow for accessing GCal of users
+    //  NOTE: <React.StrictMode> is wrapped around this in example code, hasn't
+    //        broken it yet, but just reminder. Got removed because it causes
+    //        double component mounts
     <GoogleOAuthProvider clientId={process.env.REACT_APP_CLIENT_ID}>
-      <React.StrictMode>
-        <App />
-      </React.StrictMode>
+        <App></App>
     </GoogleOAuthProvider>
   );
 } else {

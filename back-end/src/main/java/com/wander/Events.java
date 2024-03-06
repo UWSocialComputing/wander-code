@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Collections;
 import com.opencsv.CSVReader;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -122,9 +124,32 @@ public class Events{
 
     // return the saved events and mini-flyers.
     // return is map from event to the mini flyer.
-    public Map<Integer, Event> getSavedEvents(){
-        return Map.copyOf(savedEvents);
-    }
+    public List<Event> getSavedEvents(){
+        List<Event> res = new ArrayList<>();
+        for (Event e : savedEvents.values()){
+            res.add(e);
+        }
 
+        // sort list by date
+        Collections.sort(res, new Comparator<Event>() {
+            @Override
+            public int compare(Event e1, Event e2) {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                try {
+                    Date s1 = dateFormat.parse(e1.getStartTime());
+                    Date s2 = dateFormat.parse(e2.getStartTime());
+
+                    return s1.compareTo(s2);
+
+                // TODO: this is a bad idea but we need to catch exception
+                //      caused by compareTo if parse could not work correctly    
+                } catch (Exception e) {
+                    return -1;
+                }
+            }
+        });
+
+        return res;
+    }
 
 }

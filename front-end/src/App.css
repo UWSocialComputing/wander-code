@@ -30,21 +30,32 @@
   text-decoration: #daa7ff90 underline 3px;
 }
 
-#flyer-container {
+.error {
+  margin-top: 10vh;
+  color: rgb(233, 10, 62);
+  text-align: center;
+}
+
+#savedEventsPage {
+  margin: 5vh;
+}
+
+#savedEventsContainer {
   display: flex;
-  justify-content: center;
-  align-items: center;
-
-  height: 90vh;
-  margin: 0 auto;
+  flex-wrap: wrap;
+  justify-content: start;
+  gap: 3vh;
 }
 
-button {
-  margin-left: 1px;
-  margin-top: 1px;
-  margin-bottom: 0;
+.miniFlyerContainer {
+  /* Sets defined heights for all flyers even if they don't fit these dimensions */
+  height: 40vh;
+  width: 40vh;
+  /* Centers image :) */
+  text-align: center;
 }
 
-#flyer {
-  height: 98%;
+.miniFlyer {
+  height: 100%;
+  margin-bottom: 3vh;
 }

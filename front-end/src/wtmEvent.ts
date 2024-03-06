@@ -10,11 +10,12 @@ export type WtmEvent = {
   host: String;
   cost: Number;
 
-  images: Attachments;
   coordinates: LatLngExpression;
 
   url?: string;
   eventDetails?: string;
+
+  flyerUrl: string;
 };
 
 /* WtmEventType abbrev to actual filter name */
@@ -41,14 +42,6 @@ export type Address = {
   city: String;
   state: String;
   zipcode: number;
-}
-
-export type Attachments = {
-  // flyer/fileID.png
-  flyerPath: string;
-
-  // miniFlyer/fileID.png
-  miniFlyerPath: string;
 }
 
 export type PriceRange = {

@@ -2,7 +2,7 @@
 
 ## `back-end/`
 1. Run back-end from ```back-end/``` using command ```mvn spring-boot:run```
-2. Open backend on ```http://localhost:8080```
+2. Open backend on ```http://localhost:5005```
 
 ## `front-end/`
 1. `npm install`

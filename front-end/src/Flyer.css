@@ -1,0 +1,19 @@
+#flyer-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  height: 90vh;
+  margin: 0 auto;
+}
+
+#flyer {
+  height: 98%;
+}
+
+button {
+  margin-left: 1px;
+  margin-top: 1px;
+  margin-bottom: 0;
+}
