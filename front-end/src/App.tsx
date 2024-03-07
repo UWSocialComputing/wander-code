@@ -1,18 +1,21 @@
-import React, {Component} from 'react';
-import Map from "./Map";
-import { SavedEvents } from './SavedEvents';
 import "./App.css";
+
+import {Component} from 'react';
+import Map from "./Map";
 import Flyer from './Flyer';
+import { SavedEvents } from './SavedEvents';
 import { WtmEvent } from './wtmEvent';
 
 type view = "map" | "flyer" | "saved" | "error"
 
 interface AppState {
-  // Currently displayed page, updated in callbacks to app
+  /** Currently displayed page, updated in callbacks to app */
   view: view
-  // Event associated with clicked-on pin
+
+  /** Event associated with clicked-on pin */
   clickedEvent?: WtmEvent;
-  // Error produced by any unsuccessful server access in app
+
+  /** Error produced by any unsuccessful server access in app */
   error?: string;
 }
 
@@ -34,17 +37,37 @@ class App extends Component<{}, AppState> {
   };
 
   render() {
-    // TODO: style this so it's prettier (but tbh it shouldn't ever show up)
     if (this.state.view === "error") {
-      return (<p className={"error"}>{this.state.error ?? "Error"}</p>)
+      console.log("Error:" + this.state.error ?? "who knows, we can't figure it out. wtm?");
+      return (
+        <div>
+          <div id="nav">
+            <img id="logo" src={require('./img/wtm_logo.png')} alt={"wtm? logo text"}
+              onClick={() => this.setState({view: "map"})} />
+          </div>
+
+          <div id="error">
+            <div>
+              <div>
+                <h1>Congrats. <br/> You broke it.</h1>
+                <img id="error_you" src={require('./img/error_page_you.png')} alt={"This is you"}></img>
+              </div>
+              <p>I'm as shocked as you are - but don't worry, there's an easy fix.</p>
+              <button onClick={() => this.setState({view: "map"})}>Fix Website</button>
+            </div>
+
+            <img id="error_everyone" src={require('./img/error_page_group.png')} alt={"This is everyone else"}></img>
+          </div>
+        </div>
+      );
     }
 
     return (
       <div>
         <div id="nav">
-          <img src={require('./img/wtm_text.png')} alt={"wtm? logo text"} id="logo" 
+          <img id="logo" src={require('./img/wtm_logo.png')} alt={"wtm? logo text"}
             onClick={() => this.setState({view: "map"})}></img>
-          <button id="savedPageButton" onClick={() => this.setState({view: "saved"})}>Saved Events</button>
+          <button id="savedEventsButton" onClick={() => this.setState({view: "saved"})}>Saved Events</button>
         </div>
 
         {this.state.view === "flyer" && this.state.clickedEvent !== undefined ?

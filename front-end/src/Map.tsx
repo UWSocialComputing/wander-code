@@ -3,10 +3,10 @@ import "./Map.css";
 
 import { latLng, LatLng, LatLngExpression } from "leaflet";
 import React, { Component } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
-import { SOCCOMP_LATITUDE, SOCCOMP_LONGITUDE, URL_BASE } from "./constants";
+import { MapContainer, TileLayer, Marker, Popup, ZoomControl } from "react-leaflet";
+import { SOCCOMP_LATITUDE, SOCCOMP_LONGITUDE, URL_BASE, PRICE_RANGE_MIN, PRICE_RANGE_MAX } from "./constants";
 import Filter from "./Filter";
-import { WtmEvent, WtmEventType, Duration, PriceRange, parseEvents } from "./wtmEvent";
+import { WtmEvent, WtmEventType, Duration, PriceRange, parseEvents, dateToDurationString } from "./wtmEvent";
 import { getPinIcon } from "./pin";
 
 // This defines the location of the map. These are the coordinates of the UW Seattle campus
@@ -20,6 +20,16 @@ interface MapProps {
 }
 
 interface MapState {
+  /** Filter Duration.startTime min date allowed. */
+  duration_start_date_min: Date;
+
+  /** Filter Persistent State */
+  duration: Duration;
+  checkedEventTypes: WtmEventType[];
+  priceRange: PriceRange;
+
+  /** Map View State */
+  filterVisible: boolean;
   events: WtmEvent[];
 }
 
@@ -31,8 +41,20 @@ class Map extends Component<MapProps, MapState> {
   constructor(props: any) {
     super(props);
 
+    let eventStart = new Date();
+    eventStart.setSeconds(0, 0);
+    let eventEnd = new Date(eventStart);
+    eventEnd.setHours(23, 59, 0, 0);
+
+    let priceRange: PriceRange = {min: PRICE_RANGE_MIN, max: PRICE_RANGE_MAX};
+
     this.state = {
-        events: [],
+      duration_start_date_min: eventStart,
+      duration: {startTime: dateToDurationString(eventStart), endTime: dateToDurationString(eventEnd)},
+      checkedEventTypes: Object.keys(WtmEventType) as Array<WtmEventType>,
+      priceRange: priceRange,
+      filterVisible: true,
+      events: [],
     };
   }
 
@@ -41,6 +63,12 @@ class Map extends Component<MapProps, MapState> {
    */
   getEvents = (duration: Duration, eventTypes: WtmEventType[], priceRange: PriceRange): void => {
     let coord: LatLng = latLng(position);
+
+    this.setState({
+      duration: duration,
+      checkedEventTypes: eventTypes,
+      priceRange: priceRange
+    });
 
     fetch(URL_BASE + "/getEvents", {
       method: "POST",
@@ -59,7 +87,7 @@ class Map extends Component<MapProps, MapState> {
     })
       .then(this.doGetEventsResp)
       .catch(() => this.props.doError("Failed to connect to server."));
-  }
+  };
 
   doGetEventsResp = (res: Response): void => {
     if (res.status === 200) {
@@ -76,16 +104,26 @@ class Map extends Component<MapProps, MapState> {
     }
   };
 
-  render() {
+  onCollapse = (events: WtmEvent[]): void => {
+    this.setState({
+      events: events,
+      filterVisible: !this.state.filterVisible
+    });
+  };
 
+  render() {
     return (
-      <div id="map" className="home">
-        <Filter onChange={this.getEvents}/>
-        <MapContainer center={position} zoom={13.25} scrollWheelZoom={true}>
+      <div id="home">
+        {this.state.filterVisible ?
+          <Filter durationStartDateMin={this.state.duration_start_date_min} duration={this.state.duration} checkedEventTypes={this.state.checkedEventTypes} priceRange={this.state.priceRange} onChange={this.getEvents} onCollapse={() => this.onCollapse(this.state.events)}/>
+          : <></> // Display Nothing
+        }
+        <MapContainer center={position} zoom={8} zoomControl={false} scrollWheelZoom={true}>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
             url='https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
           />
+          <ZoomControl position="bottomright"/>
           {this.state.events.map((event) => (
             <Marker key={event.eventId} position={event.coordinates}
               eventHandlers={{ click: (e) => this.props.onPinClick(event) }}
@@ -93,6 +131,10 @@ class Map extends Component<MapProps, MapState> {
               <Popup>{event.name}</Popup>
             </Marker>
           ))}
+          {this.state.filterVisible ?
+            <></> // Display Nothing
+            : <div className="leaflet-top leaflet-left"><button id="filterControl" onClick={() => this.onCollapse(this.state.events)} className="leaflet-control"><img src={require('./img/filter_panel_control.png')} alt={"Collapse Filter Panel"}></img></button></div>
+          }
         </MapContainer>
       </div>
     );

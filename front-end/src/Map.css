@@ -1,14 +1,46 @@
 /* Home view. */
-.home {
+#home {
   display: flex;
+  flex-direction: row;
+
+  width: 100vw;
+  margin-top: 1vh;
   margin-left: auto;
   margin-right: auto;
-  margin-top: 1vh;
-  width: 100vw;
+
+  border-top: 2px solid #d6e7ea95;
+}
+
+#filterControl {
+  height: 3vh;
+  width: auto;
+
+  border: none;
+}
+
+#filterControl img {
+  height: 3vh;
+  width: auto;
+}
+
+#filterControl:hover {
+  box-shadow: 0 0 11px rgba(33,33,33,.2);
 }
 
 /* Sets size of map, which has class name "leaflet-container" */
 .leaflet-container {
   width: 100vw;
   height: 85vh;
+}
+
+/* ZoomControl Styling */
+.leaflet-control-zoom a {
+  box-shadow: 0 1px 5px rgba(0,0,0,0.65);
+}
+
+.leaflet-control-zoom-in {
+  margin-right: 10px;
+}
+.leaflet-control-zoom-out {
+  margin-right: 10px;
 }

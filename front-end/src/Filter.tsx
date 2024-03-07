@@ -5,14 +5,20 @@ import { WtmEventType, Duration, PriceRange } from "./wtmEvent";
 import { DURATION_END_DATE_MAX, PRICE_RANGE_MIN, PRICE_RANGE_MAX } from "./constants";
 
 interface FilterProps {
+  /** Current filter state. */
+  durationStartDateMin: Date;
+  duration: Duration;
+  checkedEventTypes: WtmEventType[];
+  priceRange: PriceRange;
+
   /** The new filters that have been chosen. */
   onChange(duration: Duration, eventTypes: WtmEventType[], priceRange: PriceRange): void;
+
+  /** Trigger the filter panel collapse. */
+  onCollapse(): void;
 }
 
 interface FilterState {
-  /** Filter Duration.startTime min date allowed. */
-  duration_start_date_min: string;
-
   /** WtmEvent start date filter. Default is current DateTime. */
   eventStart: Date;
 
@@ -26,7 +32,7 @@ interface FilterState {
   currChecked: WtmEventType[];
 
   /** PriceRange filter. Default is 0 to  */
-  priceRange: PriceRange;
+  // priceRange: PriceRange;
 }
 
 /**
@@ -51,15 +57,14 @@ class Filter extends Component<FilterProps, FilterState>  {
       );
     }
 
-    let priceRange: PriceRange = {min: PRICE_RANGE_MIN, max: PRICE_RANGE_MAX};
+    // let priceRange: PriceRange = {min: PRICE_RANGE_MIN, max: PRICE_RANGE_MAX};
 
     this.state = {
-      duration_start_date_min: this.dateToFilterString(eventStart),
       eventStart: eventStart,
       eventEnd: eventEnd,
       eventTypes: eventTypes,
       currChecked: Object.keys(WtmEventType) as Array<WtmEventType>,
-      priceRange: priceRange
+      // priceRange: priceRange
     };
   }
 
@@ -126,7 +131,7 @@ class Filter extends Component<FilterProps, FilterState>  {
    * @param event data of the changed max price
    */
   onPriceRangeUpdate = (event: ChangeEvent<HTMLInputElement>) => {
-    let updatedPriceRange: PriceRange = this.state.priceRange;
+    let updatedPriceRange: PriceRange = this.props.priceRange;
 
     let priceRangeMax: number = parseInt(event.target.value);
     if (isNaN(priceRangeMax)) {
@@ -134,9 +139,10 @@ class Filter extends Component<FilterProps, FilterState>  {
     }
     updatedPriceRange.max = priceRangeMax;
 
-    this.setState({
-      priceRange: updatedPriceRange
-    }, this.applyFilters);
+    // this.setState({
+    //   priceRange: updatedPriceRange
+    // }, this.applyFilters);
+    this.applyFilters();
     console.log("New price range max:" + event.target.value);
   }
 
@@ -148,7 +154,7 @@ class Filter extends Component<FilterProps, FilterState>  {
     const startTime: string = this.dateToDurationString(this.state.eventStart);
     const endTime: string = this.dateToDurationString(this.state.eventEnd);
 
-    this.props.onChange({startTime: startTime, endTime: endTime}, this.state.currChecked, this.state.priceRange);
+    this.props.onChange({startTime: startTime, endTime: endTime}, this.state.currChecked, this.props.priceRange);
   }
 
   /**
@@ -241,6 +247,9 @@ class Filter extends Component<FilterProps, FilterState>  {
   }
 
   render() {
+    // Start Date Minimum value
+    let startDateMinValue = this.dateToFilterString(this.props.durationStartDateMin);
+
     // Create correctly formatted start date for selector
     let startDateValue = this.dateToFilterString(this.state.eventStart);
 
@@ -249,13 +258,15 @@ class Filter extends Component<FilterProps, FilterState>  {
 
     return (
       <div id="filter">
-        <h2>Filters</h2>
+        <div id="filterNav">
+          <button id="filterControl" onClick={this.props.onCollapse}><img src={require('./img/filter_panel_control.png')} alt={"Collapse Filter Panel"}></img></button>
+        </div>
 
         <div id="duration">
           <h4>Date Range</h4>
           <div>
             <label>Start date:</label>
-            <input type="datetime-local" id="start" name="duration-start" value={startDateValue} min={this.state.duration_start_date_min} max={DURATION_END_DATE_MAX} onChange={this.onStartDateSelection}/>
+            <input type="datetime-local" id="start" name="duration-start" value={startDateValue} min={startDateMinValue} max={DURATION_END_DATE_MAX} onChange={this.onStartDateSelection}/>
           </div>
           <div>
             <label>End date:</label>
@@ -271,7 +282,7 @@ class Filter extends Component<FilterProps, FilterState>  {
         <div>
           <h4>Cost</h4>
           {/** TODO: Make pop-up value!!! */}
-          <input type="range" id="price" name="price-range" min={PRICE_RANGE_MIN} max={PRICE_RANGE_MAX} step="1" onChange={this.onPriceRangeUpdate}/>
+          <input type="range" id="price" name="price-range" min={PRICE_RANGE_MIN} max={PRICE_RANGE_MAX} value={this.props.priceRange.max} step="1" onChange={this.onPriceRangeUpdate}/>
         </div>
       </div>
     );

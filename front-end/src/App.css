@@ -2,60 +2,87 @@
   font-family: "Red Hat Display", sans-serif;
   font-optical-sizing: auto;
   font-style: normal;
-  font-weight: 300;
-  /* Within components can pick font weight from 300-900 */
+  font-weight: 300;  /* Within components can pick font weight from 300-900 */
+  color: #242424;
+}
+
+button {
+  background-color: transparent;
+}
+
+button:hover {
+  cursor: pointer;
 }
 
 #nav {
-  height: 10vh;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+
+  height: 9vh;
+  padding-left: 3vw;
+  padding-right: 3vw;
 }
 
 #logo {
-  margin-left: 1vh;
-  height: 8vh;
+  height: 5vh;
 }
 
-#savedPageButton {
-  background-color: transparent;
+#savedEventsButton {
   border: none;
-  color: #242424;
-  margin-right: 2vh;
 }
 
-#savedPageButton:hover {
+#savedEventsButton:hover {
   text-decoration: #daa7ff90 underline 3px;
 }
 
-.error {
+#error {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: stretch;
+
+  height: 40vh;
   margin-top: 10vh;
-  color: rgb(233, 10, 62);
-  text-align: center;
+  margin-left: 3vw;
+  margin-right: 3vw;
 }
 
-#savedEventsPage {
-  margin: 5vh;
+#error div div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
 }
 
-#savedEventsContainer {
+#error_everyone {
+  align-self: flex-end;
+  height: 20vh;
+}
+
+#error_you {
+  height: 12vh;
+  width: auto;
+  margin: 3vh
+}
+
+/* #savedEventsContainer {
   display: flex;
   flex-wrap: wrap;
   justify-content: start;
   gap: 3vh;
-}
+} */
 
 .miniFlyerContainer {
   /* Sets defined heights for all flyers even if they don't fit these dimensions */
-  height: 40vh;
-  width: 40vh;
+  /* height: 40vh;
+  width: 40vh; */
   /* Centers image :) */
-  text-align: center;
+  /* text-align: center; */
 }
 
-.miniFlyer {
+/* .miniFlyer {
   height: 100%;
   margin-bottom: 3vh;
-}
+} */

@@ -1,13 +1,24 @@
 #filter {
-  width: 25%;
-  border: '1px solid grey';
-  padding-top: 20px
+  width: 17vw;
+
+  padding-left: 1vw;
+  padding-top: 0.5vh;
+  margin-right: 0.5vw;
+
+  background-color: #d6e7ea3c;
+  border-right: 2px solid #d6e7ea95;
 }
 
-input {
-  margin-left: 5px;
+#filterNav {
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+  align-content: flex-end;
+  align-items: flex-end;
+
+  height: 3vh;
 }
 
-button:hover, input:hover {
+input:hover {
   cursor: pointer;
 }
