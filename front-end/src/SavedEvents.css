@@ -1,0 +1,28 @@
+#savedEventsPage {
+  margin: 5vh;
+}
+
+#savedEventsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+  gap: 3vh;
+}
+
+.miniFlyerContainer {
+  /* Sets defined space for all flyers even if they don't fit these dimensions */
+  height: 44vh;
+  width: 40vh;
+}
+
+.eventDate {
+  margin: 0;
+  font-size: 13pt;
+  font-weight: 600;
+  height: 4vh;
+}
+
+.miniFlyer {
+  height: 40vh;
+  margin-bottom: 3vh;
+}

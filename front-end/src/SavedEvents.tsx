@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { WtmEvent, parseEvents } from './wtmEvent'
 import { URL_BASE } from './constants';
+import './SavedEvents.css'
 
 interface SavedEventsProps {
   doError: (msg: string) => void;
@@ -24,7 +25,6 @@ export class SavedEvents extends Component<SavedEventsProps, SavedEventsState> {
 
   /** Loads all saved events from server when page is rendered */
   componentDidMount() {
-    console.log("SavedEvents mounting")
     fetch(URL_BASE + "/getSavedEvents")
       .then(this.doGetSavedResp)
       .catch(() => this.props.doError("Failed to connect to server."));
@@ -49,15 +49,25 @@ export class SavedEvents extends Component<SavedEventsProps, SavedEventsState> {
     this.setState({events})
   }
 
+  formatDate = (startTime: string): string => {
+    const [date, time] = startTime.split(" ");
+    const [year, month, day] = date.split("-");
+    let dateObj: Date = new Date();
+    dateObj.setFullYear(Number(year), Number(month) - 1, Number(day));
+
+    return dateObj.toLocaleString('default', {weekday: 'long'}) + ", " + dateObj.toLocaleString('default', { month: 'long' }) + " " + day;
+  }
+
   render() {
     return <div id={"savedEventsPage"}>
       <h1>Saved Events</h1>
       <div id="savedEventsContainer">
         {/* Renders each saved event as its mini image */}
         {this.state.events?.map((event) => 
-          <div className={"miniFlyerContainer"}>
-            {/* TODO: add any label we want here */}
-            <img key={event.eventId} src={URL_BASE + `/flyer/${event.eventId}.png`} 
+          <div className={"miniFlyerContainer"} key={event.eventId}>
+            {/* Date label */}
+            <p className={"eventDate"}>{this.formatDate(event.duration.startTime)}</p>
+            <img src={URL_BASE + `/flyer/${event.eventId}.png`} 
                className={"miniFlyer"} alt={"Mini flyer image for event: " + event.name}/>
           </div>
         )}

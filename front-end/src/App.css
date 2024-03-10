@@ -34,7 +34,7 @@ button:hover {
 }
 
 #savedEventsButton:hover {
-  text-decoration: #daa7ff90 underline 3px;
+  text-decoration: #BBBCE5 underline 3px;
 }
 
 #error {
@@ -66,23 +66,3 @@ button:hover {
   width: auto;
   margin: 3vh
 }
-
-/* #savedEventsContainer {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: start;
-  gap: 3vh;
-} */
-
-.miniFlyerContainer {
-  /* Sets defined heights for all flyers even if they don't fit these dimensions */
-  /* height: 40vh;
-  width: 40vh; */
-  /* Centers image :) */
-  /* text-align: center; */
-}
-
-/* .miniFlyer {
-  height: 100%;
-  margin-bottom: 3vh;
-} */

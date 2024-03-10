@@ -32,6 +32,6 @@ export const PRICE_RANGE_MIN : number = 0;
 export const PRICE_RANGE_MAX : number = 50;
 
 // Discovery doc URL for APIs
-export const DISCOVERY_DOC = ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest']
+export const DISCOVERY_DOC = "https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest";
 // Auth scopes required by the API
-export const SCOPES = ['openid', 'email', 'profile', 'https://www.googleapis.com/auth/calendar.events']
+export const SCOPES = "https://www.googleapis.com/auth/calendar";
