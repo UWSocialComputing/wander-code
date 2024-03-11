@@ -1,5 +1,6 @@
 package com.wander;
 
+// this class represents a price range
 public class PriceRange {
     private double min;
     private double max;
@@ -17,6 +18,7 @@ public class PriceRange {
         return max;
     }
 
+    // Returns true if event e's price is within the price range
     public boolean priceWithinRange(Event e){
         double price = e.getCost();
 

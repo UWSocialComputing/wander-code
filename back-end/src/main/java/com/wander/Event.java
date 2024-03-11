@@ -24,6 +24,7 @@ public class Event{
     private String url;
     private String eventDetails;
 
+    // From a line in the csv, instansitate the event object.
     public Event(String[] line){
         this.eventId = Integer.parseInt(line[0]);
         this.name = line[1];
@@ -50,6 +51,7 @@ public class Event{
         this.eventDetails = line[16];
     }
 
+    // instansitate event object from params
     public Event(int eventID, String name, EventType eventType, Duration duration, Address location,
                 String host, Double cost, Attatchments images, Coordinates coordinates, String url,
                 String eventDetails){
@@ -64,6 +66,8 @@ public class Event{
         this.url = url;
         this.eventDetails = eventDetails;
     }
+
+    // Getters
 
     public int getEventId(){
         return eventId;

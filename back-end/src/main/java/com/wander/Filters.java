@@ -9,12 +9,6 @@ public class Filters{
     private List<EventType> eventType;
     private PriceRange priceRange;
 
-    // public Filters(Duration duration, List<EventType> eventType){
-    //     this.duration = duration;
-    //     this.eventType = eventType;
-    //     this.priceRange = null;
-    // }
-
     public Filters(Duration duration, List<EventType> eventType, PriceRange priceRange){
         this.duration = duration;
         this.eventType = eventType;
@@ -30,6 +24,7 @@ public class Filters{
     }
 
     // Check if the event should be displayed given all applied filters 
+    // Returns true if the event satisfies the applied filters
     public boolean eventWithinFilter(Event e){
         // check if event is in the price range, if given.
         if(priceRange != null){

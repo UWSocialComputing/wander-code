@@ -29,6 +29,7 @@ public class Events{
         savedEvents = new HashMap<>();
         String csvFile = "database/events.csv"; // Ruh Roh
 
+        // For each line in the csv instantiate the event
         try (CSVReader reader = new CSVReader(new FileReader(csvFile))) {
             String[] nextLine;
 
@@ -50,6 +51,7 @@ public class Events{
         }
     }
 
+    // Return all events
     public List<Event> getAllEvents(){
         List l = new ArrayList<>();
         for(Integer id: allEvents.keySet()){
@@ -140,10 +142,9 @@ public class Events{
                     Date s2 = dateFormat.parse(e2.getStartTime());
 
                     return s1.compareTo(s2);
-
-                // TODO: this is a bad idea but we need to catch exception
-                //      caused by compareTo if parse could not work correctly    
                 } catch (Exception e) {
+                    // error occured. Should not occur.
+                    e.printStackTrace();
                     return -1;
                 }
             }
