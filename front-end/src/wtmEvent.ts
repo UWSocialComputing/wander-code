@@ -6,7 +6,7 @@ export type WtmEvent = {
   eventType: WtmEventType;
 
   duration: Duration;
-  location: Address;
+  location: string;
   host: String;
   cost: Number;
 
@@ -35,15 +35,6 @@ export type Duration = {
   endTime: string;
 }
 
-export type Address = {
-  name: String;
-  line1: String;
-  line2?: String;
-  city: String;
-  state: String;
-  zipcode: number;
-}
-
 export type PriceRange = {
   min: number;
   max: number;
@@ -70,9 +61,18 @@ export const parseEvents = (data: unknown) => {
       throw new Error(`Improperly formed event from server ${e}`);
     }
 
-    const coord: LatLngExpression =
+    // Turn location record into a string (i <3 unreliable params)
+    const location: string = (e.location.nameOfLocation ?? "") + " "
+                        + (e.location.line1 ?? "") + " "
+                        + (e.location.line2 ?? "") + " "
+                        + (e.location.city ?? "") + " " 
+                        + e.location.state + " " 
+                        + (e.location.zipcode ?? "");
+
+    const coordinates: LatLngExpression =
       latLng(e.coordinates.latitude, e.coordinates.longitude) as LatLngExpression
-    const event: WtmEvent = {...e, coordinates: coord}
+
+    const event: WtmEvent = {...e, location, coordinates}
 
     events.push(event);
   }

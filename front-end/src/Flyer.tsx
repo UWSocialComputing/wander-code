@@ -49,7 +49,7 @@ const Flyer = (props: FlyerProps) => {
         <button onClick={props.onBack}>Back</button> 
         {/* TODO: turn these into icon images instead of real buttons */}
         <button onClick={saveEvent}>Save Event</button>
-        {/* <AddGCal event={props.event}></AddGCal> */}
+        <AddGCal event={props.event}></AddGCal>
       </div>
 
       {/* TODO: text event details */}
