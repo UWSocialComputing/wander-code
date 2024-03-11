@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { AddGCal } from './AddGCal'
-import { WtmEvent } from './wtmEvent';
+import { Duration, WtmEvent } from './wtmEvent';
 import { URL_BASE } from './constants';
 import './Flyer.css'
 
@@ -8,7 +8,7 @@ interface FlyerProps {
   // Event to display (get flyer img & text for)
   event: WtmEvent,
   // Return to main Map view page
-  onBack: () => void,
+  onClose: () => void,
   // Trigger App to display server error page
   doError: (msg: string) => void;
 }
@@ -37,21 +37,82 @@ const Flyer = (props: FlyerProps) => {
     }
   };
 
+  /** Formats the date header for events: "Weekday, day Month startTime{am/pm} - endTime{am/pm}" */
+  const formatDate = (duration: Duration): string => {
+    const [date, startTime] = duration.startTime.split(" ");
+    const [_, endTime] = duration.endTime.split(" ");
+
+    const [year, month, day] = date.split("-");
+    let dateObj: Date = new Date();
+    dateObj.setFullYear(Number(year), Number(month) - 1, Number(day));
+
+    // Format start and end times from 
+    const startHour = startTime.slice(0, 2);
+    const startTimeFormatted: string = (Number(startHour) > 12) 
+      ? (Number(startHour) - 12) + ":" + startTime.slice(3, 5) + "pm"
+      : startTime.slice(0, 5) + "am";
+
+    const endHour = endTime.slice(0, 2);
+    const endTimeFormatted: string = (Number(endHour) > 12) 
+      ? (Number(endHour) - 12) + ":" + endTime.slice(3, 5) + "pm"
+      : endTime.slice(0, 5) + "am"
+
+    return dateObj.toLocaleString('default', {weekday: 'long'}) + ", " + 
+      dateObj.toLocaleString('default', { month: 'long' }) + " " + 
+      day + "   " + startTimeFormatted + " - " + endTimeFormatted;
+  }
+
   return (
-    <div id="flyer-container">
+    <div id="flyer">
+      <button id="flyer-x" onClick={props.onClose}><img src={require('./img/x.png')} alt={"Close Flyer View"}></img></button>
+
       {/* TODO: somehow handle the fact that this could be an invalid image 
         if there isn't one in the server for this event id */}
-      <img id="flyer" src={URL_BASE + `/flyer/${props.event.eventId}.png`}  
+      <img id="flyer-img" src={URL_BASE + `/flyer/${props.event.eventId}.png`}  
               alt={props.event.name + " flyer image"} title={props.event.name + " flyer image"}></img>
 
       <div>
-        {/* TODO: make an X out of the component instead */}
-        <button onClick={props.onBack}>Back</button> 
-        {/* TODO: turn these into icon images instead of real buttons */}
-        <button onClick={saveEvent}>Save Event</button>
+        <img className="flyer-button" src={require('./img/save-icon.png')}
+          title={"Save event"} alt={"Save event icon"} 
+          onClick={saveEvent}></img>
+
         <AddGCal event={props.event}></AddGCal>
       </div>
 
+      <div id="flyer-info">
+        <div>
+          <div> {/* First col of details */}
+            <div className="info-row">
+              <img className="flyer-info-icon" src={require('./img/time.png')} alt={"Clock icon"}></img>
+              <p>{formatDate(props.event.duration)}</p>
+            </div>
+            <div className="info-row">
+              <img className="flyer-info-icon" src={require('./img/dollar.png')} alt={"Dollar sign icon"}></img>
+              <p>{props.event.cost === 0 ? "Free!" : "$" + props.event.cost}</p>
+            </div>
+            {props.event.url ?
+              <div className="info-row">
+                <img className="flyer-info-icon" src={require('./img/link.png')} alt={"Info 'i' icon"}></img>
+                <a href={"https://" + props.event.url} target="_blank">{props.event.url}</a>
+              </div>
+              : <></>
+            }
+          </div>
+          
+          <div className="info-row"> {/* Second col of details */}
+            <img className="flyer-info-icon" src={require('./img/' + props.event.eventType.toLocaleLowerCase() + '_pin.png')} alt={props.event.eventType + " pin icon"}></img>
+            <p>{props.event.location}</p>
+          </div>
+        </div>
+
+        {props.event.url ?
+          <div className="info-row">
+            <img className="flyer-info-icon" src={require('./img/info.png')}></img>
+            <p>{props.event.eventDetails}</p>
+          </div>
+          : <></>
+        }
+      </div>
       {/* TODO: text event details */}
     </div>
   );

@@ -4,10 +4,12 @@ import { URL_BASE } from './constants';
 import './SavedEvents.css'
 
 interface SavedEventsProps {
+  // Trigger an error page
   doError: (msg: string) => void;
 }
 
 interface SavedEventsState {
+  // Saved events received from server
   events?: WtmEvent[];
 }
 
@@ -43,14 +45,15 @@ export class SavedEvents extends Component<SavedEventsProps, SavedEventsState> {
     }
   }
 
+  /** Parsees saved events returned from server into WtmEvent objects */
   handleSavedEvents = (resJson: any): void => {
-    // Turn server response into WtmEvent objects
     const events: WtmEvent[] = parseEvents(resJson);
     this.setState({events})
   }
 
+  /** Formats the date header for events: "Weekday, day Month" */
   formatDate = (startTime: string): string => {
-    const [date, time] = startTime.split(" ");
+    const [date, _time] = startTime.split(" ");
     const [year, month, day] = date.split("-");
     let dateObj: Date = new Date();
     dateObj.setFullYear(Number(year), Number(month) - 1, Number(day));

@@ -148,8 +148,11 @@ export const AddGCal = (props) => {
     });
   }
 
-  // TODO: turn into cute google icon
-  return ( <button onClick={addManualEvent}> Add Event to Google Calendar </button> );
+  return (
+    <img className={"flyer-button"} src={require('./img/cal-icon.png')} 
+      title={"Add Event to Google Calendar"} alt={"Calendar icon"} 
+      onClick={addManualEvent}></img>
+  );
 };
 
 export default AddGCal;

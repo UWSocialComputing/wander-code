@@ -80,38 +80,20 @@ export const parseEvents = (data: unknown) => {
 }
 
 /**
+ * Returns the value of the WtmEventType key
+ * @param key key to find the WtmEventType value of
+ * @requires key is a key of WtmEventType
+ * @returns the value of the WtmEventType key
+ */
+export const wtmEventTypeKeytoValue = (key: string): WtmEventType => {
+  return Object.keys(WtmEventType)[Object.values(WtmEventType).indexOf(key as WtmEventType)] as WtmEventType;
+}
+
+/**
  * Determines whether the given value is a record.
  * @param val the value in question
  * @return true if the value is a record and false otherwise
  */
 export const isRecord = (val: unknown): val is Record<string, unknown> => {
   return val !== null && typeof val === "object";
-};
-
-/**
- * Translates the given date to a string in format "YYYY-MM-DD hh:mm".
- * @param date date to format
- * @returns given date as a string in format "YYYY-MM-DD hh:mm"
- */
-export const dateToDurationString = (date: Date): string => {
-  let str = date.getFullYear().toString() + "-";
-
-  let month = date.getMonth() + 1;  // Date has zero based month numbering
-  if (month < 10) {
-    str = str + "0";
-  }
-  str = str + month.toString() + "-";
-
-  let day = date.getDate();
-  if (day < 10) {
-    str = str + "0";
-  }
-  str = str + day.toString() + " ";
-
-  let hours = date.getHours();
-  str = str + hours.toString() + ":";
-
-  let mins = date.getMinutes();
-
-  return str + mins.toString() + ":00";
 };

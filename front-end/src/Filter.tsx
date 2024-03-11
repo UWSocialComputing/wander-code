@@ -1,7 +1,8 @@
 import "./Filter.css";
 
 import { ChangeEvent, Component } from "react";
-import { WtmEventType, Duration, PriceRange } from "./wtmEvent";
+import { WtmEventType, Duration, PriceRange, wtmEventTypeKeytoValue } from "./wtmEvent";
+import { dateToString, stringToDate } from "./util";
 import { DURATION_END_DATE_MAX, PRICE_RANGE_MIN, PRICE_RANGE_MAX } from "./constants";
 
 interface FilterProps {
@@ -19,20 +20,8 @@ interface FilterProps {
 }
 
 interface FilterState {
-  /** WtmEvent start date filter. Default is current DateTime. */
-  eventStart: Date;
-
-  /** WtmEvent end date filter. Default is current DateTime. */
-  eventEnd: Date;
-
   /** WtmEventType filters. Default is all. */
   eventTypes: JSX.Element[];
-
-  /** Helper for eventTypes. Contains enum key for each eventTypes value that is checked. */
-  currChecked: WtmEventType[];
-
-  /** PriceRange filter. Default is 0 to  */
-  // priceRange: PriceRange;
 }
 
 /**
@@ -41,39 +30,41 @@ interface FilterState {
 class Filter extends Component<FilterProps, FilterState>  {
   constructor(props: any) {
     super(props);
-
-    let eventStart = new Date();
-    eventStart.setSeconds(0, 0);
-    let eventEnd = new Date(eventStart);
-    eventEnd.setHours(23, 59, 0, 0);
+    console.log("here: " + this.props.checkedEventTypes);
 
     let eventTypes: JSX.Element[] = [];
     for (const eventType of Object.values(WtmEventType)) {
-      eventTypes.push(
-        <div key={eventType}>
-          <input key={eventType} type="checkbox" id={eventType.toString()} value={eventType} onChange={this.onEventTypeCheck} defaultChecked/>
-          <label>{eventType}</label>
-        </div>
-      );
+      // only leave the appropriate ones checked
+      // TODO: not right
+      let index = this.props.checkedEventTypes.indexOf(wtmEventTypeKeytoValue(eventType));
+      console.log(index)
+
+      if (index === -1) {
+        eventTypes.push(
+          <div key={eventType}>
+            <input key={eventType} type="checkbox" id={eventType.toString()} value={eventType} onChange={this.onEventTypeCheck}/>
+            <label>{eventType}</label>
+          </div>
+        );
+
+        // eventTypes.push(
+        //   <button id={eventType} onClick={this.onEventButtonClick}>
+        //       <img src={require('./img/' + 'filter_panel_control.png')} alt={"Collapse Filter Panel"}></img>
+        //   </button>
+        // );
+      } else {
+        eventTypes.push(
+          <div key={eventType}>
+            <input key={eventType} type="checkbox" id={eventType.toString()} value={eventType} onChange={this.onEventTypeCheck} defaultChecked/>
+            <label>{eventType}</label>
+          </div>
+        );
+      }
     }
 
-    // let priceRange: PriceRange = {min: PRICE_RANGE_MIN, max: PRICE_RANGE_MAX};
-
     this.state = {
-      eventStart: eventStart,
-      eventEnd: eventEnd,
       eventTypes: eventTypes,
-      currChecked: Object.keys(WtmEventType) as Array<WtmEventType>,
-      // priceRange: priceRange
     };
-  }
-
-  /**
-   * Initialize the map with pins that match default filter once the component
-   * has mounted.
-   */
-  componentDidMount = (): void => {
-    this.applyFilters();
   }
 
   /**
@@ -81,15 +72,18 @@ class Filter extends Component<FilterProps, FilterState>  {
    * @param event data of the changed start date
    */
   onStartDateSelection = (event: ChangeEvent<HTMLInputElement>) => {
-    let newStart: Date = this.filterStringToDate(event.target.value);
-    let newEnd: Date = this.state.eventEnd;
-    if (newStart > newEnd) {
-      newEnd = newStart;
+    let updatedDuration: Duration = this.props.duration;
+
+    let newStartTime: Date = stringToDate(event.target.value, true);
+    updatedDuration.startTime = dateToString(newStartTime, false);
+
+
+    let endTime: Date = stringToDate(updatedDuration.endTime, false);
+    if (newStartTime > endTime) {
+      updatedDuration.endTime = dateToString(newStartTime, false);
     }
-    this.setState({
-      eventStart: newStart,
-      eventEnd: newEnd
-    }, this.applyFilters);
+
+    this.props.onChange(updatedDuration, this.props.checkedEventTypes, this.props.priceRange);
   }
 
   /**
@@ -97,10 +91,12 @@ class Filter extends Component<FilterProps, FilterState>  {
    * @param event data of the changed end date
    */
   onEndDateSelection = (event: ChangeEvent<HTMLInputElement>) => {
-    let newEventEnd = this.filterStringToDate(event.target.value);
-    this.setState({
-      eventEnd: newEventEnd
-    }, this.applyFilters);
+    let updatedDuration: Duration = this.props.duration;
+    
+    let newEndTime: Date = stringToDate(event.target.value, true);
+    updatedDuration.endTime = dateToString(newEndTime, false);
+
+    this.props.onChange(updatedDuration, this.props.checkedEventTypes, this.props.priceRange);
   }
 
   /**
@@ -108,10 +104,10 @@ class Filter extends Component<FilterProps, FilterState>  {
    * @param event data of the (un)checked eventType
    */
   onEventTypeCheck = (event: ChangeEvent<HTMLInputElement>) => {
-    let updatedChecked = this.state.currChecked;
+    let updatedChecked = this.props.checkedEventTypes;
 
-    let enumVal: WtmEventType = Object.keys(WtmEventType)[Object.values(WtmEventType).indexOf(event.target.value as WtmEventType)] as WtmEventType;
-    let index = this.state.currChecked.indexOf(enumVal);
+    let enumVal: WtmEventType = wtmEventTypeKeytoValue(event.target.value);
+    let index = updatedChecked.indexOf(enumVal);
     // Not found, so need to "check" by adding to currChecked
     if (index === -1) {
       updatedChecked.push(enumVal);
@@ -120,10 +116,17 @@ class Filter extends Component<FilterProps, FilterState>  {
     } else {
       updatedChecked.splice(index, 1);
     }
+    console.log(updatedChecked)
 
-    this.setState({
-      currChecked: updatedChecked
-    }, this.applyFilters);
+    this.props.onChange(this.props.duration, updatedChecked, this.props.priceRange);
+  }
+
+  /**
+   * Updates currChecked with new status of the eventType, event.
+   * @param event data of the (un)checked eventType
+   */
+  onEventButtonClick = () => {
+    // TODO
   }
 
   /**
@@ -139,127 +142,25 @@ class Filter extends Component<FilterProps, FilterState>  {
     }
     updatedPriceRange.max = priceRangeMax;
 
-    // this.setState({
-    //   priceRange: updatedPriceRange
-    // }, this.applyFilters);
-    this.applyFilters();
-    console.log("New price range max:" + event.target.value);
-  }
-
-  /**
-   * Communicates the Duration (eventStart to eventEnd) and a WtmEventType list,
-   * where each element of the WtmEventType list is a checked value in eventType.
-   */
-  applyFilters = () => {
-    const startTime: string = this.dateToDurationString(this.state.eventStart);
-    const endTime: string = this.dateToDurationString(this.state.eventEnd);
-
-    this.props.onChange({startTime: startTime, endTime: endTime}, this.state.currChecked, this.props.priceRange);
-  }
-
-  /**
-   * Translates the given date to a string in format "YYYY-MM-DD hh:mm".
-   * @param date date to format
-   * @returns given date as a string in format "YYYY-MM-DD hh:mm"
-   */
-  dateToDurationString = (date: Date): string => {
-    let str = date.getFullYear().toString() + "-";
-
-    let month = date.getMonth() + 1;  // Date has zero based month numbering
-    if (month < 10) {
-      str = str + "0";
-    }
-    str = str + month.toString() + "-";
-
-    let day = date.getDate();
-    if (day < 10) {
-      str = str + "0";
-    }
-    str = str + day.toString() + " ";
-
-    let hours = date.getHours();
-    str = str + hours.toString() + ":";
-
-    let mins = date.getMinutes();
-
-    return str + mins.toString() + ":00";
-  }
-
-  /**
-   * Translates the given date to a string in format "YYYY-MM-DDThh:mm".
-   * @param date date to format
-   * @returns given date as a string in format "YYYY-MM-DDThh:mm"
-   */
-  dateToFilterString = (date: Date): string => {
-    let str = date.getFullYear().toString() + "-";
-
-    let month = date.getMonth() + 1;  // Date has zero based month numbering
-    if (month < 10) {
-      str = str + "0";
-    }
-    str = str + month.toString() + "-";
-
-    let day = date.getDate();
-    if (day < 10) {
-      str = str + "0";
-    }
-    str = str + day.toString() + "T";
-
-    let hours = date.getHours();
-    if (hours < 10) {
-      str = str + "0";
-    }
-    str = str + hours.toString() + ":";
-
-    let mins = date.getMinutes();
-    if (mins < 10) {
-      str = str + "0";
-    }
-    return str + mins.toString();
-  }
-
-  /**
-   * Translates the given dateStr to a Date
-   * @param dateStr string to convert to Date
-   * @requires dateStr in format "YYYY-MM-DDThh:mm"
-   * @returns given dateStr as a Date
-   */
-  filterStringToDate = (dateStr: String): Date => {
-    let dateTimeParts: string[] = dateStr.split("T");
-
-    let dateParts: string[] = dateTimeParts[0].split("-");
-    let year: number = parseInt(dateParts[0]);
-    let month: number = parseInt(dateParts[1]);
-    let day: number = parseInt(dateParts[2]);
-
-    let timeParts: string[] = dateTimeParts[1].split(":");
-    let hours: number =  parseInt(timeParts[0]);
-    let mins: number =  parseInt(timeParts[1]);
-
-    if (isNaN(year) || isNaN(month) || isNaN(day) || isNaN(hours) || isNaN(mins)) {
-      console.log("ERROR: Date selector gave non-numerical date.")
-    }
-
-    let date: Date = new Date();
-    date.setFullYear(year, month - 1, day);
-    date.setHours(hours, mins, 0, 0);
-    return date;
+    this.props.onChange(this.props.duration, this.props.checkedEventTypes, updatedPriceRange);
   }
 
   render() {
     // Start Date Minimum value
-    let startDateMinValue = this.dateToFilterString(this.props.durationStartDateMin);
+    let startDateMinValue = dateToString(this.props.durationStartDateMin, true);
 
     // Create correctly formatted start date for selector
-    let startDateValue = this.dateToFilterString(this.state.eventStart);
+    let startDateValue = dateToString(stringToDate(this.props.duration.startTime, false), true);
 
     // Create correctly formatted end date for selector
-    let endDateValue = this.dateToFilterString(this.state.eventEnd);
+    let endDateValue = dateToString(stringToDate(this.props.duration.endTime, false), true);
 
     return (
       <div id="filter">
         <div id="filterNav">
-          <button id="filterControl" onClick={this.props.onCollapse}><img src={require('./img/filter_panel_control.png')} alt={"Collapse Filter Panel"}></img></button>
+          <button id="filterControl" onClick={this.props.onCollapse}>
+            <img src={require('./img/filter_panel_control.png')} alt={"Collapse Filter Panel"}></img>
+          </button>
         </div>
 
         <div id="duration">

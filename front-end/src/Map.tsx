@@ -5,16 +5,16 @@ import { latLng, LatLng, LatLngExpression } from "leaflet";
 import React, { Component } from "react";
 import { MapContainer, TileLayer, Marker, Popup, ZoomControl } from "react-leaflet";
 import { SOCCOMP_LATITUDE, SOCCOMP_LONGITUDE, URL_BASE, PRICE_RANGE_MIN, PRICE_RANGE_MAX } from "./constants";
-import Filter from "./Filter";
-import { WtmEvent, WtmEventType, Duration, PriceRange, parseEvents, dateToDurationString } from "./wtmEvent";
+import { WtmEvent, WtmEventType, Duration, PriceRange, parseEvents } from "./wtmEvent";
+import { dateToString } from "./util";
 import { getPinIcon } from "./pin";
+import Filter from "./Filter";
+import Flyer from "./Flyer";
 
 // This defines the location of the map. These are the coordinates of the UW Seattle campus
 const position: LatLngExpression = latLng(SOCCOMP_LATITUDE, SOCCOMP_LONGITUDE);
 
 interface MapProps {
-  // Trigger App to display flyer associated with clicked pin
-  onPinClick: (event: WtmEvent) => void;
   // Trigger App to display server error page
   doError: (msg: string) => void;
 }
@@ -31,6 +31,8 @@ interface MapState {
   /** Map View State */
   filterVisible: boolean;
   events: WtmEvent[];
+  flyerVisible: boolean;
+  clickedEvent?: WtmEvent;
 }
 
 /**
@@ -50,11 +52,12 @@ class Map extends Component<MapProps, MapState> {
 
     this.state = {
       duration_start_date_min: eventStart,
-      duration: {startTime: dateToDurationString(eventStart), endTime: dateToDurationString(eventEnd)},
+      duration: {startTime: dateToString(eventStart, false), endTime: dateToString(eventEnd, false)},
       checkedEventTypes: Object.keys(WtmEventType) as Array<WtmEventType>,
       priceRange: priceRange,
       filterVisible: true,
       events: [],
+      flyerVisible: false,
     };
   }
 
@@ -104,10 +107,20 @@ class Map extends Component<MapProps, MapState> {
     }
   };
 
+  onPinClick = (event: WtmEvent): void => {
+    this.setState({ clickedEvent: event, flyerVisible: true })
+  }
+
   onCollapse = (events: WtmEvent[]): void => {
     this.setState({
       events: events,
       filterVisible: !this.state.filterVisible
+    });
+  };
+
+  onClose = (): void => {
+    this.setState({
+      flyerVisible: !this.state.flyerVisible
     });
   };
 
@@ -118,7 +131,8 @@ class Map extends Component<MapProps, MapState> {
           <Filter durationStartDateMin={this.state.duration_start_date_min} duration={this.state.duration} checkedEventTypes={this.state.checkedEventTypes} priceRange={this.state.priceRange} onChange={this.getEvents} onCollapse={() => this.onCollapse(this.state.events)}/>
           : <></> // Display Nothing
         }
-        <MapContainer center={position} zoom={8} zoomControl={false} scrollWheelZoom={true}>
+
+        <MapContainer center={position} zoom={11.3} zoomControl={false} scrollWheelZoom={true}>
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
             url='https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png'
@@ -126,7 +140,7 @@ class Map extends Component<MapProps, MapState> {
           <ZoomControl position="bottomright"/>
           {this.state.events.map((event) => (
             <Marker key={event.eventId} position={event.coordinates}
-              eventHandlers={{ click: (e) => this.props.onPinClick(event) }}
+              eventHandlers={{ click: (_e) => this.onPinClick(event) }}
               icon={getPinIcon(event.eventType)} interactive riseOnHover>
               <Popup>{event.name}</Popup>
             </Marker>
@@ -136,6 +150,12 @@ class Map extends Component<MapProps, MapState> {
             : <div className="leaflet-top leaflet-left"><button id="filterControl" onClick={() => this.onCollapse(this.state.events)} className="leaflet-control"><img src={require('./img/filter_panel_control.png')} alt={"Collapse Filter Panel"}></img></button></div>
           }
         </MapContainer>
+
+        {this.state.flyerVisible && this.state.clickedEvent ?
+            <Flyer event={this.state.clickedEvent}
+                  onClose={this.onClose} doError={this.props.doError}></Flyer>
+          : <></> // DisplayNothing
+        }
       </div>
     );
   }

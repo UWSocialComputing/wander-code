@@ -2,18 +2,13 @@ import "./App.css";
 
 import {Component} from 'react';
 import Map from "./Map";
-import Flyer from './Flyer';
 import { SavedEvents } from './SavedEvents';
-import { WtmEvent } from './wtmEvent';
 
-type view = "map" | "flyer" | "saved" | "error"
+type view = "map" | "saved" | "error"
 
 interface AppState {
   /** Currently displayed page, updated in callbacks to app */
   view: view
-
-  /** Event associated with clicked-on pin */
-  clickedEvent?: WtmEvent;
 
   /** Error produced by any unsuccessful server access in app */
   error?: string;
@@ -37,6 +32,7 @@ class App extends Component<{}, AppState> {
   };
 
   render() {
+    // Renders cute error page :) good job katherine
     if (this.state.view === "error") {
       console.log("Error:" + this.state.error ?? "who knows, we can't figure it out. wtm?");
       return (
@@ -70,12 +66,8 @@ class App extends Component<{}, AppState> {
           <button id="savedEventsButton" onClick={() => this.setState({view: "saved"})}>Saved Events</button>
         </div>
 
-        {this.state.view === "flyer" && this.state.clickedEvent !== undefined ?
-            <Flyer event={this.state.clickedEvent}
-              onBack={() => this.setState({view: "map"})} doError={this.doError}></Flyer>
-
-          : this.state.view === "map" ?
-            <Map onPinClick={(event) => this.setState({view: "flyer", clickedEvent: event})} doError={this.doError}/>
+        {this.state.view === "map" ?
+            <Map doError={this.doError}/>
 
           : this.state.view === "saved" ?
             <SavedEvents doError={this.doError}></SavedEvents>
