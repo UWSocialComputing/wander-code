@@ -1,5 +1,5 @@
 #filter {
-  width: 17vw;
+  min-width: 17vw;
 
   padding-left: 1vw;
   padding-top: 0.5vh;
@@ -7,6 +7,8 @@
 
   background-color: #d6e7ea3c;
   border-right: 2px solid #d6e7ea95;
+
+  height: 87vh;
 }
 
 #filterNav {

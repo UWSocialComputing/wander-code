@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { WtmEvent, parseEvents } from './wtmEvent'
 import { URL_BASE } from './constants';
+import Flyer from './Flyer';
 import './SavedEvents.css'
 
 interface SavedEventsProps {
@@ -11,6 +12,8 @@ interface SavedEventsProps {
 interface SavedEventsState {
   // Saved events received from server
   events?: WtmEvent[];
+  // Currently clicked on saved event img
+  clickedEvent?: WtmEvent;
 }
 
 /**
@@ -62,19 +65,34 @@ export class SavedEvents extends Component<SavedEventsProps, SavedEventsState> {
   }
 
   render() {
-    return <div id={"savedEventsPage"}>
-      <h1>Saved Events</h1>
-      <div id="savedEventsContainer">
-        {/* Renders each saved event as its mini image */}
-        {this.state.events?.map((event) => 
-          <div className={"miniFlyerContainer"} key={event.eventId}>
-            {/* Date label */}
-            <p className={"eventDate"}>{this.formatDate(event.duration.startTime)}</p>
-            <img src={URL_BASE + `/flyer/${event.eventId}.png`} 
-               className={"miniFlyer"} alt={"Mini flyer image for event: " + event.name}/>
+    return <div id="saved-page">
+      {/* <div id="saved-page-content">
+
+        <div id="events-container"> */}
+          <h1>Saved Events</h1>
+
+          <div id="events-arrage-container">
+            {/* Renders each saved event as its mini image */}
+            {this.state.events?.map((event) => 
+              <div className={"miniFlyerContainer"} key={event.eventId}>
+                {/* Date label */}
+                <p className={"eventDate"}>{this.formatDate(event.duration.startTime)}</p>
+                <img src={URL_BASE + `/flyer/${event.eventId}.png`} 
+                  className={"miniFlyer"} alt={"Mini flyer image for event: " + event.name}
+                  onClick={(_e) => this.setState({ clickedEvent: event })}/>
+              </div>
+            )}
           </div>
-        )}
-      </div>
-    </div>;
+        </div>
+
+    //     {/* Open side flyer view if an event is clicked */}
+    //     {this.state.clickedEvent ?
+    //       <Flyer event={this.state.clickedEvent}
+    //             onClose={() => this.setState({ clickedEvent: undefined })} 
+    //             doError={this.props.doError}></Flyer>
+    //       : <></> // DisplayNothing
+    //     }
+    //   </div>
+    // </div>;
   }
 }

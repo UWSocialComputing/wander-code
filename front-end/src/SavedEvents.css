@@ -1,9 +1,19 @@
-#savedEventsPage {
-  margin: 5vh;
+#saved-page {
+  margin: 0 5vh 5vh 5vh;
 }
 
-#savedEventsContainer {
+#saved-page-content {
+  /* display: flex;
+  flex-direction: row; */
+}
+
+#events-container {
+  /* min-width: 56vw; */
+}
+
+#events-arrage-container {
   display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
   justify-content: flex-start;
   gap: 3vh;

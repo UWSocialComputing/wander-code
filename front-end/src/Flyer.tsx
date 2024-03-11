@@ -59,7 +59,7 @@ const Flyer = (props: FlyerProps) => {
 
     return dateObj.toLocaleString('default', {weekday: 'long'}) + ", " + 
       dateObj.toLocaleString('default', { month: 'long' }) + " " + 
-      day + "   " + startTimeFormatted + " - " + endTimeFormatted;
+      day + "\n" + startTimeFormatted + " - " + endTimeFormatted;
   }
 
   return (
@@ -79,41 +79,42 @@ const Flyer = (props: FlyerProps) => {
         <AddGCal event={props.event}></AddGCal>
       </div>
 
+      {/* All the flyer information: */}
       <div id="flyer-info">
-        <div>
-          <div> {/* First col of details */}
-            <div className="info-row">
+        <div id="info-row">
+          <div> {/* First col: date, time and cost */}
+            <div className="info-item">
               <img className="flyer-info-icon" src={require('./img/time.png')} alt={"Clock icon"}></img>
               <p>{formatDate(props.event.duration)}</p>
             </div>
-            <div className="info-row">
+            <div className="info-item">
               <img className="flyer-info-icon" src={require('./img/dollar.png')} alt={"Dollar sign icon"}></img>
               <p>{props.event.cost === 0 ? "Free!" : "$" + props.event.cost}</p>
             </div>
+          </div>
+          <div> {/* Second col: location & URL */}
+            <div className="info-item">
+              <img className="flyer-info-icon" src={require('./img/' + props.event.eventType.toLocaleLowerCase() + '_pin.png')} alt={props.event.eventType + " pin icon"}></img>
+              <p>{props.event.location}</p>
+            </div>
             {props.event.url ?
-              <div className="info-row">
+              <div className="info-item">
                 <img className="flyer-info-icon" src={require('./img/link.png')} alt={"Info 'i' icon"}></img>
                 <a href={"https://" + props.event.url} target="_blank">{props.event.url}</a>
               </div>
               : <></>
             }
           </div>
-          
-          <div className="info-row"> {/* Second col of details */}
-            <img className="flyer-info-icon" src={require('./img/' + props.event.eventType.toLocaleLowerCase() + '_pin.png')} alt={props.event.eventType + " pin icon"}></img>
-            <p>{props.event.location}</p>
-          </div>
         </div>
 
-        {props.event.url ?
-          <div className="info-row">
+        {props.event.eventDetails ?
+          <div className="info-item">
             <img className="flyer-info-icon" src={require('./img/info.png')}></img>
             <p>{props.event.eventDetails}</p>
           </div>
           : <></>
         }
       </div>
-      {/* TODO: text event details */}
     </div>
   );
 };

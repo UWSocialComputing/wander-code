@@ -62,10 +62,10 @@ export const parseEvents = (data: unknown) => {
     }
 
     // Turn location record into a string (i <3 unreliable params)
-    const location: string = (e.location.nameOfLocation ?? "") + " "
-                        + (e.location.line1 ?? "") + " "
-                        + (e.location.line2 ?? "") + " "
-                        + (e.location.city ?? "") + " " 
+    const location: string = (e.location.nameOfLocation ? e.location.nameOfLocation + "\n" : "") 
+                        + (e.location.line1 ? e.location.line1 + "\n" : "")
+                        + (e.location.line2 ? e.location.line2 + "\n" : "")
+                        + (e.location.city ? e.location.city + ", " : "")
                         + e.location.state + " " 
                         + (e.location.zipcode ?? "");
 

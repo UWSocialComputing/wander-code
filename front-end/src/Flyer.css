@@ -1,14 +1,16 @@
 #flyer {
   position: relative;
-  width: 40vw;
+  min-width: 34vw;
   padding: 0.5vh 0.5vw 0 1vh;
   margin-left: 0.5vw;
 
   background-color: #d6e7ea3c;
   border-left: 2px solid #d6e7ea95;
 
+  height: 87vh;
+
   /* TODO: it's being difficult */
-  /* overflow-y: scroll; */
+  overflow-y: scroll;
 }
 
 #flyer-x {
@@ -30,7 +32,7 @@
 }
 
 #flyer-img {
-  width: 39vw;
+  width: 34vw;
 }
 
 .flyer-button {
@@ -38,24 +40,28 @@
   margin: 0.5vh 1vw 0.5vh 0;
 }
 
-/* TODO: this selector is not being acknowledged at all */
-#flyer-info:first-child {
-  text-decoration: wavy;
-  display: flex;
-  flex-direction: column;
+#flyer-info {
+  margin: 2vh;
 }
 
-.info-row {
-  height: 4vh;
+#info-row {
   display: flex;
   flex-direction: row;
+  gap: 3vw;
+  margin-bottom: 1vh;
 }
 
-.info-row p {
+.info-item {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 1vh;
+}
+
+.info-item p {
   margin: 0;
+  white-space: pre-wrap;
 }
 
-/* Add some space between */
 .flyer-info-icon {
   height: 3vh;
   margin-right: 1vh;

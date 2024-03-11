@@ -108,7 +108,7 @@ class Map extends Component<MapProps, MapState> {
   };
 
   onPinClick = (event: WtmEvent): void => {
-    this.setState({ clickedEvent: event, flyerVisible: true })
+    this.setState({ clickedEvent: event })
   }
 
   onCollapse = (events: WtmEvent[]): void => {
@@ -120,7 +120,7 @@ class Map extends Component<MapProps, MapState> {
 
   onClose = (): void => {
     this.setState({
-      flyerVisible: !this.state.flyerVisible
+      clickedEvent: undefined
     });
   };
 
@@ -140,7 +140,9 @@ class Map extends Component<MapProps, MapState> {
           <ZoomControl position="bottomright"/>
           {this.state.events.map((event) => (
             <Marker key={event.eventId} position={event.coordinates}
-              eventHandlers={{ click: (_e) => this.onPinClick(event) }}
+              eventHandlers={{ click: (_e) => this.onPinClick(event), 
+                               mouseover: (e) => e.target.openPopup(), 
+                               mouseout: (e) => e.target.closePopup()}}
               icon={getPinIcon(event.eventType)} interactive riseOnHover>
               <Popup>{event.name}</Popup>
             </Marker>
@@ -151,7 +153,7 @@ class Map extends Component<MapProps, MapState> {
           }
         </MapContainer>
 
-        {this.state.flyerVisible && this.state.clickedEvent ?
+        {this.state.clickedEvent ?
             <Flyer event={this.state.clickedEvent}
                   onClose={this.onClose} doError={this.props.doError}></Flyer>
           : <></> // DisplayNothing

@@ -4,9 +4,7 @@
   flex-direction: row;
 
   width: 100vw;
-  margin-top: 1vh;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 1vh auto 0 auto;
 
   border-top: 2px solid #d6e7ea95;
 }
@@ -30,7 +28,7 @@
 /* Sets size of map, which has class name "leaflet-container" */
 .leaflet-container {
   width: 100vw;
-  height: 85vh;
+  height: 87vh;
 }
 
 /* ZoomControl Styling */
