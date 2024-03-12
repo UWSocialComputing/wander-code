@@ -1,7 +1,7 @@
 import "./Filter.css";
 
 import { ChangeEvent, Component } from "react";
-import { WtmEventType, Duration, PriceRange, wtmEventTypeKeytoValue } from "./wtmEvent";
+import { WtmEventType, Duration, PriceRange, wtmEventTypeKeyToValue } from "./wtmEvent";
 import { dateToString, stringToDate } from "./util";
 import { DURATION_END_DATE_MAX, PRICE_RANGE_MIN, PRICE_RANGE_MAX } from "./constants";
 
@@ -19,52 +19,10 @@ interface FilterProps {
   onCollapse(): void;
 }
 
-interface FilterState {
-  /** WtmEventType filters. Default is all. */
-  eventTypes: JSX.Element[];
-}
-
 /**
  * The Map sidebar that allows the user to select different WtmEvent filters.
  */
-class Filter extends Component<FilterProps, FilterState>  {
-  constructor(props: any) {
-    super(props);
-    console.log("here: " + this.props.checkedEventTypes);
-
-    let eventTypes: JSX.Element[] = [];
-    for (const eventType of Object.values(WtmEventType)) {
-      let index = this.props.checkedEventTypes.indexOf(wtmEventTypeKeytoValue(eventType));
-
-      if (index === -1) {
-        // eventTypes.push(
-        //   <div key={eventType}>
-        //     <input key={eventType} type="checkbox" id={eventType.toString()} value={eventType} onChange={this.onEventTypeCheck}/>
-        //     <label>{eventType}</label>
-        //   </div>
-        // );
-
-        eventTypes.push(
-          <button id={eventType.toString()}>Hi</button>
-        );
-      } else {
-        // eventTypes.push(
-        //   <div key={eventType}>
-        //     <input key={eventType} type="checkbox" id={eventType.toString()} value={eventType} onChange={this.onEventTypeCheck} defaultChecked/>
-        //     <label>{eventType}</label>
-        //   </div>
-        // );
-        eventTypes.push(
-          <button key={eventType} id={eventType.toString().toLowerCase()}>{eventType}</button>
-        );
-        console.log(eventType.toString().toLowerCase())
-      }
-    }
-
-    this.state = {
-      eventTypes: eventTypes,
-    };
-  }
+class Filter extends Component<FilterProps, {}>  {
 
   /**
    * Stores the selection of a new start date filter.
@@ -91,7 +49,7 @@ class Filter extends Component<FilterProps, FilterState>  {
    */
   onEndDateSelection = (event: ChangeEvent<HTMLInputElement>) => {
     let updatedDuration: Duration = this.props.duration;
-    
+
     let newEndTime: Date = stringToDate(event.target.value, true);
     updatedDuration.endTime = dateToString(newEndTime, false);
 
@@ -102,30 +60,24 @@ class Filter extends Component<FilterProps, FilterState>  {
    * Updates currChecked with new status of the eventType, event.
    * @param event data of the (un)checked eventType
    */
-  onEventTypeCheck = (event: ChangeEvent<HTMLInputElement>) => {
+  onEventTypeCheck = (eventValue: string) => {
     let updatedChecked = this.props.checkedEventTypes;
 
-    let enumVal: WtmEventType = wtmEventTypeKeytoValue(event.target.value);
+    let enumVal: WtmEventType = wtmEventTypeKeyToValue(eventValue);
     let index = updatedChecked.indexOf(enumVal);
     // Not found, so need to "check" by adding to currChecked
     if (index === -1) {
+      console.log("check: " + eventValue.toString())
       updatedChecked.push(enumVal);
 
     // Found, so need to "uncheck" by removing from currChecked
     } else {
+      console.log("uncheck: " + eventValue.toString())
       updatedChecked.splice(index, 1);
     }
     console.log(updatedChecked)
 
     this.props.onChange(this.props.duration, updatedChecked, this.props.priceRange);
-  }
-
-  /**
-   * Updates currChecked with new status of the eventType, event.
-   * @param event data of the (un)checked eventType
-   */
-  onEventButtonClick = () => {
-    // TODO
   }
 
   /**
@@ -154,6 +106,23 @@ class Filter extends Component<FilterProps, FilterState>  {
     // Create correctly formatted end date for selector
     let endDateValue = dateToString(stringToDate(this.props.duration.endTime, false), true);
 
+    let eventTypes: JSX.Element[] = [];
+    for (const eventType of Object.values(WtmEventType)) {
+      let index = this.props.checkedEventTypes.indexOf(wtmEventTypeKeyToValue(eventType));
+
+      if (index === -1) {
+        eventTypes.push(
+          <button key={eventType} className="unselected" onClick={() => this.onEventTypeCheck(eventType.toString())}>{eventType}</button>
+        );
+
+      } else {
+        eventTypes.push(
+          <button key={eventType} id={eventType.toString().toLowerCase()} className="selected" onClick={() => this.onEventTypeCheck(eventType.toString())}>{eventType}</button>
+        );
+        console.log(eventType.toString().toLowerCase())
+      }
+    }
+
     return (
       <div id="filter">
         <div id="filterNav">
@@ -179,9 +148,9 @@ class Filter extends Component<FilterProps, FilterState>  {
         <div>
           <h4>Type of Event</h4>
           <div>
-            <div className="eventButtons">{this.state.eventTypes.slice(0,3)}</div>
-            <div className="eventButtons">{this.state.eventTypes.slice(3,6)}</div>
-            <div className="eventButtons">{this.state.eventTypes.slice(6,7)}</div>
+            <div className="eventButtons">{eventTypes.slice(0,3)}</div>
+            <div className="eventButtons">{eventTypes.slice(3,6)}</div>
+            <div className="eventButtons">{eventTypes.slice(6,7)}</div>
           </div>
         </div>
 
@@ -189,8 +158,10 @@ class Filter extends Component<FilterProps, FilterState>  {
 
         <div>
           <h4>Cost</h4>
-          {/** TODO: Make pop-up value!!! */}
-          <input type="range" id="price" name="price-range" min={PRICE_RANGE_MIN} max={PRICE_RANGE_MAX} value={this.props.priceRange.max} step="1" onChange={this.onPriceRangeUpdate}/>
+          <div id="price">
+            <input type="range" name="price-range" min={PRICE_RANGE_MIN} max={PRICE_RANGE_MAX} value={this.props.priceRange.max} step="1" onChange={this.onPriceRangeUpdate}/>
+            <p>{this.props.priceRange.max}</p>
+          </div>
         </div>
       </div>
     );

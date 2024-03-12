@@ -43,7 +43,6 @@ hr {
   border: 0 solid #E2E8F0;
   border-radius: 8px;
   box-sizing: border-box;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 
   white-space: nowrap;
 }
@@ -52,59 +51,102 @@ hr {
   box-shadow: 0 0 11px rgba(33,33,33,.2);
 }
 
-.unselectedButton {
+.unselected {
   background-color: #E4E4E4;
-  box-shadow: 0; /** TODO */
+  box-shadow: none;
+}
+
+.selected {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 #arts\ \&\ crafts {
   background-color: #FBC6C6;
+  border: 2px solid #e5adad;
 }
 
 #cultural {
   background-color: #BBBCE5;
+  border: 2px solid #a6a7cd;
 }
 
 #food {
   background-color: #BDE49E;
+  border: 2px solid #accf8f;
 }
 
 #music {
   background-color: #A2D4E5;
+  border: 2px solid #96c4d4;
 }
 
 #miscellaneous {
   background-color: #ffffff;
+  border: 2px solid #dadade;
 }
 
 #sports {
   background-color: #EEE5B1;
+  border: 2px solid #ddd097;
 }
 
 #theater {
   background-color: #D1ABDF;
+  border: 2px solid #ae8cbb;
 }
 
-input {
+#price {
+  display: flex;
+  flex-direction: row;
+
+  width: 160px;
+}
+
+#price input {
+  --c: #bbbce5; /* active color */
+  --g: 8px; /* the gap */
+  --l: 5px; /* line thickness*/
+  --s: 20px; /* thumb size*/
+
+  /* height: var(--s); needed for Firefox */
+  width: 160px;
+  margin-right: 8px;
+  --_c: color-mix(in srgb, var(--c), #000 var(--p,0%));
   -webkit-appearance :none;
   -moz-appearance :none;
   appearance :none;
   background: none;
+  cursor: pointer;
+  overflow: hidden;
 }
 
-/* slider track */
-input[type="range"]::-webkit-slider-runnable-track {
-  background-color: #bbbce5;
-  border-radius: 0.5rem;
-  /* height: 0.5rem; */
+#price input:focus-visible, #price input:hover {
+  --p: 25%;
 }
 
-/* slider thumb */
-input[type="range" i]::-webkit-slider-thumb {
-  margin-top: -5px; /* Centers thumb on the track */
-  margin-bottom: -5px; /* Centers thumb on the track */
-  background-color: #555353;
-  border-radius: 1.5rem;
-  height: 1.5rem;
-  width: 1rem;
+#price input:active, #price input:focus-visible{
+  --_b: var(--s)
+}
+
+#price input[type="range" i]::-webkit-slider-thumb{
+  height: var(--s);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  box-shadow: 0 0 0 var(--_b,var(--l)) inset var(--_c);
+  border-image: linear-gradient(90deg,var(--_c) 50%,#ababab 0) 0 1/calc(50% - var(--l)/2) 100vw/0 calc(100vw + var(--g));
+  -webkit-appearance: none;
+  appearance: none;
+  transition: .3s;
+}
+
+#price p {
+  background: #c5c6eb;
+  text-align: center;
+
+  display: inline-block;
+
+  border-radius: 8px;
+  min-width: 16px;
+  margin-left: 8px;
+  padding: 5px 10px;
 }

@@ -62,11 +62,11 @@ export const parseEvents = (data: unknown) => {
     }
 
     // Turn location record into a string (i <3 unreliable params)
-    const location: string = (e.location.nameOfLocation ? e.location.nameOfLocation + "\n" : "") 
+    const location: string = (e.location.nameOfLocation ? e.location.nameOfLocation + "\n" : "")
                         + (e.location.line1 ? e.location.line1 + "\n" : "")
                         + (e.location.line2 ? e.location.line2 + "\n" : "")
                         + (e.location.city ? e.location.city + ", " : "")
-                        + e.location.state + " " 
+                        + e.location.state + " "
                         + (e.location.zipcode ?? "");
 
     const coordinates: LatLngExpression =
@@ -85,7 +85,7 @@ export const parseEvents = (data: unknown) => {
  * @requires key is a key of WtmEventType
  * @returns the value of the WtmEventType key
  */
-export const wtmEventTypeKeytoValue = (key: string): WtmEventType => {
+export const wtmEventTypeKeyToValue = (key: string): WtmEventType => {
   return Object.keys(WtmEventType)[Object.values(WtmEventType).indexOf(key as WtmEventType)] as WtmEventType;
 }
 

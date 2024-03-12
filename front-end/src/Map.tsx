@@ -72,6 +72,7 @@ class Map extends Component<MapProps, MapState> {
       checkedEventTypes: eventTypes,
       priceRange: priceRange
     });
+    console.log("persists: " + this.state.checkedEventTypes)
 
     fetch(URL_BASE + "/getEvents", {
       method: "POST",
@@ -140,8 +141,8 @@ class Map extends Component<MapProps, MapState> {
           <ZoomControl position="bottomright"/>
           {this.state.events.map((event) => (
             <Marker key={event.eventId} position={event.coordinates}
-              eventHandlers={{ click: (_e) => this.onPinClick(event), 
-                               mouseover: (e) => e.target.openPopup(), 
+              eventHandlers={{ click: (_e) => this.onPinClick(event),
+                               mouseover: (e) => e.target.openPopup(),
                                mouseout: (e) => e.target.closePopup()}}
               icon={getPinIcon(event.eventType)} interactive riseOnHover>
               <Popup>{event.name}</Popup>
