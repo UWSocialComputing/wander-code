@@ -56,7 +56,7 @@ export class SavedEvents extends Component<SavedEventsProps, SavedEventsState> {
 
   /** Formats the date header for events: "Weekday, day Month" */
   formatDate = (startTime: string): string => {
-    const [date, _time] = startTime.split(" ");
+    const [date, _] = startTime.split(" ");
     const [year, month, day] = date.split("-");
     let dateObj: Date = new Date();
     dateObj.setFullYear(Number(year), Number(month) - 1, Number(day));
@@ -66,9 +66,9 @@ export class SavedEvents extends Component<SavedEventsProps, SavedEventsState> {
 
   render() {
     return <div id="saved-page">
-      {/* <div id="saved-page-content">
+      {/* <div id="saved-page-content">  */}
 
-        <div id="events-container"> */}
+        <div id="events-container">
           <h1>Saved Events</h1>
 
           <div id="events-arrage-container">
@@ -84,15 +84,16 @@ export class SavedEvents extends Component<SavedEventsProps, SavedEventsState> {
             )}
           </div>
         </div>
+        
+        {/* Open side flyer view if an event is clicked */}
+        {this.state.clickedEvent ?
+          <Flyer event={this.state.clickedEvent}
+                onClose={() => this.setState({ clickedEvent: undefined })} 
+                doError={this.props.doError}></Flyer>
+          : <></> // DisplayNothing
+        }
 
-    //     {/* Open side flyer view if an event is clicked */}
-    //     {this.state.clickedEvent ?
-    //       <Flyer event={this.state.clickedEvent}
-    //             onClose={() => this.setState({ clickedEvent: undefined })} 
-    //             doError={this.props.doError}></Flyer>
-    //       : <></> // DisplayNothing
-    //     }
-    //   </div>
-    // </div>;
+      {/* </div> */}
+    </div>;
   }
 }

@@ -14,7 +14,7 @@ button {
   background-color: transparent;
 }
 
-button:hover {
+button:hover, input:hover {
   cursor: pointer;
 }
 
@@ -37,7 +37,7 @@ button:hover {
 }
 
 #savedEventsButton:hover {
-  text-decoration: #BBBCE5 underline 3px;
+  text-decoration: rgb(187, 188, 229) underline 3px;
 }
 
 #error {

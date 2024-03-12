@@ -1,5 +1,5 @@
 #filter {
-  min-width: 17vw;
+  min-width: 220px;
 
   padding-left: 1vw;
   padding-top: 0.5vh;
@@ -21,6 +21,90 @@
   height: 3vh;
 }
 
-input:hover {
-  cursor: pointer;
+hr {
+  margin-top: 2vh;
+  margin-bottom: 1vh;
+  margin-right: 8px;
+}
+
+#startDate {
+  margin-bottom: 1vh;
+}
+
+.eventButtons {
+  display: flex;
+  flex-flow: row;
+}
+
+.eventButtons button {
+  margin: 4px;
+  padding: 4px;
+
+  border: 0 solid #E2E8F0;
+  border-radius: 8px;
+  box-sizing: border-box;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+  white-space: nowrap;
+}
+
+.eventButtons button:hover {
+  box-shadow: 0 0 11px rgba(33,33,33,.2);
+}
+
+.unselectedButton {
+  background-color: #E4E4E4;
+  box-shadow: 0; /** TODO */
+}
+
+#arts\ \&\ crafts {
+  background-color: #FBC6C6;
+}
+
+#cultural {
+  background-color: #BBBCE5;
+}
+
+#food {
+  background-color: #BDE49E;
+}
+
+#music {
+  background-color: #A2D4E5;
+}
+
+#miscellaneous {
+  background-color: #ffffff;
+}
+
+#sports {
+  background-color: #EEE5B1;
+}
+
+#theater {
+  background-color: #D1ABDF;
+}
+
+input {
+  -webkit-appearance :none;
+  -moz-appearance :none;
+  appearance :none;
+  background: none;
+}
+
+/* slider track */
+input[type="range"]::-webkit-slider-runnable-track {
+  background-color: #bbbce5;
+  border-radius: 0.5rem;
+  /* height: 0.5rem; */
+}
+
+/* slider thumb */
+input[type="range" i]::-webkit-slider-thumb {
+  margin-top: -5px; /* Centers thumb on the track */
+  margin-bottom: -5px; /* Centers thumb on the track */
+  background-color: #555353;
+  border-radius: 1.5rem;
+  height: 1.5rem;
+  width: 1rem;
 }

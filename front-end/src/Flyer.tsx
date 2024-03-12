@@ -69,9 +69,9 @@ const Flyer = (props: FlyerProps) => {
       {/* TODO: somehow handle the fact that this could be an invalid image 
         if there isn't one in the server for this event id */}
       <img id="flyer-img" src={URL_BASE + `/flyer/${props.event.eventId}.png`}  
-              alt={props.event.name + " flyer image"} title={props.event.name + " flyer image"}></img>
+        alt={props.event.name + " flyer image"} title={props.event.name + " flyer image"}></img>
 
-      <div>
+      <div id="flyer-buttons">
         <img className="flyer-button" src={require('./img/save-icon.png')}
           title={"Save event"} alt={"Save event icon"} 
           onClick={saveEvent}></img>

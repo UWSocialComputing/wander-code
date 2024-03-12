@@ -34,31 +34,30 @@ class Filter extends Component<FilterProps, FilterState>  {
 
     let eventTypes: JSX.Element[] = [];
     for (const eventType of Object.values(WtmEventType)) {
-      // only leave the appropriate ones checked
-      // TODO: not right
       let index = this.props.checkedEventTypes.indexOf(wtmEventTypeKeytoValue(eventType));
-      console.log(index)
 
       if (index === -1) {
-        eventTypes.push(
-          <div key={eventType}>
-            <input key={eventType} type="checkbox" id={eventType.toString()} value={eventType} onChange={this.onEventTypeCheck}/>
-            <label>{eventType}</label>
-          </div>
-        );
-
         // eventTypes.push(
-        //   <button id={eventType} onClick={this.onEventButtonClick}>
-        //       <img src={require('./img/' + 'filter_panel_control.png')} alt={"Collapse Filter Panel"}></img>
-        //   </button>
+        //   <div key={eventType}>
+        //     <input key={eventType} type="checkbox" id={eventType.toString()} value={eventType} onChange={this.onEventTypeCheck}/>
+        //     <label>{eventType}</label>
+        //   </div>
         // );
-      } else {
+
         eventTypes.push(
-          <div key={eventType}>
-            <input key={eventType} type="checkbox" id={eventType.toString()} value={eventType} onChange={this.onEventTypeCheck} defaultChecked/>
-            <label>{eventType}</label>
-          </div>
+          <button id={eventType.toString()}>Hi</button>
         );
+      } else {
+        // eventTypes.push(
+        //   <div key={eventType}>
+        //     <input key={eventType} type="checkbox" id={eventType.toString()} value={eventType} onChange={this.onEventTypeCheck} defaultChecked/>
+        //     <label>{eventType}</label>
+        //   </div>
+        // );
+        eventTypes.push(
+          <button key={eventType} id={eventType.toString().toLowerCase()}>{eventType}</button>
+        );
+        console.log(eventType.toString().toLowerCase())
       }
     }
 
@@ -165,7 +164,7 @@ class Filter extends Component<FilterProps, FilterState>  {
 
         <div id="duration">
           <h4>Date Range</h4>
-          <div>
+          <div id="startDate">
             <label>Start date:</label>
             <input type="datetime-local" id="start" name="duration-start" value={startDateValue} min={startDateMinValue} max={DURATION_END_DATE_MAX} onChange={this.onStartDateSelection}/>
           </div>
@@ -175,10 +174,18 @@ class Filter extends Component<FilterProps, FilterState>  {
           </div>
         </div>
 
+        <hr className="solid"/>
+
         <div>
           <h4>Type of Event</h4>
-          {this.state.eventTypes}
+          <div>
+            <div className="eventButtons">{this.state.eventTypes.slice(0,3)}</div>
+            <div className="eventButtons">{this.state.eventTypes.slice(3,6)}</div>
+            <div className="eventButtons">{this.state.eventTypes.slice(6,7)}</div>
+          </div>
         </div>
+
+        <hr className="solid"/>
 
         <div>
           <h4>Cost</h4>
