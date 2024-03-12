@@ -2,6 +2,12 @@
 
 **Note:** The following instructions are meant to be followed locally. These
 instructions are not meant to be followed on attu or a cloud based terminal.
+Also, the Google calendar integration portion can sometimes be a bit finnicky.
+Access is enabled to specific emails (including Amy & Ruotong's CSE emails) since
+the app is currently in "Testing" mode. The auth and then event creation process
+is a bit timing dependent, so if you run into trouble, try reloading, clicking through
+the auth quickly and then waiting a moment for the event! Ask Jaela if you run into
+trouble!
 
 ### Setup
 1. Install `mvn` with command `brew install mvn` (MacOS)
