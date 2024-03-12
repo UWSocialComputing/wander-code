@@ -66,9 +66,12 @@ export const AddGCal = (props) => {
     setTokenClient({...tokenClient, callback: async (resp) => {
       if (resp.error) { throw resp; }
       const { access_token, expires_in } = gapi.client.getToken();
-      console.log("returned from other window?")
+
       localStorage.setItem("access_token", access_token);
       localStorage.setItem("expires_in", expires_in);
+
+      console.log(accessToken);
+      console.log(expiresIn)
     }});
 
     try {
@@ -80,9 +83,8 @@ export const AddGCal = (props) => {
         // User already given consent, skip that
         await tokenClient.requestAccessToken({ prompt: "" });
       }
-    } catch (e) { // Try again
-      console.error(e);
-      handleAuthClick();
+    } catch (e) {
+      console.log(e);
     }
   }
 

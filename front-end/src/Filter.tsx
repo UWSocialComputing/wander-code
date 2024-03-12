@@ -67,15 +67,12 @@ class Filter extends Component<FilterProps, {}>  {
     let index = updatedChecked.indexOf(enumVal);
     // Not found, so need to "check" by adding to currChecked
     if (index === -1) {
-      console.log("check: " + eventValue.toString())
       updatedChecked.push(enumVal);
 
     // Found, so need to "uncheck" by removing from currChecked
     } else {
-      console.log("uncheck: " + eventValue.toString())
       updatedChecked.splice(index, 1);
     }
-    console.log(updatedChecked)
 
     this.props.onChange(this.props.duration, updatedChecked, this.props.priceRange);
   }
@@ -119,7 +116,6 @@ class Filter extends Component<FilterProps, {}>  {
         eventTypes.push(
           <button key={eventType} id={eventType.toString().toLowerCase()} className="selected" onClick={() => this.onEventTypeCheck(eventType.toString())}>{eventType}</button>
         );
-        console.log(eventType.toString().toLowerCase())
       }
     }
 

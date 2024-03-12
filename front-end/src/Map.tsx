@@ -72,7 +72,6 @@ class Map extends Component<MapProps, MapState> {
       checkedEventTypes: eventTypes,
       priceRange: priceRange
     });
-    console.log("persists: " + this.state.checkedEventTypes)
 
     fetch(URL_BASE + "/getEvents", {
       method: "POST",
