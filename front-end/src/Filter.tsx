@@ -160,7 +160,7 @@ class Filter extends Component<FilterProps, {}>  {
           <h4>Cost</h4>
           <div id="price">
             <input type="range" name="price-range" min={PRICE_RANGE_MIN} max={PRICE_RANGE_MAX} value={this.props.priceRange.max} step="1" onChange={this.onPriceRangeUpdate}/>
-            <p>{this.props.priceRange.max}</p>
+            <p>${this.props.priceRange.max}</p>
           </div>
         </div>
       </div>
