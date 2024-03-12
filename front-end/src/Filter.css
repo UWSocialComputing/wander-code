@@ -11,6 +11,10 @@
   height: 87vh;
 }
 
+button img {
+  background-color: transparent;
+}
+
 #filterNav {
   display: flex;
   flex-direction: row;

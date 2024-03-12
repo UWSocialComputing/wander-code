@@ -127,7 +127,7 @@ class Filter extends Component<FilterProps, {}>  {
       <div id="filter">
         <div id="filterNav">
           <button id="filterControl" onClick={this.props.onCollapse}>
-            <img src={require('./img/filter_panel_control.png')} alt={"Collapse Filter Panel"}></img>
+            <img src={require('./img/x.png')} alt={"Collapse Filter Panel"}></img>
           </button>
         </div>
 

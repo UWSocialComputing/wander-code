@@ -10,10 +10,6 @@ body {
   margin: 0;
 }
 
-button {
-  background-color: transparent;
-}
-
 button:hover, input:hover {
   cursor: pointer;
 }
