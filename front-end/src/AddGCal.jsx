@@ -90,12 +90,12 @@ export const AddGCal = (props) => {
    * adds it to the users primary calendar
    */
   async function addManualEvent () {
-    // TODO: doesn't seem to be working anymore, Jaela may have messed up browser though
-    if (!(accessToken && expiresIn)) {
+    // TODO: should have this check & not always make people authorize, but it's being difficult
+    // if ((accessToken && expiresIn)) {
       handleAuthClick()
       // hah hacky and bad, this async stuff is being the worst though, so slightly ignoring this
       await delay(7000);
-    }
+    // }
 
     // Format WtmEvent start and end times into "YYYY-MM-DDThh:mm" for GCal 
     const startStringParts = props.event.duration.startTime.split(" ");
