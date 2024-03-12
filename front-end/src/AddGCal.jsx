@@ -63,16 +63,13 @@ export const AddGCal = (props) => {
    */
   async function handleAuthClick() {
     // Setting callback to handle resp after user grants auth
-    setTokenClient({...tokenClient, callback: async (resp) => {
+    tokenClient.callback = async (resp) => {
       if (resp.error) { throw resp; }
       const { access_token, expires_in } = gapi.client.getToken();
 
       localStorage.setItem("access_token", access_token);
       localStorage.setItem("expires_in", expires_in);
-
-      console.log(accessToken);
-      console.log(expiresIn)
-    }});
+    };
 
     try {
       // If the access token and expiration time aren't in local storage
@@ -97,7 +94,7 @@ export const AddGCal = (props) => {
     if (!(accessToken && expiresIn)) {
       handleAuthClick()
       // hah hacky and bad, this async stuff is being the worst though, so slightly ignoring this
-      await delay(6500);
+      await delay(7000);
     }
 
     // Format WtmEvent start and end times into "YYYY-MM-DDThh:mm" for GCal 
