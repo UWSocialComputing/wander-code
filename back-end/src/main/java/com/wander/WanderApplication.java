@@ -35,9 +35,9 @@ public class WanderApplication {
     }
 
     // Health
-    @GetMapping("/heartbeat")
-    public String hello(@RequestParam(value = "name", defaultValue = "<3") String name) {
-      return String.format("Heartbeat %s!", name);
+    @GetMapping("/")
+    public String healthCheck() {
+      return String.format("Connection successful");
     }
 
     // returns events and applies given filter, and checks distance.
