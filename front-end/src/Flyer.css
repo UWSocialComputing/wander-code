@@ -4,12 +4,10 @@
   padding: 0.5vh 0.5vw 0 1vh;
   margin-left: 0.5vw;
 
-  background-color: #d6e7ea3c;
   border-left: 2px solid #d6e7ea95;
 
   height: 87vh;
 
-  /* TODO: it's being difficult */
   overflow-y: scroll;
 }
 
@@ -24,6 +22,13 @@
   left: 12px;
   /* Layer this image on top of flyer */
   z-index: 1;
+}
+
+#flyer-stuff {
+  margin-top: 0.5vh;
+  padding: 0.5vh;
+  background-color: #d6e7ea3c;
+  border-radius: 5px;
 }
 
 #flyer-x img {

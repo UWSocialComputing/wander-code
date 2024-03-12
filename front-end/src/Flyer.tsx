@@ -71,49 +71,51 @@ const Flyer = (props: FlyerProps) => {
       <img id="flyer-img" src={URL_BASE + `/flyer/${props.event.eventId}.png`}  
         alt={props.event.name + " flyer image"} title={props.event.name + " flyer image"}></img>
 
-      <div id="flyer-buttons">
-        <img className="flyer-button" src={require('./img/save-icon.png')}
-          title={"Save event"} alt={"Save event icon"} 
-          onClick={saveEvent}></img>
+      <div id="flyer-stuff">
+        <div id="flyer-buttons">
+          <img className="flyer-button" src={require('./img/save-icon.png')}
+            title={"Save event"} alt={"Save event icon"} 
+            onClick={saveEvent}></img>
 
-        <AddGCal event={props.event}></AddGCal>
-      </div>
-
-      {/* All the flyer information: */}
-      <div id="flyer-info">
-        <div id="info-row">
-          <div> {/* First col: date, time and cost */}
-            <div className="info-item">
-              <img className="flyer-info-icon" src={require('./img/time.png')} alt={"Clock icon"}></img>
-              <p>{formatDate(props.event.duration)}</p>
-            </div>
-            <div className="info-item">
-              <img className="flyer-info-icon" src={require('./img/dollar.png')} alt={"Dollar sign icon"}></img>
-              <p>{props.event.cost === 0 ? "Free!" : "$" + props.event.cost}</p>
-            </div>
-          </div>
-          <div> {/* Second col: location & URL */}
-            <div className="info-item">
-              <img className="flyer-info-icon" src={require('./img/' + props.event.eventType.toLocaleLowerCase() + '_pin.png')} alt={props.event.eventType + " pin icon"}></img>
-              <p>{props.event.location}</p>
-            </div>
-            {props.event.url ?
-              <div className="info-item">
-                <img className="flyer-info-icon" src={require('./img/link.png')} alt={"Info 'i' icon"}></img>
-                <a href={"https://" + props.event.url} target="_blank">{props.event.url}</a>
-              </div>
-              : <></>
-            }
-          </div>
+          <AddGCal event={props.event}></AddGCal>
         </div>
 
-        {props.event.eventDetails ?
-          <div className="info-item">
-            <img className="flyer-info-icon" src={require('./img/info.png')}></img>
-            <p>{props.event.eventDetails}</p>
+        {/* All the flyer information: */}
+        <div id="flyer-info">
+          <div id="info-row">
+            <div> {/* First col: date, time and cost */}
+              <div className="info-item">
+                <img className="flyer-info-icon" src={require('./img/time.png')} alt={"Clock icon"}></img>
+                <p>{formatDate(props.event.duration)}</p>
+              </div>
+              <div className="info-item">
+                <img className="flyer-info-icon" src={require('./img/dollar.png')} alt={"Dollar sign icon"}></img>
+                <p>{props.event.cost === 0 ? "Free!" : "$" + props.event.cost}</p>
+              </div>
+            </div>
+            <div> {/* Second col: location & URL */}
+              <div className="info-item">
+                <img className="flyer-info-icon" src={require('./img/' + props.event.eventType.toLocaleLowerCase() + '_pin.png')} alt={props.event.eventType + " pin icon"}></img>
+                <p>{props.event.location}</p>
+              </div>
+              {props.event.url ?
+                <div className="info-item">
+                  <img className="flyer-info-icon" src={require('./img/link.png')} alt={"Info 'i' icon"}></img>
+                  <a href={"https://" + props.event.url} target="_blank">{props.event.url}</a>
+                </div>
+                : <></>
+              }
+            </div>
           </div>
-          : <></>
-        }
+
+          {props.event.eventDetails ?
+            <div className="info-item">
+              <img className="flyer-info-icon" src={require('./img/info.png')}></img>
+              <p>{props.event.eventDetails}</p>
+            </div>
+            : <></>
+          }
+        </div>
       </div>
     </div>
   );

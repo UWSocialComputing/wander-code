@@ -1,14 +1,6 @@
 #saved-page {
   margin: 0 5vh 5vh 5vh;
-}
-
-#saved-page-content {
-  /* display: flex;
-  flex-direction: row; */
-}
-
-#events-container {
-  /* min-width: 56vw; */
+  display: flex;
 }
 
 #events-arrage-container {
@@ -35,4 +27,12 @@
 .miniFlyer {
   height: 40vh;
   margin-bottom: 3vh;
+}
+
+#saved-page #flyer {
+  background-color: white;
+  border: 2px solid #d6e7ea95;
+  margin-right: 4.5vw;
+  margin-top: 4.5vh;
+  height: 83vh;
 }
