@@ -13,6 +13,9 @@ instructions are not meant to be followed on attu or a cloud based terminal.
     Keep the “Tools for Native Modules” option disabled. These selections should be
     the default installation options, so just verify they are made.
 3. Install Chrome.
+4. Download the `env.ts` file located in the [Wander Google Drive](https://drive.google.com/drive/u/0/folders/1K52nRgWxKXIJYFI0t-igm8NLXfbg7h7u)
+ and add it inside the `/src` directory. This file contains the API Key and Client ID
+ needed to access the Google Calendar API.
 
 ## `back-end/`
 1. Run the backend from `wander-code/back-end/` using command `mvn spring-boot:run`.
